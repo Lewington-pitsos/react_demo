@@ -1,9 +1,14 @@
 import React from 'react'
 
+import Board from './Flipper/Board'
+
 export default class Flipper extends React.Component {
   render() {
     return(
-      <h1>Flipper Page</h1>
+      <div>
+        <h1>Flipper Page</h1>
+        <Board cellNumber={40}/>
+      </div>
     )
   }
 }

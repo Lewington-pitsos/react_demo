@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom'
 import Layout from './pages/Layout.js';
 import Home from './pages/Home.js';
 import Flipper from './pages/Flipper.js';
+import dispatcher from './dispatcher'
 
 const main = document.getElementById('main')
 
