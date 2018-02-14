@@ -29109,11 +29109,16 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(100);
 
 
 
 
 class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  addCell() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].addCell();
+  }
+
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -29123,7 +29128,16 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         null,
         'Flipper Page'
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Flipper_Board__["a" /* default */], { cellNumber: 40 })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Flipper_Board__["a" /* default */], { cellNumber: 40 }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'container-fluid' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { onClick: this.addCell.bind(this) },
+          'Go ahead, add a cell'
+        )
+      )
     );
   }
 }
@@ -29410,7 +29424,6 @@ module.exports = Dispatcher;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Board_Cell__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(97);
-
 
 
 
@@ -29839,6 +29852,23 @@ function isObject(arg) {
 function isUndefined(arg) {
   return arg === void 0;
 }
+
+/***/ }),
+/* 99 */,
+/* 100 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(91);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  addCell() {
+    dispatcher.dispatch({
+      type: 'ADD_CELL'
+    });
+  }
+});
 
 /***/ })
 /******/ ]);

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import Cell from './Board/Cell'
-
 import boardStore from '../../stores/BoardStore'
 
 export default class Board extends React.Component {
