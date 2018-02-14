@@ -29426,7 +29426,8 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   componentWillMount() {
     // triggered just before a render occurs apparently
     __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].on('change', () => {
-      this.state = __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].cellSpecs();
+      console.log('component picked up state change');
+      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].cellSpecs());
     });
   }
 
@@ -29549,12 +29550,13 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
       case "ADD_CELL":
         {
           // increases cell number by one
-          this.addCell(action.title, action.text);
+          console.log('action handled');
+          this.addCell();
         }
     }
   }
 
-  addCell(title, text) {
+  addCell() {
     this.number += 1;
 
     this.emit('change');

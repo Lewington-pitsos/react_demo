@@ -16,12 +16,13 @@ class BoardStore extends EventEmitter {
   handleActions(action) {
     switch(action.type) {
       case "ADD_CELL": { // increases cell number by one
-        this.addCell(action.title, action.text);
+        console.log('action handled');
+        this.addCell();
       }
     }
   }
 
-  addCell(title, text) {
+  addCell() {
     this.number += 1
 
     this.emit('change')
