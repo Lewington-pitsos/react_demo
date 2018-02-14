@@ -29439,14 +29439,15 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   componentWillMount() {
     // triggered just before a render occurs apparently
     __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].on('change', () => {
-      console.log('component picked up state change');
       this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].cellSpecs());
     });
   }
 
   render() {
     // creates a number of cell componeents and then renders them within a flexbox
-    const cells = this.state.cells.map(id => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: id, key: id, size: this.state.cellSize }));
+    const cells = this.state.cells.map(cell => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: cell.id,
+      key: cell.id,
+      size: this.state.cellSize }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -29467,22 +29468,23 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(100);
+
+
 
 
 
 class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
     super(props);
-    this.state = { frontTextIndex: 0, backTextIndex: -1
 
-      // This binding is necessary to make `this` work in the callback
-    };this.flip = this.flip.bind(this);
+    // This binding is necessary to make `this` work in the callback
+    this.flipCell = this.flipCell.bind(this);
   }
 
-  flip() {
-    // triggers a flip animation by adding or removing the .hover class
-    var $flippingCell = $(`#cell-${this.props.id}`);
-    $flippingCell.toggleClass('backside');
+  flipCell() {
+    $('#cell-' + this.props.id).toggleClass('backside');
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].flipCell(this.props.id);
   }
 
   componentDidMount() {
@@ -29501,6 +29503,7 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       height: this.props.size + 'px',
       width: this.props.size + 'px'
     };
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { style: dimensions, className: 'vertical flip-container', id: 'cell-' + this.props.id },
@@ -29509,12 +29512,12 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         { className: 'flipper' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'cell front', onClick: this.flip.bind(this) },
+          { className: 'cell front', onClick: this.flipCell.bind(this) },
           'FUCK'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'cell back', onClick: this.flip.bind(this) },
+          { className: 'cell back', onClick: this.flipCell.bind(this) },
           'AIDS'
         )
       )
@@ -29550,9 +29553,10 @@ Cell.defaultProps = {
 class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
+    // cells are stored in an array
     this.cellSize = 600;
     this.number = 1;
-    this.cells = [88828];
+    this.cells = [{ id: 88828, backSide: false }];
   }
 
   cellSpecs() {
@@ -29563,18 +29567,29 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     switch (action.type) {
       case "ADD_CELL":
         {
-          // increases cell number by one
-          console.log('action handled');
           this.addCell();
+        }case "FLIP_CELL":
+        {
+          this.flipCell(action.cellId);
         }
     }
   }
 
   addCell() {
+    // adds a new cell object to the array of cell objects
     this.number += 1;
-    this.cells.push(Date.now());
+    this.cells.push({ id: Date.now(), backSide: false });
 
     this.emit('change');
+  }
+
+  flipCell(id) {
+    // finds the cell object that matches id and toggles it's side value
+    this.cells.forEach(function (cell) {
+      if (cell.id == id) {
+        cell.backSide = !cell.backSide;
+      }
+    });
   }
 
 }
@@ -29582,7 +29597,6 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
 const boardStore = new BoardStore();
 
 __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore.handleActions.bind(boardStore));
-window.dispatcher = __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */];
 /* harmony default export */ __webpack_exports__["a"] = (boardStore);
 
 /***/ }),
@@ -29866,12 +29880,12 @@ function isUndefined(arg) {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   addCell() {
-    dispatcher.dispatch({
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'ADD_CELL'
     });
   },
   flipCell(id) {
-    dispatcher.dispatch({
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'FLIP_CELL',
       cellId: id
     });

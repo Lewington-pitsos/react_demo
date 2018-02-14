@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatcher'
+import dispatcher from '../dispatcher'
 
 export default {
   addCell() {

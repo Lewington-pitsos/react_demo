@@ -12,7 +12,6 @@ export default class Board extends React.Component {
 
   componentWillMount() { // triggered just before a render occurs apparently
     boardStore.on('change', () => {
-      console.log('component picked up state change');
       this.setState( boardStore.cellSpecs() )
     })
   }
@@ -22,7 +21,9 @@ export default class Board extends React.Component {
     const cells = this
       .state
       .cells
-      .map((id) => <Cell id={id} key={id} size={this.state.cellSize} />)
+      .map((cell) => <Cell id={cell.id}
+                          key={cell.id}
+                          size={this.state.cellSize} />)
 
     return(
       <div className="d-flex justify-content-center p-0 board flex-wrap">

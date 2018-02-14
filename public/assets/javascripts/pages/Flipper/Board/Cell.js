@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import cellActions from '../../../actions/cellActions'
+
 export default class Cell extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {frontTextIndex: 0, backTextIndex: -1}
 
     // This binding is necessary to make `this` work in the callback
-    this.flip = this.flip.bind(this)
+    this.flipCell = this.flipCell.bind(this)
   }
 
-  flip() {
-    // triggers a flip animation by adding or removing the .hover class
-    var $flippingCell = $(`#cell-${this.props.id}`)
-    $flippingCell.toggleClass('backside');
+  flipCell() {
+    $('#cell-' + this.props.id).toggleClass('backside');
+    cellActions.flipCell(this.props.id)
   }
 
   componentDidMount() {
@@ -32,13 +32,14 @@ export default class Cell extends React.Component {
       height: this.props.size + 'px',
       width: this.props.size + 'px'
     }
+
     return(
       <div style={dimensions} className="vertical flip-container" id={'cell-' + this.props.id} >
         <div className='flipper'>
-          <div className='cell front' onClick={this.flip.bind(this)}>
+          <div className='cell front' onClick={this.flipCell.bind(this)}>
             FUCK
           </div>
-          <div className='cell back' onClick={this.flip.bind(this)}>
+          <div className='cell back' onClick={this.flipCell.bind(this)}>
             AIDS
           </div>
         </div>
