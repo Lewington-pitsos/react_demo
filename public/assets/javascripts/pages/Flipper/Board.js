@@ -8,7 +8,7 @@ export default class Board extends React.Component {
     // creates a number of cell componeents and then renders them within a flexbox
     const cells = Array(this.props.cellNumber)
       .fill()
-      .map((_, index) => <Cell id={index} />)
+      .map((_, index) => <Cell id={index} size={100} />)
 
     return(
       <div className="d-flex justify-content-center p-0 board flex-wrap">
@@ -19,9 +19,11 @@ export default class Board extends React.Component {
 }
 
 Board.propTypes = {
-  cellNumber: PropTypes.number.isRequired
+  cellNumber: PropTypes.number.isRequired,
+  cellSize: PropTypes.number.isRequired
 }
 
 Board.defaultProps = {
-  cellNumber: 1
+  cellNumber: 1,
+  cellSize: 600
 }
