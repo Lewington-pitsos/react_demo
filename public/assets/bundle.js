@@ -29485,7 +29485,6 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   flipCell() {
-    // $('#cell-' + this.props.id).toggleClass('backside');
     __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].flipCell(this.props.id);
   }
 

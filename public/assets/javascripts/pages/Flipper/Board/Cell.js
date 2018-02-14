@@ -12,7 +12,6 @@ export default class Cell extends React.Component {
   }
 
   flipCell() {
-    // $('#cell-' + this.props.id).toggleClass('backside');
     cellActions.flipCell(this.props.id)
   }
 
