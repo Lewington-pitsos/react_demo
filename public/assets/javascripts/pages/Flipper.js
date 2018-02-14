@@ -1,9 +1,14 @@
 import React from 'react'
 
+import Cell from './Flipper/Cell'
+
 export default class Flipper extends React.Component {
   render() {
     return(
-      <h1>Flipper Page</h1>
+      <div>
+        <h1>Flipper Page</h1>
+        <Cell id={1} />
+      </div>
     )
   }
 }
