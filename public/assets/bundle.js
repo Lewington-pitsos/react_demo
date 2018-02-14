@@ -29119,6 +29119,10 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].addCell();
   }
 
+  randFlipping() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].randFlipping();
+  }
+
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -29136,6 +29140,11 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           'button',
           { className: 'btn btn-primary', onClick: this.addCell.bind(this) },
           'Go ahead, add a cell'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary rand-flipping', onClick: this.randFlipping.bind(this) },
+          'Start Flipping'
         )
       )
     );
@@ -29557,6 +29566,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
 
     // cells are stored in an array
     this.cells = [{ id: 88828, backSide: false }];
+
+    this.flipping = false;
   }
 
   cellSpecs() {
@@ -29569,11 +29580,33 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
       case "ADD_CELL":
         {
           this.addCell();
+          break;
         }case "FLIP_CELL":
         {
           this.flipCell(action.cellId);
+          break;
+        }case 'RAND_FLIPPING':
+        {
+          this.toggleRandFlipping();
+          break;
         }
     }
+  }
+
+  toggleRandFlipping() {
+    console.log('store received toggleflip command');
+    // starts a timeout which keeps choosing a random cell and telling it to flip OR stops it if it's already going
+    if (this.flipping) {
+      this.flipping = false;
+    } else {
+      this.flipping = setInterval(this.flipRandomCell.bind(this), 500);
+    }
+  }
+
+  flipRandomCell() {
+    console.log('flipping...' + this);
+    var cell = this.cells[Math.floor(Math.random() * this.cells.length)];
+    this.flipCell(cell.id);
   }
 
   addCell() {
@@ -29896,6 +29929,11 @@ function isUndefined(arg) {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'FLIP_CELL',
       cellId: id
+    });
+  },
+  randFlipping() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'RAND_FLIPPING'
     });
   }
 });

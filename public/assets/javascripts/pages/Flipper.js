@@ -7,6 +7,10 @@ export default class Flipper extends React.Component {
     cellActions.addCell()
   }
 
+  randFlipping() {
+    cellActions.randFlipping()
+  }
+
   render() {
     return(
       <div>
@@ -14,6 +18,7 @@ export default class Flipper extends React.Component {
         <Board />
         <div className="container-fluid interface bottom">
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
+          <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
         </div>
       </div>
     )

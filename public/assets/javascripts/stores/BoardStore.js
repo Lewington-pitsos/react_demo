@@ -13,6 +13,8 @@ class BoardStore extends EventEmitter {
     this.cells = [
       { id: 88828, backSide: false }
     ]
+
+    this.flipping = false
   }
 
   cellSpecs() {
@@ -24,10 +26,31 @@ class BoardStore extends EventEmitter {
     switch(action.type) {
       case "ADD_CELL": {
         this.addCell();
+        break
       } case "FLIP_CELL": {
-        this.flipCell(action.cellId)
+        this.flipCell(action.cellId);
+        break
+      } case 'RAND_FLIPPING': {
+        this.toggleRandFlipping();
+        break
       }
     }
+  }
+
+  toggleRandFlipping() {
+    console.log('store received toggleflip command');
+    // starts a timeout which keeps choosing a random cell and telling it to flip OR stops it if it's already going
+    if (this.flipping) {
+      this.flipping = false
+    } else {
+      this.flipping = setInterval(this.flipRandomCell.bind(this), 500)
+    }
+  }
+
+  flipRandomCell() {
+    console.log('flipping...' + this);
+    var cell = this.cells[ Math.floor(Math.random() * this.cells.length) ]
+    this.flipCell(cell.id)
   }
 
   addCell() {

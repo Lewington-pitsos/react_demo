@@ -11,5 +11,10 @@ export default {
       type: 'FLIP_CELL',
       cellId: id
     })
+  },
+  randFlipping() {
+    dispatcher.dispatch({
+      type: 'RAND_FLIPPING'
+    })
   }
 }
