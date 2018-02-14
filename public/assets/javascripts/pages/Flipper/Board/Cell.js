@@ -12,7 +12,7 @@ export default class Cell extends React.Component {
   }
 
   flipCell() {
-    $('#cell-' + this.props.id).toggleClass('backside');
+    // $('#cell-' + this.props.id).toggleClass('backside');
     cellActions.flipCell(this.props.id)
   }
 
@@ -29,8 +29,10 @@ export default class Cell extends React.Component {
       transformOrigin: '100% ' + this.props.size / 2 + 'px'
     }
 
+    var side = this.props.backSide ? 'backside' : ''
+
     return(
-      <div style={dimensions} className="vertical flip-container" id={'cell-' + this.props.id} >
+      <div style={dimensions} className={'vertical flip-container ' + side } id={'cell-' + this.props.id} >
         <div className='flipper' style={originTransform}>
           <div className='cell front' onClick={this.flipCell.bind(this)}>
             FUCK

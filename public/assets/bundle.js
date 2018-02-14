@@ -29448,7 +29448,8 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     // the overarching cell size is passed in to each cell as a prop
     const cells = this.state.cells.map(cell => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: cell.id,
       key: cell.id,
-      size: this.state.cellSize }));
+      size: this.state.cellSize,
+      backSide: cell.backSide }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -29465,7 +29466,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
@@ -29484,7 +29485,7 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   flipCell() {
-    $('#cell-' + this.props.id).toggleClass('backside');
+    // $('#cell-' + this.props.id).toggleClass('backside');
     __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].flipCell(this.props.id);
   }
 
@@ -29501,9 +29502,11 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       transformOrigin: '100% ' + this.props.size / 2 + 'px'
     };
 
+    var side = this.props.backSide ? 'backside' : '';
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { style: dimensions, className: 'vertical flip-container', id: 'cell-' + this.props.id },
+      { style: dimensions, className: 'vertical flip-container ' + side, id: 'cell-' + this.props.id },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'flipper', style: originTransform },
@@ -29533,7 +29536,6 @@ Cell.defaultProps = {
   // sets default prop values
   size: 600
 };
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(46)))
 
 /***/ }),
 /* 97 */
@@ -29595,6 +29597,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
         cell.backSide = !cell.backSide;
       }
     });
+
+    this.emit('change');
   }
 
 }

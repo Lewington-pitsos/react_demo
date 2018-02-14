@@ -24,7 +24,8 @@ export default class Board extends React.Component {
       .cells
       .map((cell) => <Cell id={cell.id}
                           key={cell.id}
-                          size={this.state.cellSize} />)
+                          size={this.state.cellSize}
+                          backSide={cell.backSide}/>)
 
     return(
       <div className="d-flex justify-content-center p-0 board flex-wrap">

@@ -50,6 +50,8 @@ class BoardStore extends EventEmitter {
         cell.backSide = !cell.backSide
       }
     })
+
+    this.emit('change')
   }
 
 }
