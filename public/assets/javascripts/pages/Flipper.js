@@ -7,7 +7,7 @@ export default class Flipper extends React.Component {
     return(
       <div>
         <h1>Flipper Page</h1>
-        <Board />
+        <Board cellNumber={4}/>
       </div>
     )
   }

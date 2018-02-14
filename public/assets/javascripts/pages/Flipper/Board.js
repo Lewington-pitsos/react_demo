@@ -1,17 +1,27 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 import Cell from './Board/Cell'
 
 export default class Board extends React.Component {
   render() {
-    const cells = Array(2)
+    // creates a number of cell componeents and then renders them within a flexbox
+    const cells = Array(this.props.cellNumber)
       .fill()
       .map((_, index) => <Cell id={index} />)
 
     return(
-      <div className="d-flex justify-content-center p-0 board">
+      <div className="d-flex justify-content-center p-0 board flex-wrap">
        {cells}
       </div>
     )
   }
+}
+
+Board.propTypes = {
+  cellNumber: PropTypes.number.isRequired
+}
+
+Board.defaultProps = {
+  cellNumber: 1
 }

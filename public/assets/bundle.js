@@ -29123,7 +29123,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         null,
         'Flipper Page'
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Flipper_Board__["a" /* default */], null)
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Flipper_Board__["a" /* default */], { cellNumber: 4 })
     );
   }
 }
@@ -29406,24 +29406,36 @@ module.exports = Dispatcher;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Board_Cell__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Board_Cell__ = __webpack_require__(96);
+
 
 
 
 
 class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
-    const cells = Array(2).fill().map((_, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Board_Cell__["a" /* default */], { id: index }));
+    // creates a number of cell componeents and then renders them within a flexbox
+    const cells = Array(this.props.cellNumber).fill().map((_, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: index }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'd-flex justify-content-center p-0 board' },
+      { className: 'd-flex justify-content-center p-0 board flex-wrap' },
       cells
     );
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Board;
 
+
+Board.propTypes = {
+  cellNumber: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired
+};
+
+Board.defaultProps = {
+  cellNumber: 1
+};
 
 /***/ }),
 /* 96 */
