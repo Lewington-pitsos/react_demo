@@ -19,9 +19,10 @@ export default class Board extends React.Component {
 
   render() {
     // creates a number of cell componeents and then renders them within a flexbox
-    const cells = Array(this.state.number)
-      .fill()
-      .map((_, index) => <Cell id={index} size={this.state.cellSize} />)
+    const cells = this
+      .state
+      .cells
+      .map((id) => <Cell id={id} key={id} size={this.state.cellSize} />)
 
     return(
       <div className="d-flex justify-content-center p-0 board flex-wrap">

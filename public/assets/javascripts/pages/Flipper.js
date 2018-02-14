@@ -11,9 +11,9 @@ export default class Flipper extends React.Component {
     return(
       <div>
         <h1>Flipper Page</h1>
-        <Board cellNumber={40}/>
-        <div className="container-fluid">
-          <button onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
+        <Board />
+        <div className="container-fluid interface bottom">
+          <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
         </div>
       </div>
     )

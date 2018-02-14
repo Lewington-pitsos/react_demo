@@ -13,7 +13,7 @@ export default class Cell extends React.Component {
   flip() {
     // triggers a flip animation by adding or removing the .hover class
     var $flippingCell = $(`#cell-${this.props.id}`)
-    $flippingCell.toggleClass('hover');
+    $flippingCell.toggleClass('backside');
   }
 
   componentDidMount() {

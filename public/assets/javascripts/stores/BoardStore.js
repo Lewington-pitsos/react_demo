@@ -7,10 +7,11 @@ class BoardStore extends EventEmitter {
     super()
     this.cellSize = 600
     this.number = 1
+    this.cells = [ 88828 ]
   }
 
   cellSpecs() {
-    return {cellSize: this.cellSize, number: this.number}
+    return {cellSize: this.cellSize, number: this.number, cells: this.cells}
   }
 
   handleActions(action) {
@@ -24,6 +25,7 @@ class BoardStore extends EventEmitter {
 
   addCell() {
     this.number += 1
+    this.cells.push(Date.now())
 
     this.emit('change')
   }
