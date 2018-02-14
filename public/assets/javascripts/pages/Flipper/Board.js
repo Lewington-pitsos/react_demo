@@ -18,6 +18,7 @@ export default class Board extends React.Component {
 
   render() {
     // creates a number of cell componeents and then renders them within a flexbox
+    // the overarching cell size is passed in to each cell as a prop
     const cells = this
       .state
       .cells

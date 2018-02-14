@@ -5,15 +5,18 @@ import dispatcher from '../dispatcher'
 class BoardStore extends EventEmitter {
   constructor() {
     super()
-    // cells are stored in an array
+    this.maxSize = 600
     this.cellSize = 600
     this.number = 1
+
+    // cells are stored in an array
     this.cells = [
       { id: 88828, backSide: false }
     ]
   }
 
   cellSpecs() {
+    // returns all the cell info stored as a single object
     return {cellSize: this.cellSize, number: this.number, cells: this.cells}
   }
 
@@ -28,11 +31,16 @@ class BoardStore extends EventEmitter {
   }
 
   addCell() {
-    // adds a new cell object to the array of cell objects
+    // adds a new cell object to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
     this.number += 1
+    this.resizeCells()
     this.cells.push({id: Date.now(), backSide: false})
-
     this.emit('change')
+  }
+
+  resizeCells() {
+    // Hackily reudces cell size as more cells are added
+    this.cellSize = (this.cellSize <= 100 ? 100 : this.cellSize - 50)
   }
 
   flipCell(id) {

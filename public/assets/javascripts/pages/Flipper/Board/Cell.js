@@ -16,26 +16,22 @@ export default class Cell extends React.Component {
     cellActions.flipCell(this.props.id)
   }
 
-  componentDidMount() {
-    // this method is auto-called after each render
-    // the transform-origin of each cell's flipper is offset along the y access to the vale of half it's height. This way the cell will appear to pivot over a central axis
-    var $cell = $(`#cell-${this.props.id}`)
-    var $flipPanel = $cell.find('.flipper')
-    $flipPanel.css({
-      'transform-origin': '100% ' + $cell.height() / 2 + 'px'
-    })
-  }
-
   render() {
     // renders a (vertically) flippable cell using David Walsh's css flip https://davidwalsh.name/css-flip
+
+    // cell dimensions and size reflect what's going on in the store
     var dimensions = {
       height: this.props.size + 'px',
       width: this.props.size + 'px'
     }
 
+    var originTransform = {
+      transformOrigin: '100% ' + this.props.size / 2 + 'px'
+    }
+
     return(
       <div style={dimensions} className="vertical flip-container" id={'cell-' + this.props.id} >
-        <div className='flipper'>
+        <div className='flipper' style={originTransform}>
           <div className='cell front' onClick={this.flipCell.bind(this)}>
             FUCK
           </div>

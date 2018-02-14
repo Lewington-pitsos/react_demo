@@ -29445,6 +29445,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
     // creates a number of cell componeents and then renders them within a flexbox
+    // the overarching cell size is passed in to each cell as a prop
     const cells = this.state.cells.map(cell => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: cell.id,
       key: cell.id,
       size: this.state.cellSize }));
@@ -29487,21 +29488,17 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].flipCell(this.props.id);
   }
 
-  componentDidMount() {
-    // this method is auto-called after each render
-    // the transform-origin of each cell's flipper is offset along the y access to the vale of half it's height. This way the cell will appear to pivot over a central axis
-    var $cell = $(`#cell-${this.props.id}`);
-    var $flipPanel = $cell.find('.flipper');
-    $flipPanel.css({
-      'transform-origin': '100% ' + $cell.height() / 2 + 'px'
-    });
-  }
-
   render() {
     // renders a (vertically) flippable cell using David Walsh's css flip https://davidwalsh.name/css-flip
+
+    // cell dimensions and size reflect what's going on in the store
     var dimensions = {
       height: this.props.size + 'px',
       width: this.props.size + 'px'
+    };
+
+    var originTransform = {
+      transformOrigin: '100% ' + this.props.size / 2 + 'px'
     };
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -29509,7 +29506,7 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       { style: dimensions, className: 'vertical flip-container', id: 'cell-' + this.props.id },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { className: 'flipper' },
+        { className: 'flipper', style: originTransform },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { className: 'cell front', onClick: this.flipCell.bind(this) },
@@ -29553,13 +29550,16 @@ Cell.defaultProps = {
 class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    // cells are stored in an array
+    this.maxSize = 600;
     this.cellSize = 600;
     this.number = 1;
+
+    // cells are stored in an array
     this.cells = [{ id: 88828, backSide: false }];
   }
 
   cellSpecs() {
+    // returns all the cell info stored as a single object
     return { cellSize: this.cellSize, number: this.number, cells: this.cells };
   }
 
@@ -29576,11 +29576,16 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   }
 
   addCell() {
-    // adds a new cell object to the array of cell objects
+    // adds a new cell object to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
     this.number += 1;
+    this.resizeCells();
     this.cells.push({ id: Date.now(), backSide: false });
-
     this.emit('change');
+  }
+
+  resizeCells() {
+    // Hackily reudces cell size as more cells are added
+    this.cellSize = this.cellSize <= 100 ? 100 : this.cellSize - 50;
   }
 
   flipCell(id) {
