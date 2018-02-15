@@ -20,6 +20,10 @@ export default class Flipper extends React.Component {
     cellActions.cascadeFlip()
   }
 
+  playRound() {
+    cellActions.playRound()
+  }
+
   render() {
     return(
       <div>
@@ -32,6 +36,7 @@ export default class Flipper extends React.Component {
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
           <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Cascade Flip</button>
+          <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
         </div>
       </div>
     )

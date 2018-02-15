@@ -15,14 +15,24 @@ export default class PositionedCell {
   }
 
   updateSide() {
-    this.backSide = futureBackSide
+    console.log(this.futureBackSide);
+    this.backSide = this.futureBackSide
   }
 
   findNextSide() {
-    livingSiblings = this.siblings().livingCount()
+    var livingSiblings = this.siblings.livingCount()
+    console.log(livingSiblings);
 
     // this next line contains the rules of the game
     // currently we're set to GOL
-    this.futureBackSide = ( livingSiblings > 1 && livingSiblings < 4 )
+    this.futureBackSide = this.stateFromSiblings(livingSiblings)
+  }
+
+  stateFromSiblings(siblings) {
+    if (this.backSide) {
+      return (siblings == 2 || siblings == 3)
+    } else {
+      return siblings == 3
+    }
   }
 }

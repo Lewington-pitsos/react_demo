@@ -32,4 +32,10 @@ export default {
       type: 'CASCADE_FLIP'
     })
   },
+
+  playRound() {
+    dispatcher.dispatch({
+      type: 'PLAY_ROUND'
+    })
+  }
 }

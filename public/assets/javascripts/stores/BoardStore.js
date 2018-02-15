@@ -59,6 +59,9 @@ class BoardStore extends EventEmitter {
       } case 'CASCADE_FLIP': {
         this.cascadeFlip()
         break
+      } case 'PLAY_ROUND': {
+        this.playRound()
+        break
       }
     }
   }
@@ -128,7 +131,19 @@ class BoardStore extends EventEmitter {
   }
 
   playRound() {
+    // first goes through each cell and calculates its nexte state, then goes throguh them all again and updates the state
+    this.everyCell(this.calculateNextState.bind(this))
+    this.everyCell(this.assignNextState.bind(this))
 
+    this.emit('change')
+  }
+
+  calculateNextState(cell) {
+    cell.findNextSide()
+  }
+
+  assignNextState(cell){
+    cell.updateSide()
   }
 
   cascadeFlip() {
@@ -153,6 +168,7 @@ class BoardStore extends EventEmitter {
   }
 
   everyCell(func) {
+    // takes a function and calls it on every cell, plus that cell's coordinates
     for (var i = 0; i < this.cellMatrix.length; i++) {
       for (var j = 0; j < this.cellMatrix[i].length; j++) {
         func(this.cellMatrix[i][j], i, j)
