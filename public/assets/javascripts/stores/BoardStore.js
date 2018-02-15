@@ -86,12 +86,41 @@ class BoardStore extends EventEmitter {
 
   fixBoard(boardWidth) {
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
-    console.log('fixing board to width ' + cellsPerRow + ' cells per row')
+
     // we also have to fix the width of the rendered cell board
     this.boardWidth = cellsPerRow * this.cellSize
     console.log(this.cells)
+    this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
+    console.log(this.cellMatrix);
 
     this.emit('change')
+  }
+
+  matrixify(array, rowLength) {
+    // iterate throgh the array and add each element to row
+    // if the current array index is equal to the rowLength,
+    //  => push the row to matrix
+    //  => reset row to an empty array
+    //  => add the innitial row length to the current rowLength tracker
+    // finally, push the final row to matrix if it contains anything
+    var innitialRowLength = rowLength
+    var matrix = []
+    var row = []
+
+    for (var i = 0; i < array.length; i++) {
+      if (i == rowLength) {
+        matrix.push(row)
+        row = []
+        rowLength += innitialRowLength
+      }
+      row.push(array[i])
+    }
+    
+    if (row.length) {
+      matrix.push(row)
+    }
+
+    return matrix
   }
 
 }
