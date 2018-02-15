@@ -1,7 +1,8 @@
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
-import randomFLipping from './BoardStore/randomFlipping'
+import randomFLippingHelper from './BoardStore/randomFlippingHelper'
+import matrixHelper from './BoardStore/matrixHelper'
 import PositionedCell from './BoardStore/PositionedCell'
 
 class BoardStore extends EventEmitter {
@@ -29,7 +30,9 @@ class BoardStore extends EventEmitter {
     ].map(cell => new PositionedCell(cell.id, cell.backSide))
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
-    Object.assign(this, randomFLipping);
+    Object.assign(this, randomFLippingHelper);
+
+    Object.assign(this, matrixHelper)
   }
 
   cellSpecs() {
@@ -91,115 +94,18 @@ class BoardStore extends EventEmitter {
   }
 
   fixBoard(boardWidth) {
+    // fixes the width of the board component/element to it's current width
+    // also uses that width and the current cell size to craete a fixed matrix of cells that reflects the current on-screen cell layout
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
-
-    // we also have to fix the width of the rendered cell board
     this.boardWidth = cellsPerRow * this.cellSize
-    console.log(this.cells)
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
     this.everyCell(this.assignSiblings.bind(this))
     console.log(this.cells)
 
+    // this is only here so the board width gets fixed on the DOM
     this.emit('change')
   }
 
-  matrixify(array, rowLength) {
-    // iterate throgh the array and add each element to row
-    // if the current array index is equal to the rowLength,
-    //  => push the row to matrix
-    //  => reset row to an empty array
-    //  => add the innitial row length to the current rowLength tracker
-    // finally, push the final row to matrix if it contains anything
-    var innitialRowLength = rowLength
-    var matrix = []
-    var row = []
-
-    for (var i = 0; i < array.length; i++) {
-      if (i == rowLength) {
-        matrix.push(row)
-        row = []
-        rowLength += innitialRowLength
-      }
-      row.push(array[i])
-    }
-
-    if (row.length) {
-      matrix.push(row)
-    }
-
-    return matrix
-  }
-
-  playRound() {
-    // first goes through each cell and calculates its nexte state, then goes through them all again and updates the state and displays it through a casecade flip
-    this.everyCell(this.calculateNextState.bind(this))
-    this.cascadeFlip(this.assignNextState.bind(this))
-  }
-
-  calculateNextState(cell) {
-    cell.findNextSide()
-  }
-
-  assignNextState(cell){
-    cell.updateSide()
-  }
-
-  cascadeFlip(func) {
-    // takes a function as an argument and For each row in the matrix,
-    //  => it waits successivly longer and then applies the function to every cell in that row
-    //  => triggers a change event
-    for (var i = 0; i < this.cellMatrix.length; i++) {
-      setTimeout( this.flipRow.bind(this), i * 100, this.cellMatrix[i], func )
-    }
-  }
-
-  flipRow(row, func) {
-    // calls the passed in function on every cell in the current row, then emits a change event
-    for (var j = 0; j < row.length; j++) {
-      func(row[j])
-    }
-
-    this.emit('change')
-  }
-
-  reverse(cell) {
-    cell.backSide = !cell.backSide
-  }
-
-  assignSiblings(cell, y, x) {
-    // iterates through every cell in the matrix and adds all it's siblings to it's siblingsTracker object
-    cell.addSiblings(this.getCoordinateSiblings(x, y))
-  }
-
-  everyCell(func) {
-    // takes a function and calls it on every cell, plus that cell's coordinates
-    for (var i = 0; i < this.cellMatrix.length; i++) {
-      for (var j = 0; j < this.cellMatrix[i].length; j++) {
-        func(this.cellMatrix[i][j], i, j)
-      }
-    }
-  }
-
-  getCoordinateSiblings(x, y) {
-    // very simple: just pushes all the values at neighbouring coordinates to an array and returns it (minus any falsey values)
-    var siblingsArray = []
-    if (y > 0) {
-      siblingsArray.push(this.cellMatrix[y-1][x-1])
-      siblingsArray.push(this.cellMatrix[y-1][x])
-      siblingsArray.push(this.cellMatrix[y-1][x+1])
-    }
-
-    siblingsArray.push(this.cellMatrix[y][x-1])
-    siblingsArray.push(this.cellMatrix[y][x+1])
-
-    if (y < this.cellMatrix.length - 1 ) {
-      siblingsArray.push(this.cellMatrix[y+1][x-1])
-      siblingsArray.push(this.cellMatrix[y+1][x])
-      siblingsArray.push(this.cellMatrix[y+1][x+1])
-    }
-
-    return siblingsArray.filter(cell => cell);
-  }
 
 }
 
