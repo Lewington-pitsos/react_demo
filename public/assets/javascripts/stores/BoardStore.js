@@ -10,6 +10,7 @@ class BoardStore extends EventEmitter {
     this.maxSize = 600
     this.cellSize = 200
     this.number = 12
+    this.boardWidth = false
 
     // cells are stored as an array of PositionedCell objects
     this.cells = [
@@ -33,7 +34,12 @@ class BoardStore extends EventEmitter {
 
   cellSpecs() {
     // returns all the cell info stored as a single object
-    return {cellSize: this.cellSize, number: this.number, cells: this.cells}
+    return {
+      cellSize: this.cellSize,
+      number: this.number,
+      cells: this.cells,
+      fixedWidth: this.boardWidth
+    }
   }
 
   handleActions(action) {
@@ -81,7 +87,11 @@ class BoardStore extends EventEmitter {
   fixBoard(boardWidth) {
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
     console.log('fixing board to width ' + cellsPerRow + ' cells per row')
+    // we also have to fix the width of the rendered cell board
+    this.boardWidth = cellsPerRow * this.cellSize
     console.log(this.cells)
+
+    this.emit('change')
   }
 
 }

@@ -27,8 +27,17 @@ export default class Board extends React.Component {
                           size={this.state.cellSize}
                           backSide={cell.backSide}/>)
 
+    // if a fixed width exists in state, we want to fix the board do that width
+    var width = null
+    if (this.state.fixedWidth) {
+      width =   {
+          width: this.state.fixedWidth + 'px',
+          flexShrink: 0
+        }
+    }
+
     return(
-      <div className="d-flex justify-content-start p-0 board flex-wrap" id="board">
+      <div className="d-flex justify-content-start p-0 board flex-wrap" id="board" style={width}>
        {cells}
       </div>
     )

@@ -21,7 +21,9 @@ export default class Flipper extends React.Component {
     return(
       <div>
         <h1>Flipper Page</h1>
-        <Board />
+        <div className="d-flex justify-content-center">
+          <Board />
+        </div>
         <div className="container-fluid interface bottom">
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
