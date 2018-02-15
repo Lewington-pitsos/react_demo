@@ -2,6 +2,7 @@ import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
 import randomFLipping from './BoardStore/randomFlipping'
+import PositionedCell from './BoardStore/PositionedCell'
 
 class BoardStore extends EventEmitter {
   constructor() {
@@ -80,6 +81,10 @@ class BoardStore extends EventEmitter {
   fixBoard(boardWidth) {
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
     console.log('fixing board to width ' + cellsPerRow + ' cells per row')
+    var fixedCells = this.cells.map(function(cell) {
+      return new PositionedCell(cell.id, cell.backSide)
+    })
+    console.log(fixedCells)
   }
 
 }
