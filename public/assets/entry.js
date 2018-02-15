@@ -8,3 +8,4 @@ import './stylesheets/flip.css';
 // js
 import 'bootstrap'; // yeah, this is just bootstrap js
 import './javascripts/basic.js';
+import './javascripts/animations/distracting.js';
