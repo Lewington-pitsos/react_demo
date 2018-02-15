@@ -57,7 +57,7 @@ class BoardStore extends EventEmitter {
         this.fixBoard(action.boardWidth)
         break
       } case 'CASCADE_FLIP': {
-        this.cascadeFlip()
+        this.cascadeFlip(this.reverse.bind(this))
         break
       } case 'PLAY_ROUND': {
         this.playRound()
@@ -146,20 +146,24 @@ class BoardStore extends EventEmitter {
     cell.updateSide()
   }
 
-  cascadeFlip() {
+  cascadeFlip(func) {
     // for each row in the matrix it waits successfily longer and then triggers a full flip (all cells in the row have their facing reversed)
     for (var i = 0; i < this.cellMatrix.length; i++) {
-      setTimeout( this.flipRow.bind(this), i * 100, this.cellMatrix[i] )
+      setTimeout( this.flipRow.bind(this), i * 100, this.cellMatrix[i], func )
     }
   }
 
-  flipRow(row) {
+  flipRow(row, func) {
     // reverses the current facing of each cell on the given rown and then emits a change event
     for (var j = 0; j < row.length; j++) {
-      row[j].backSide = !row[j].backSide
+      func(row[j])
     }
 
     this.emit('change')
+  }
+
+  reverse(cell) {
+    cell.backSide = !cell.backSide
   }
 
   assignSiblings(cell, y, x) {
