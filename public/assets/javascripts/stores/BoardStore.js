@@ -105,8 +105,6 @@ class BoardStore extends EventEmitter {
     // this is only here so the board width gets fixed on the DOM
     this.emit('change')
   }
-
-
 }
 
 const boardStore = new BoardStore;
