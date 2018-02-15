@@ -87,3 +87,23 @@ nav
   &.back
     color: $body-bg
     background: $body-color
+
+// HOME
+
+#home-page
+  position: relative
+  #distracting-overlay
+    background: green
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    .distractor
+      display: inline-block
+      background: $body-color
+      color: $body-bg
+      padding: 1.5rem
+      z-index: 3
+  .home
+    z-index: 2

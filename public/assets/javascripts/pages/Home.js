@@ -1,11 +1,13 @@
 import React from 'react'
 
+import DistractingOverlay from './Home/DistractingOverlay'
+
 export default class Home extends React.Component {
   render() {
     return(
-      <div>
+      <div id="home-page">
         <h1>HomePage</h1>
-        <div className="container">
+        <div className="container home">
           <div className="row justify-content-center">
             <div className="col-md-6 text-center animated fadeIn">
               <h3>Hey Ho</h3>
@@ -13,6 +15,7 @@ export default class Home extends React.Component {
             </div>
           </div>
         </div>
+        <DistractingOverlay />
       </div>
     )
   }
