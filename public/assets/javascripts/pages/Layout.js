@@ -16,7 +16,7 @@ export default class Layout extends React.Component {
           </ul>
         </nav>
 
-        <div className="container-fluid content">
+        <div className="container-fluid content p-0">
           {this.props.children}
         </div>
       </div>

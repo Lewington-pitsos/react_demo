@@ -5,6 +5,12 @@ $body-color-dark: #ccc
 
 // GENERAL
 
+h1
+  padding-bottom: 3rem
+
+h2
+  padding-bottom: 3rem
+
 #background
   background: $body-bg
 
@@ -25,6 +31,10 @@ a
   background: $body-bg
   &.bottom
     bottom: 0
+    border-top: 1px solid $body-color
+
+.hidden
+  display: none
 
 // LAYOUT
 
@@ -35,8 +45,11 @@ nav
 
 // FLIPPER
 
+.GOL_wrapper
+  padding: 3rem
+
 .board
-  padding: 0 0 20rem 0
+  padding: 0 0 8rem 0
   flex-basis: auto
 
 // CELL

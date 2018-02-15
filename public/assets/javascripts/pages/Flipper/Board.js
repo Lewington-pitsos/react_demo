@@ -37,7 +37,7 @@ export default class Board extends React.Component {
     }
 
     return(
-      <div className="d-flex justify-content-start board flex-wrap" id="board" style={width}>
+      <div className="d-flex justify-content-center board flex-wrap" id="board" style={width}>
        {cells}
       </div>
     )

@@ -28,13 +28,15 @@ export default class Flipper extends React.Component {
     return(
       <div>
         <h1>Flipper Page</h1>
-        <div className="d-flex justify-content-center">
+        <div className="d-flex align-items-center flex-column GOL_wrapper">
           <Board />
         </div>
         <div className="container-fluid interface bottom">
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
+        </div>
+        <div className="container-fluid interface bottom GOL_panel hidden">
           <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Cascade Flip</button>
           <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
         </div>
