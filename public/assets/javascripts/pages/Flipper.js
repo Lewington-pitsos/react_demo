@@ -31,7 +31,7 @@ export default class Flipper extends React.Component {
 
   fixBoard() {
     // the current width of the baord is recorded so that we can fix the grid cells the same way that they are displayed
-    var $golElements = $('.hidden')
+    var $golElements = $('.GOL')
     $golElements.removeClass('hidden')
     $golElements.addClass('animated')
     cellActions.fixBoard($('#board').width())
@@ -45,6 +45,13 @@ export default class Flipper extends React.Component {
     cellActions.playRound()
   }
 
+  exit() {
+    var $golElements = $('.GOL')
+    $golElements.removeClass('fadeInUp fadeInDown')
+    $golElements.addClass('fadeOutUp')
+    cellActions.exit()
+  }
+
   componentDidMount() {
 
   }
@@ -53,7 +60,7 @@ export default class Flipper extends React.Component {
 
     return(
       <div>
-        <ControlPanel classes="hidden fadeInDown" side="top">
+        <ControlPanel classes="GOL hidden fadeInDown" side="top">
           <h2>Game of Life Simulator</h2>
         </ControlPanel>
         <h1>Flipper Page</h1>
@@ -65,9 +72,10 @@ export default class Flipper extends React.Component {
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
         </ControlPanel>
-        <ControlPanel classes="hidden fadeInUp">
+        <ControlPanel classes="GOL hidden fadeInUp">
           <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Cascade Flip</button>
           <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
+          <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>
         </ControlPanel>
       </div>
     )

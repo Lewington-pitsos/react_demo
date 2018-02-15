@@ -65,8 +65,17 @@ class BoardStore extends EventEmitter {
       } case 'PLAY_ROUND': {
         this.playRound()
         break
+      } case 'EXIT_GOL': {
+        this.exitGol()
+        break
       }
     }
+  }
+
+  exitGol() {
+    this.boardWidth = false
+
+    this.emit('change')
   }
 
   addCell() {

@@ -37,5 +37,11 @@ export default {
     dispatcher.dispatch({
       type: 'PLAY_ROUND'
     })
+  },
+
+  exit() {
+    dispatcher.dispatch({
+      type: 'EXIT_GOL'
+    })
   }
 }
