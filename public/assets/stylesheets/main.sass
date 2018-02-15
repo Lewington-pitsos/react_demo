@@ -6,10 +6,11 @@ $body-color-dark: #ccc
 // GENERAL
 
 h1
-  padding-bottom: 3rem
+  padding: 2rem
+  background: $body-bg
 
 h2
-  padding-bottom: 3rem
+  padding: 1rem
 
 #background
   background: $body-bg
@@ -27,11 +28,15 @@ a
   position: fixed
   left: 0
   right: 0
-  padding: 3rem
+  padding: 1rem
   background: $body-bg
+  z-index: 10
   &.bottom
     bottom: 0
     border-top: 1px solid $body-color
+  &.top
+    top: 0
+    border-bottom: 1px solid $body-color
 
 .hidden
   display: none

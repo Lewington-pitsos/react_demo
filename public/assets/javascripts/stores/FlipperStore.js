@@ -5,12 +5,27 @@ import dispatcher from '../dispatcher'
 class FlipperStore extends EventEmitter {
   constructor() {
     super()
-    this.GOLPanel = false
-    this.titleText = 'Flippers'
+    this.GOLState = false
   }
 
   getInfo() {
-    {GOLPanel: this.GOL_panel, titleText: this.titleText}
+    return {GOLState: this.GOLState}
+  }
+
+  handleActions(action) {
+    switch(action.type) {
+      case "FIX_BOARD": {
+        console.log('picked u at store');
+        this.layoutGOL()
+        break
+      }
+    }
+  }
+
+  layoutGOL() {
+    this.GOLState = true
+
+    this.emit('change')
   }
 }
 
