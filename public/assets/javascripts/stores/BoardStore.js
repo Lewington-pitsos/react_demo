@@ -26,6 +26,7 @@ class BoardStore extends EventEmitter {
       { id: 88528, backSide: false }
     ]
 
+    // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, randomFLipping);
   }
 
@@ -40,10 +41,13 @@ class BoardStore extends EventEmitter {
         this.addCell();
         break
       } case "FLIP_CELL": {
-        this.flipCell(action.cellId);
+        this.flipCell(action.cellId)
         break
       } case 'RAND_FLIPPING': {
-        this.toggleRandFlipping();
+        this.toggleRandFlipping()
+        break
+      } case 'FIX_BOARD': {
+        this.fixBoard(action.boardWidth)
         break
       }
     }
@@ -73,8 +77,9 @@ class BoardStore extends EventEmitter {
     this.emit('change')
   }
 
-  fixCellsInGrid() {
-
+  fixBoard(boardWidth) {
+    var cellsPerRow = Math.floor(boardWidth / this.cellSize)
+    console.log('fixing board to width ' + cellsPerRow + ' cells per row')
   }
 
 }

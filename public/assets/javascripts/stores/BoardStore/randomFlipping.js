@@ -1,6 +1,5 @@
 export default {
   toggleRandFlipping() {
-    console.log('store received toggleflip command');
     // starts two staggered intervals which keep choosing random numbers of random cells and flipping them
     // if the intervals are already running, it stops them both
     if (this.autoFlipper) {
