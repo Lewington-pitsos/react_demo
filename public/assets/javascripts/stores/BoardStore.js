@@ -94,7 +94,7 @@ class BoardStore extends EventEmitter {
     this.boardWidth = cellsPerRow * this.cellSize
     console.log(this.cells)
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
-    this.assignSiblings()
+    this.everyCell(this.assignSiblings.bind(this))
     console.log(this.cells)
 
     this.emit('change')
@@ -127,6 +127,10 @@ class BoardStore extends EventEmitter {
     return matrix
   }
 
+  playRound() {
+
+  }
+
   cascadeFlip() {
     // for each row in the matrix it waits successfily longer and then triggers a full flip (all cells in the row have their facing reversed)
     for (var i = 0; i < this.cellMatrix.length; i++) {
@@ -143,16 +147,21 @@ class BoardStore extends EventEmitter {
     this.emit('change')
   }
 
-  assignSiblings() {
+  assignSiblings(cell, y, x) {
     // iterates through every cell in the matrix and adds all it's siblings to it's siblingsTracker object
+    cell.addSiblings(this.getCoordinateSiblings(x, y))
+  }
+
+  everyCell(func) {
     for (var i = 0; i < this.cellMatrix.length; i++) {
       for (var j = 0; j < this.cellMatrix[i].length; j++) {
-        this.cellMatrix[i][j].addSiblings(this.getCoordinateSiblings(i, j))
+        func(this.cellMatrix[i][j], i, j)
       }
     }
   }
 
   getCoordinateSiblings(x, y) {
+    // very simple: just pushes all the values at neighbouring coordinates to an array and returns it (minus any falsey values)
     var siblingsArray = []
     if (y > 0) {
       siblingsArray.push(this.cellMatrix[y-1][x-1])
