@@ -14,11 +14,12 @@ export default class Flipper extends React.Component {
 
   componentWillMount() { // triggered just before a render occurs apparently
     flipperStore.on('change', () => {
-      console.log('picked up at flipper');
       this.setState( flipperStore.getInfo() )
-      if (this.state.GOLState) {
-      }
     })
+  }
+
+  componentDidMount() {
+    $('.GOL').addClass('hidden')
   }
 
   addCell() {
@@ -31,9 +32,6 @@ export default class Flipper extends React.Component {
 
   fixBoard() {
     // the current width of the baord is recorded so that we can fix the grid cells the same way that they are displayed
-    var $golElements = $('.GOL')
-    $golElements.removeClass('hidden')
-    $golElements.addClass('animated')
     cellActions.fixBoard($('#board').width())
   }
 
@@ -46,21 +44,16 @@ export default class Flipper extends React.Component {
   }
 
   exit() {
-    var $golElements = $('.GOL')
-    $golElements.removeClass('fadeInUp fadeInDown')
-    $golElements.addClass('fadeOutUp')
     cellActions.exit()
-  }
-
-  componentDidMount() {
-
   }
 
   render() {
 
+    console.log(this.state);
+
     return(
       <div>
-        <ControlPanel classes="GOL hidden fadeInDown" side="top">
+        <ControlPanel classes="GOL animated" side="top" fadeIn="fadeInDown" fadeOut="fadeOutUp" GOLActive={this.state.GOLState}>
           <h2>Game of Life Simulator</h2>
         </ControlPanel>
         <h1>Flipper Page</h1>
@@ -72,7 +65,7 @@ export default class Flipper extends React.Component {
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
         </ControlPanel>
-        <ControlPanel classes="GOL hidden fadeInUp">
+        <ControlPanel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.state.GOLState}>
           <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Cascade Flip</button>
           <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
           <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>

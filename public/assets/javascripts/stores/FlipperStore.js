@@ -15,11 +15,19 @@ class FlipperStore extends EventEmitter {
   handleActions(action) {
     switch(action.type) {
       case "FIX_BOARD": {
-        console.log('picked u at store');
         this.layoutGOL()
+        break
+      } case "EXIT_GOL": {
+        this.exitGol()
         break
       }
     }
+  }
+
+  exitGol() {
+    this.GOLState = false
+
+    this.emit('change')
   }
 
   layoutGOL() {

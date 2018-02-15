@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 
 export default class ControlPanel extends React.Component {
   render() {
+    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut
+
+    const classes = this.props.classes + ' '
+                    + this.props.side + ' '
+                    + fade
     return(
-      <div className={'container-fluid interface ' + this.props.side + ' ' + this.props.classes }>
+      <div className={'container-fluid interface ' + classes }>
         {this.props.children}
       </div>
     )
