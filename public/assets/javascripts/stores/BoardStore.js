@@ -11,7 +11,7 @@ class BoardStore extends EventEmitter {
     this.cellSize = 200
     this.number = 12
 
-    // cells are stored in an array
+    // cells are stored as an array of PositionedCell objects
     this.cells = [
       { id: 88828, backSide: false },
       { id: 75766, backSide: false },
@@ -25,7 +25,7 @@ class BoardStore extends EventEmitter {
       { id: 56456, backSide: false },
       { id: 96456, backSide: false },
       { id: 88528, backSide: false }
-    ]
+    ].map(cell => new PositionedCell(cell.id, cell.backSide))
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, randomFLipping);
@@ -55,10 +55,10 @@ class BoardStore extends EventEmitter {
   }
 
   addCell() {
-    // adds a new cell object to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
+    // adds a new PositionedCell to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
     this.number += 1
     this.resizeCells()
-    this.cells.push({id: Date.now(), backSide: false})
+    this.cells.push(new PositionedCell(Date.now()))
     this.emit('change')
   }
 
@@ -81,10 +81,7 @@ class BoardStore extends EventEmitter {
   fixBoard(boardWidth) {
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
     console.log('fixing board to width ' + cellsPerRow + ' cells per row')
-    var fixedCells = this.cells.map(function(cell) {
-      return new PositionedCell(cell.id, cell.backSide)
-    })
-    console.log(fixedCells)
+    console.log(this.cells)
   }
 
 }

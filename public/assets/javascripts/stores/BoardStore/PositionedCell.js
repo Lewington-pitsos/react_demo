@@ -4,10 +4,10 @@ export default class PositionedCell {
   // holds the data for this cell (it's id and current facing)
   // also tracks the sibling (touching) cells of this cell
   // contains methods for updating the cell's facing, and working out it's next facing
-  constructor(id, backside=false) {
-    this.backside = backside
+  constructor(id, backSide=false) {
+    this.backSide = backSide
     this.id = id
-    this.futureBackSide = backside
+    this.futureBackSide = backSide
   }
 
   addSiblings(siblings) {
