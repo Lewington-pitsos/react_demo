@@ -131,11 +131,9 @@ class BoardStore extends EventEmitter {
   }
 
   playRound() {
-    // first goes through each cell and calculates its nexte state, then goes throguh them all again and updates the state
+    // first goes through each cell and calculates its nexte state, then goes through them all again and updates the state and displays it through a casecade flip
     this.everyCell(this.calculateNextState.bind(this))
-    this.everyCell(this.assignNextState.bind(this))
-
-    this.emit('change')
+    this.cascadeFlip(this.assignNextState.bind(this))
   }
 
   calculateNextState(cell) {
@@ -147,14 +145,16 @@ class BoardStore extends EventEmitter {
   }
 
   cascadeFlip(func) {
-    // for each row in the matrix it waits successfily longer and then triggers a full flip (all cells in the row have their facing reversed)
+    // takes a function as an argument and For each row in the matrix,
+    //  => it waits successivly longer and then applies the function to every cell in that row
+    //  => triggers a change event
     for (var i = 0; i < this.cellMatrix.length; i++) {
       setTimeout( this.flipRow.bind(this), i * 100, this.cellMatrix[i], func )
     }
   }
 
   flipRow(row, func) {
-    // reverses the current facing of each cell on the given rown and then emits a change event
+    // calls the passed in function on every cell in the current row, then emits a change event
     for (var j = 0; j < row.length; j++) {
       func(row[j])
     }
