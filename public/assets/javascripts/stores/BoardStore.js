@@ -94,7 +94,8 @@ class BoardStore extends EventEmitter {
     this.boardWidth = cellsPerRow * this.cellSize
     console.log(this.cells)
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
-    console.log(this.cellMatrix);
+    this.assignSiblings()
+    console.log(this.cells)
 
     this.emit('change')
   }
@@ -142,9 +143,33 @@ class BoardStore extends EventEmitter {
     this.emit('change')
   }
 
+  assignSiblings() {
+    // iterates through every cell in the matrix and adds all it's siblings to it's siblingsTracker object
+    for (var i = 0; i < this.cellMatrix.length; i++) {
+      for (var j = 0; j < this.cellMatrix[i].length; j++) {
+        this.cellMatrix[i][j].addSiblings(this.getCoordinateSiblings(i, j))
+      }
+    }
+  }
+
   getCoordinateSiblings(x, y) {
     var siblingsArray = []
-    siblingsArray.push()
+    if (y > 0) {
+      siblingsArray.push(this.cellMatrix[y-1][x-1])
+      siblingsArray.push(this.cellMatrix[y-1][x])
+      siblingsArray.push(this.cellMatrix[y-1][x+1])
+    }
+
+    siblingsArray.push(this.cellMatrix[y][x-1])
+    siblingsArray.push(this.cellMatrix[y][x+1])
+
+    if (y < this.cellMatrix.length - 1 ) {
+      siblingsArray.push(this.cellMatrix[y+1][x-1])
+      siblingsArray.push(this.cellMatrix[y+1][x])
+      siblingsArray.push(this.cellMatrix[y+1][x+1])
+    }
+
+    return siblingsArray.filter(cell => cell);
   }
 
 }
