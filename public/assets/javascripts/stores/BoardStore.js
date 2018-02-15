@@ -91,6 +91,10 @@ class BoardStore extends EventEmitter {
     this.emit('change')
   }
 
+  fixCellsInGrid() {
+    
+  }
+
 }
 
 const boardStore = new BoardStore;
