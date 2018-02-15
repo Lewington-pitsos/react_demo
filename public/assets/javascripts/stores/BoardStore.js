@@ -1,21 +1,32 @@
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
+import randomFLipping from './BoardStore/randomFlipping'
 
 class BoardStore extends EventEmitter {
   constructor() {
     super()
     this.maxSize = 600
-    this.cellSize = 600
-    this.number = 1
+    this.cellSize = 200
+    this.number = 12
 
     // cells are stored in an array
     this.cells = [
-      { id: 88828, backSide: false }
+      { id: 88828, backSide: false },
+      { id: 75766, backSide: false },
+      { id: 54676, backSide: false },
+      { id: 78678, backSide: false },
+      { id: 53456, backSide: false },
+      { id: 11231, backSide: false },
+      { id: 45677, backSide: false },
+      { id: 76576, backSide: false },
+      { id: 35656, backSide: false },
+      { id: 56456, backSide: false },
+      { id: 96456, backSide: false },
+      { id: 88528, backSide: false }
     ]
 
-    this.autoFlipper = false
-    this.secondAutoFlipper = false
+    Object.assign(this, randomFLipping);
   }
 
   cellSpecs() {
@@ -36,35 +47,6 @@ class BoardStore extends EventEmitter {
         break
       }
     }
-  }
-
-  toggleRandFlipping() {
-    console.log('store received toggleflip command');
-    // starts two staggered intervals which keep choosing random numbers of random cells and flipping them
-    // if the intervals are already running, it stops them both
-    if (this.autoFlipper) {
-      clearInterval(this.autoFlipper)
-      clearInterval(this.secondAutoFlipper)
-    } else {
-      this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800)
-      this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100)
-    }
-  }
-
-  flipSomeCells() {
-    // chooses a number between 1 and 1/3 of the current max and executes that manay random flips
-    var times = Math.floor(Math.random() * (this.cells.length / 3) ) + 1
-    for (; times > 0; times--) {
-      this.flipRandomCell.call(this)
-    }
-  }
-
-  flipRandomCell() {
-    // chooses a cell at random from all the stored cells and changes it's clip orientation, emmitting a change event
-    var cell = this.cells[ Math.floor(Math.random() * this.cells.length) ]
-    cell.backSide = !cell.backSide
-
-    this.emit('change')
   }
 
   addCell() {
@@ -92,7 +74,7 @@ class BoardStore extends EventEmitter {
   }
 
   fixCellsInGrid() {
-    
+
   }
 
 }

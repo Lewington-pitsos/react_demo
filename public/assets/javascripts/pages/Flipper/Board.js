@@ -28,7 +28,7 @@ export default class Board extends React.Component {
                           backSide={cell.backSide}/>)
 
     return(
-      <div className="d-flex justify-content-center p-0 board flex-wrap">
+      <div className="d-flex justify-content-start p-0 board flex-wrap">
        {cells}
       </div>
     )
