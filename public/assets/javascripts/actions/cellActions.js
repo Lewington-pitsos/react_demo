@@ -25,7 +25,7 @@ export default {
       type: 'FIX_BOARD',
       boardWidth: boardWidth
     })
-  }
+  },
 
   cascadeFlip() {
     dispatcher.dispatch({

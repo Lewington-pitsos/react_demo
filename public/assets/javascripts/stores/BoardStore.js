@@ -129,7 +129,7 @@ class BoardStore extends EventEmitter {
   cascadeFlip() {
     // for each row in the matrix it waits successfily longer and then triggers a full flip (all cells in the row have their facing reversed)
     for (var i = 0; i < this.cellMatrix.length; i++) {
-      setTimeout( this.flipRow, i * 200, this.cellMatrix[i] )
+      setTimeout( this.flipRow.bind(this), i * 100, this.cellMatrix[i] )
     }
   }
 
