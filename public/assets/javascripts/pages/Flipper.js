@@ -1,8 +1,14 @@
 import React from 'react'
 
 import Board from './Flipper/Board'
+import ControlPanel from './Flipper/ControlPanel'
 import cellActions from '../actions/cellActions'
+
+
 export default class Flipper extends React.Component {
+  constructor() {
+    super()
+  }
   addCell() {
     cellActions.addCell()
   }
@@ -31,11 +37,11 @@ export default class Flipper extends React.Component {
         <div className="d-flex align-items-center flex-column GOL_wrapper">
           <Board />
         </div>
-        <div className="container-fluid interface bottom">
+        <ControlPanel>
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
-        </div>
+        </ControlPanel>
         <div className="container-fluid interface bottom GOL_panel hidden">
           <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Cascade Flip</button>
           <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
