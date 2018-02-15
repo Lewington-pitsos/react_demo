@@ -56,6 +56,9 @@ class BoardStore extends EventEmitter {
       } case 'FIX_BOARD': {
         this.fixBoard(action.boardWidth)
         break
+      } case 'CASCADE_FLIP': {
+        this.cascadeFlip()
+        break
       }
     }
   }
@@ -115,12 +118,33 @@ class BoardStore extends EventEmitter {
       }
       row.push(array[i])
     }
-    
+
     if (row.length) {
       matrix.push(row)
     }
 
     return matrix
+  }
+
+  cascadeFlip() {
+    // for each row in the matrix it waits successfily longer and then triggers a full flip (all cells in the row have their facing reversed)
+    for (var i = 0; i < this.cellMatrix.length; i++) {
+      setTimeout( this.flipRow, i * 200, this.cellMatrix[i] )
+    }
+  }
+
+  flipRow(row) {
+    // reverses the current facing of each cell on the given rown and then emits a change event
+    for (var j = 0; j < row.length; j++) {
+      row[j].backSide = !row[j].backSide
+    }
+
+    this.emit('change')
+  }
+
+  getCoordinateSiblings(x, y) {
+    var siblingsArray = []
+    siblingsArray.push()
   }
 
 }

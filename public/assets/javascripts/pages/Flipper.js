@@ -12,9 +12,12 @@ export default class Flipper extends React.Component {
   }
 
   fixBoard() {
-    console.log($('#board').width());
     // the current width of the baord is recorded so that we can fix the grid cells the same way that they are displayed
     cellActions.fixBoard($('#board').width())
+  }
+
+  cascadeFlip() {
+    cellActions.cascadeFlip()
   }
 
   render() {
@@ -28,6 +31,7 @@ export default class Flipper extends React.Component {
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
           <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
+          <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Fix Board Dimensions</button>
         </div>
       </div>
     )

@@ -26,4 +26,10 @@ export default {
       boardWidth: boardWidth
     })
   }
+
+  cascadeFlip() {
+    dispatcher.dispatch({
+      type: 'CASCADE_FLIP'
+    })
+  },
 }
