@@ -28,16 +28,17 @@ export default class Board extends React.Component {
                           backSide={cell.backSide}/>)
 
     // if a fixed width exists in state, we want to fix the board do that width
-    var width = null
+    var boardStyle = null
     if (this.state.fixedWidth) {
-      width =   {
+      boardStyle =   {
           width: this.state.fixedWidth + 'px',
-          flexShrink: 0
+          flexShrink: 0,
+          justifyContent: 'flex-start'
         }
     }
 
     return(
-      <div className="d-flex justify-content-center board flex-wrap" id="board" style={width}>
+      <div className="d-flex board flex-wrap" id="board" style={boardStyle}>
        {cells}
       </div>
     )

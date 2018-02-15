@@ -10,6 +10,7 @@ $body-color-dark: #ccc
   color: $body-bg
   border: none
   padding: 1rem
+  margin-bottom: 1rem
   &:hover
     border: none
     background: $body-color-dark
@@ -34,6 +35,9 @@ a
   &:hover
     color: $body-color-dark
     text-decoration: none
+  &:focus
+    color: $body-color-dark
+    text-decoration: none
 
 .interface
   position: fixed
@@ -43,6 +47,7 @@ a
   background: $body-bg
   z-index: 10
   display: flex
+  flex-wrap: wrap
   justify-content: space-between
   &.bottom
     bottom: 0
@@ -64,8 +69,9 @@ nav
 // FLIPPER
 
 .board
-  padding: 0 0 8rem 0
+  padding: 2rem 0 16rem 0
   flex-basis: auto
+  justify-content: center
 
 // CELL
 

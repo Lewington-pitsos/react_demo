@@ -60,13 +60,13 @@ export default class Flipper extends React.Component {
         <div className="d-flex align-items-center flex-column GOL_wrapper">
           <Board />
         </div>
-        <ControlPanel>
-          <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Go ahead, add a cell</button>
-          <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Flipping</button>
-          <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Fix Board Dimensions</button>
+        <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLState}>
+          <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Add Cell</button>
+          <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Random Flipping</button>
+          <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Game of Life</button>
         </ControlPanel>
         <ControlPanel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.state.GOLState}>
-          <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Cascade Flip</button>
+          <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Full flip</button>
           <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
           <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>
         </ControlPanel>
