@@ -7,7 +7,7 @@ class ExecutorStore extends EventEmitter {
     super()
     this.nextId = 2
     this.buckets = [
-      {stones: 1, id: 1}
+      {stones: 1, id: 1, justAdded: true}
     ]
   }
 
@@ -28,10 +28,15 @@ class ExecutorStore extends EventEmitter {
   }
 
   addBucket() {
+    // We record that all previously added buckets have been added already
+    this.buckets.forEach((bucket) => bucket.justAdded = false)
+
+    // then we add a new bucket to the list of buckets
     this.buckets.push(
-      {stones: 0, id: this.nextId}
+      {stones: 0, id: this.nextId, justAdded: true}
     )
 
+    // update the next Id
     this.nextId += 1
 
     this.emit('change')

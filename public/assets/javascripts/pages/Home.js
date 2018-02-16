@@ -1,7 +1,5 @@
 import React from 'react'
 
-import DistractingOverlay from './Home/DistractingOverlay'
-
 export default class Home extends React.Component {
   render() {
     return(

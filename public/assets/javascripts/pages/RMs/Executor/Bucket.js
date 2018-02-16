@@ -18,8 +18,10 @@ export default class Bucket extends React.Component {
     // renders a number of stones according to props
     var stones = this.stonesArray(this.props.stoneNumber)
 
+    var animationClasses = this.props.newBucket ? 'animated fadeInUp' : ''
+
     return(
-      <div className="bucket d-flex justify-content-around align-items-start flex-wrap" id={'bucket-' + this.props.id}>
+      <div className={'bucket d-flex justify-content-around align-items-start flex-wrap ' + animationClasses} id={'bucket-' + this.props.id}>
         {stones}
       </div>
     )
