@@ -30549,7 +30549,7 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const buckets = this.state.buckets.map(bucket => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], { stoneNumber: bucket.stones, id: 'bucket-' + bucket.id,
+    const buckets = this.state.buckets.map(bucket => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], { stoneNumber: bucket.stones, id: bucket.id,
       key: bucket.id }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -30694,7 +30694,7 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     // returns an array of number Stone compoennets
     var stones = [];
     for (var i = 0; i < number; i++) {
-      stones.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], null));
+      stones.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { key: i }));
     }
 
     return stones;
@@ -30706,7 +30706,7 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'bucket d-flex justify-content-around align-items-start flex-wrap' },
+      { className: 'bucket d-flex justify-content-around align-items-start flex-wrap', id: 'bucket-' + this.props.id },
       stones
     );
   }
@@ -30769,7 +30769,7 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
   }
 
   addBucket() {
-    this.buckets.push({ stones: 0, id: this.nextid });
+    this.buckets.push({ stones: 0, id: this.nextId });
 
     this.nextId += 1;
 
@@ -30777,7 +30777,7 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
   }
 
   removeBucket() {
-    this.buckets = this.buckets.splice(-1, 1);
+    this.buckets.splice(-1, 1);
 
     this.nextId -= 1;
 

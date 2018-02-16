@@ -8,7 +8,7 @@ export default class Bucket extends React.Component {
     // returns an array of number Stone compoennets
     var stones = []
     for (var i = 0; i < number; i++) {
-      stones.push(<Stone />)
+      stones.push(<Stone key={i}/>)
     }
 
     return stones
@@ -19,7 +19,7 @@ export default class Bucket extends React.Component {
     var stones = this.stonesArray(this.props.stoneNumber)
 
     return(
-      <div className="bucket d-flex justify-content-around align-items-start flex-wrap">
+      <div className="bucket d-flex justify-content-around align-items-start flex-wrap" id={'bucket-' + this.props.id}>
         {stones}
       </div>
     )

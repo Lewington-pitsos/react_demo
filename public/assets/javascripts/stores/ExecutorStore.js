@@ -29,7 +29,7 @@ class ExecutorStore extends EventEmitter {
 
   addBucket() {
     this.buckets.push(
-      {stones: 0, id: this.nextid}
+      {stones: 0, id: this.nextId}
     )
 
     this.nextId += 1
@@ -38,7 +38,7 @@ class ExecutorStore extends EventEmitter {
   }
 
   removeBucket() {
-    this.buckets = this.buckets.splice(-1,1)
+    this.buckets.splice(-1,1)
 
     this.nextId -= 1
 
