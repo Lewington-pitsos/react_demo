@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Bucket from './Executor/Bucket'
+import Ugg from './Executor/Ugg'
 import executorStore from '../../stores/ExecutorStore'
 
 export default class Executor extends React.Component {
@@ -31,7 +32,7 @@ export default class Executor extends React.Component {
             {buckets}
           </div>
           <div className="col-5 ugg-holder">
-            <p>Ugg</p>
+            <Ugg />
           </div>
         </div>
       </div>
