@@ -16,7 +16,6 @@ export default class Executor extends React.Component {
     })
   }
 
-
   render() {
 
     const buckets = this

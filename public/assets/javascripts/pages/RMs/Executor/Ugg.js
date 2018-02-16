@@ -3,9 +3,18 @@ import Stone from './Stone'
 
 
 export default class Ugg extends React.Component {
+
+  moveUgg() {
+    var bucketId = 'bucket-3'
+    var bucketHeight = ($('#' + bucketId).height() * 3 ) + 50
+    $('.ugg-wrapper').animate({
+      top: bucketHeight
+    }, 1000)
+  }
+
   render() {
     return(
-      <div>
+      <div className="ugg-wrapper">
         <h4>Ugg</h4>
         <div className="ugg row">
           <div className="col-6">
