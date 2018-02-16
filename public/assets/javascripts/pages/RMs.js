@@ -10,6 +10,7 @@ export default class RMs extends React.Component {
       <div id="RMs-page">
         <h1>Register Machines</h1>
         <div className="row">
+          <Program />
           <Executor />
         </div>
         <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
