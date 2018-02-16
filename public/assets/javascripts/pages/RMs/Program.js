@@ -3,7 +3,7 @@ import React from 'react'
 export default class Executor extends React.Component {
   render() {
     return(
-      <div className="col-md-6">
+      <div className="col-md-4">
         <ol>
           <li>
             <p>Program</p>

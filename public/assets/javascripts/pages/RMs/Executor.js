@@ -26,12 +26,12 @@ export default class Executor extends React.Component {
                   key={bucket.id} /> )
 
     return(
-      <div className="col-md-6">
-        <div className="row">
-          <div className="col-5 buckets d-flex flex-column">
+      <div className="col-md-7">
+        <div className="row justify-content-between">
+          <div className="col-7 buckets d-flex flex-column">
             {buckets}
           </div>
-          <div className="col-5 ugg-holder">
+          <div className="col-4 ugg-holder">
             <Ugg />
           </div>
         </div>
