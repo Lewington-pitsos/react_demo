@@ -8,6 +8,9 @@ export default class Layout extends React.Component {
         <nav className="container-fluid">
           <ul className="d-flex justify-content-end">
             <li>
+              <Link to="/register_machines">Register Machines</Link>
+            </li>
+            <li>
               <Link to="/">Home</Link>
             </li>
             <li>
