@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Board from './Flipper/Board'
-import ControlPanel from './Flipper/ControlPanel'
+import ControlPanel from './shared/ControlPanel'
 import cellActions from '../actions/cellActions'
 import flipperStore from '../stores/FlipperStore'
 

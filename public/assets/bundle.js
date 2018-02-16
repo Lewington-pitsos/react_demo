@@ -29473,8 +29473,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             )
           )
         )
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Home_DistractingOverlay__["a" /* default */], null)
+      )
     );
   }
 }
@@ -29501,7 +29500,7 @@ class DistractingOverlay extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
     );
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = DistractingOverlay;
+/* unused harmony export default */
 
 
 /***/ }),
@@ -29533,7 +29532,7 @@ class Distractor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Flipper_ControlPanel__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(106);
 
@@ -29593,7 +29592,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       'div',
       null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_2__Flipper_ControlPanel__["a" /* default */],
+        __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
         { classes: 'GOL animated', side: 'top', fadeIn: 'fadeInDown', fadeOut: 'fadeOutUp', GOLActive: this.state.GOLState },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h2',
@@ -29612,7 +29611,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Flipper_Board__["a" /* default */], null)
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_2__Flipper_ControlPanel__["a" /* default */],
+        __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
         { classes: 'animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: !this.state.GOLState },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
@@ -29631,7 +29630,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         )
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_2__Flipper_ControlPanel__["a" /* default */],
+        __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
         { classes: 'GOL animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: this.state.GOLState },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
@@ -30395,43 +30394,7 @@ class SiblingsTracker {
 
 
 /***/ }),
-/* 105 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-
-
-
-class ControlPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  render() {
-    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
-
-    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'container-fluid interface ' + classes },
-      this.props.children
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ControlPanel;
-
-
-ControlPanel.propTypes = {
-  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
-};
-
-ControlPanel.defaultProps = {
-  // sets default prop values
-  side: 'bottom',
-  classes: ''
-};
-
-/***/ }),
+/* 105 */,
 /* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30502,23 +30465,183 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RMs_Executor__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RMs_Program__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(111);
+
+
+
+
 
 
 class RMs extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "div",
-      { id: "RMs-page" },
+      'div',
+      { id: 'RMs-page' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "h1",
+        'h1',
         null,
-        "Register Machines"
+        'Register Machines'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'row' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__RMs_Executor__["a" /* default */], null)
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__["a" /* default */],
+        { classes: 'animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: true },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary fix-board' },
+          'Game of Life'
+        )
       )
     );
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = RMs;
 
+
+/***/ }),
+/* 109 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "div",
+      { className: "col-md-6" },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "div",
+        { className: "row" },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          "div",
+          { className: "col-6 buckets d-flex flex-column" },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "p",
+            null,
+            "buckets"
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          "div",
+          { className: "col-6 ugg-holder" },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "p",
+            null,
+            "Ugg"
+          )
+        )
+      )
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Executor;
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "div",
+      { className: "col-md-6" },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "ol",
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          "li",
+          null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "p",
+            null,
+            "Program"
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          "li",
+          null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "p",
+            null,
+            "Program"
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          "li",
+          null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "p",
+            null,
+            "Program"
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          "li",
+          null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "p",
+            null,
+            "Program"
+          )
+        )
+      )
+    );
+  }
+}
+/* unused harmony export default */
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+
+
+
+class ControlPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
+
+    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'container-fluid interface ' + classes },
+      this.props.children
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ControlPanel;
+
+
+ControlPanel.propTypes = {
+  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
+};
+
+ControlPanel.defaultProps = {
+  // sets default prop values
+  side: 'bottom',
+  classes: ''
+};
 
 /***/ })
 /******/ ]);
