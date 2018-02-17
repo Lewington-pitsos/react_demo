@@ -28,7 +28,7 @@ export default class Executor extends React.Component {
                                             newBucket={bucket.justAdded}/> )
 
     return(
-      <div className="col-md-7">
+      <div className="col-md-7 executor">
         <div className="row justify-content-between">
           <div className="col-7 buckets d-flex flex-column">
             {buckets}
