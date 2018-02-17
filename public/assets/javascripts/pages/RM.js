@@ -15,6 +15,14 @@ export default class RM extends React.Component {
     rmActions.removeBucket()
   }
 
+  addDecrement() {
+    rmActions.addDecrement()
+  }
+
+  addIncrement() {
+    rmActions.addIncrement()
+  }
+
   render() {
     return(
       <div id="RMs-page">
@@ -27,6 +35,8 @@ export default class RM extends React.Component {
           <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
           <button className="btn btn-primary" onClick={this.removeBucket.bind(this)}>Remove Bucket</button>
           <BucketSelector />
+          <button className="btn btn-primary" onClick={this.addDecrement.bind(this)}>Add Decrement Command</button>
+          <button className="btn btn-primary" onClick={this.addIncrement.bind(this)}>Add Increment Command</button>
         </ControlPanel>
       </div>
     )

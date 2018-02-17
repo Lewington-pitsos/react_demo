@@ -28,34 +28,36 @@ class ProgramStore extends EventEmitter {
     }
   }
 
+  getNextId() {
+    var id = this.nextId
+
+    this.getId += 1
+
+    return id
+  }
+
   addCommand(props) {
     // checkes for the type of command to add
     // creates and pushes the appripriate command to commands
+    var id = this.getNextId()
+
     if (props.increment) {
       this.commands.push(new Increment(
         props.nextCommand,
         props.bucket,
-        this.getNextId)
+        id)
       )
     } else {
       this.commands.push(new Decrement(
         props.nextCommand,
         props.bucket,
-        this.getNextId,
+        id,
         props.alternateNext,
-        programStore.getBucket(props.bucket)
+        executorStore.getBucket(props.bucket)
       ))
     }
 
     this.emit('change')
-  }
-
-  getNextId() {
-    var id = this.nextId
-
-    this.getNextId += 1
-
-    return id
   }
 }
 

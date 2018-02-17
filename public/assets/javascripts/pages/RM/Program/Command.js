@@ -9,7 +9,7 @@ export default class Command extends React.Component {
 
     return(
       <div className="command" id={'command-' + this.props.id}>
-        <p><span className="command-id">{this.props.id}:</span>{this.props.type} bucket {this.props.bucketId} and go to  {nextCommand};</p>
+        <p><span className="command-id">{this.props.id}.</span>{this.props.type} bucket {this.props.bucketId} and go to  {nextCommand}</p>
       </div>
     )
   }

@@ -25,5 +25,28 @@ export default {
       type: 'DECREMENT_BUCKET',
       id: id
     })
+  },
+
+  addDecrement() {
+    dispatcher.dispatch({
+      type: 'ADD_COMMAND',
+      commandProps: {
+        increment: false,
+        nextCommand: 1,
+        bucket: 1,
+        alternateNext: 1
+      }
+    })
+  },
+
+  addIncrement() {
+    dispatcher.dispatch({
+      type: 'ADD_COMMAND',
+      commandProps: {
+        increment: true,
+        nextCommand: 1,
+        bucket: 1
+      }
+    })
   }
 }
