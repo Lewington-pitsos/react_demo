@@ -6,6 +6,6 @@ export default class Increment extends Command {
   }
 
   run() {
-    this.actions.incremenetBucket(this.bucketId)
+    this.store.incremenetBucket(this.bucketId)
   }
 }

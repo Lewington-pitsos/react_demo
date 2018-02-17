@@ -35,10 +35,10 @@ class ExecutorStore extends EventEmitter {
         this.removeBucket()
         break
       } case "INCREMENT_BUCKET": {
-        this.alterBucket(action.id, this.animateInStone.bind(this))
+        this.incrementBucket(action.id)
         break
       } case "DECREMENT_BUCKET": {
-        this.alterBucket(action.id, this.animateOutStone.bind(this))
+        this.decrementBucket(action.id)
         break
       }
     }
@@ -62,9 +62,14 @@ class ExecutorStore extends EventEmitter {
     this.emit('change')
   }
 
-  alterBucket(id, method) {
+  decrementBucket(id) {
     this.moveUgg(id)
-    setTimeout(method, 400, id)
+    this.setTimeout(this.animateOutStone.bind(this), id, 400)
+  }
+
+  incrementBucket(id) {
+    this.moveUgg(id)
+    this.setTimeout(this.animateInStone.bind(this), id, 400)
   }
 
   addStoneTo(id) {
