@@ -3,7 +3,6 @@ const executorAnimations =  {
     // scrolls ugg to the middle of the bucket whose ide is passed in
     var bucketSelector = '#bucket-' + bucketId
     var bucketHeight = $(bucketSelector).outerHeight(true)
-    console.log(bucketHeight);
     var currentBucketMiddle = ( ( bucketHeight * bucketId ) + 10  )
     $('.ugg').animate({
       top: currentBucketMiddle
