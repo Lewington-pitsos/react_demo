@@ -31004,12 +31004,12 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
 
   decrementBucket(id) {
     this.moveUgg(id);
-    this.setTimeout(this.animateOutStone.bind(this), id, 400);
+    setTimeout(this.animateOutStone.bind(this), 400, id);
   }
 
   incrementBucket(id) {
     this.moveUgg(id);
-    this.setTimeout(this.animateInStone.bind(this), id, 400);
+    setTimeout(this.animateInStone.bind(this), 400, id);
   }
 
   addStoneTo(id) {
@@ -31130,9 +31130,7 @@ class Command {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ExecutorStore__ = __webpack_require__(119);
  // 'events is like, part of nodejs'
-
 
 
 
@@ -31142,7 +31140,7 @@ class Command {
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](2, 0, 1), new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](0, 1, 2, 1, __WEBPACK_IMPORTED_MODULE_5__ExecutorStore__["a" /* default */].getBucket(1))];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 0, 1)];
     this.nextId = 2;
   }
 
@@ -31182,7 +31180,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     if (props.increment) {
       this.commands.push(new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id));
     } else {
-      this.commands.push(new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext, __WEBPACK_IMPORTED_MODULE_5__ExecutorStore__["a" /* default */].getBucket(props.bucket)));
+      this.commands.push(new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext));
     }
 
     this.emit('change');
@@ -31192,6 +31190,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     var nextCommand = this.commands[0].id;
 
     while (nextCommand) {
+      console.log('next command: ' + nextCommand);
       // locates the command who'se id matches nextCommand
       var currentCommand = $.grep(this.commands, function (command) {
         return command.id == nextCommand;
@@ -31224,7 +31223,7 @@ class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
   }
 
   run() {
-    this.store.incremenetBucket(this.bucketId);
+    this.store.incrementBucket(this.bucketId);
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Increment;

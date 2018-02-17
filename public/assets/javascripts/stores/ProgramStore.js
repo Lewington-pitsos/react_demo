@@ -4,14 +4,12 @@ import Command from './ProgramStore/Command'
 import Increment from './ProgramStore/Increment'
 import Decrement from './ProgramStore/Decrement'
 import dispatcher from '../dispatcher'
-import executorStore from './ExecutorStore'
 
 class ProgramStore extends EventEmitter {
   constructor() {
     super()
     this.commands = [
-      new Increment(2, 0, 1),
-      new Decrement(0, 1, 2, 1, executorStore.getBucket(1))
+      new Increment(0, 0, 1)
     ]
     this.nextId = 2
   }
@@ -58,8 +56,7 @@ class ProgramStore extends EventEmitter {
         props.nextCommand,
         props.bucket,
         id,
-        props.alternateNext,
-        executorStore.getBucket(props.bucket)
+        props.alternateNext
       ))
     }
 
@@ -70,6 +67,7 @@ class ProgramStore extends EventEmitter {
     var nextCommand = this.commands[0].id
 
     while (nextCommand) {
+      console.log('next command: ' + nextCommand);
       // locates the command who'se id matches nextCommand
       var currentCommand = $.grep(this.commands, function(command){
         return command.id == nextCommand

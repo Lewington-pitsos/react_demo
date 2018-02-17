@@ -64,12 +64,12 @@ class ExecutorStore extends EventEmitter {
 
   decrementBucket(id) {
     this.moveUgg(id)
-    this.setTimeout(this.animateOutStone.bind(this), id, 400)
+    setTimeout(this.animateOutStone.bind(this), 400, id)
   }
 
   incrementBucket(id) {
     this.moveUgg(id)
-    this.setTimeout(this.animateInStone.bind(this), id, 400)
+    setTimeout(this.animateInStone.bind(this), 400, id)
   }
 
   addStoneTo(id) {
