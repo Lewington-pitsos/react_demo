@@ -35,7 +35,7 @@ export default class BucketSelector extends React.Component {
     console.log(this.state.number);
 
     return(
-      <select name="bucket">
+      <select name="bucket" defaultValue={this.props.current}>
         {this.generateOptions()}
       </select>
     )

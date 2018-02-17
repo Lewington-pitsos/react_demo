@@ -22,6 +22,7 @@ export default class Command extends React.Component {
       <CommandInfo command={command} /> :
       <CommandEdit command={command} />
 
+    // generates a class list depending on whether the command is nwely added
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command'
 
     return(

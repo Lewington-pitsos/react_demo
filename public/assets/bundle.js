@@ -31184,6 +31184,7 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     const display = this.state.display == 'info' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command });
 
+    // generates a class list depending on whether the command is nwely added
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -31245,7 +31246,7 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'bucket' },
+      { name: 'bucket', defaultValue: this.props.current },
       this.generateOptions()
     );
   }
@@ -31303,9 +31304,7 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BucketSelector__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__TypeSelector__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__CommandSelector__ = __webpack_require__(123);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandSelector__ = __webpack_require__(123);
 
 
 
@@ -31319,9 +31318,22 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'command-edit' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__TypeSelector__["a" /* default */], { name: command.constructor.name }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], null),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__CommandSelector__["a" /* default */], null)
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'select',
+        { name: 'type', defaultValue: command.constructor.name },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'option',
+          { value: 'Increment' },
+          'Increment'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'option',
+          { value: 'Decrement' },
+          'Decrement'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: command.bucketId }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: command.nextId })
     );
   }
 }
@@ -31329,57 +31341,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 
 
 /***/ }),
-/* 122 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-
-class TypeSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  render() {
-    // chooses which of the two options so start as selected according to the passed in name prop and renders a type selector accordingly
-
-    const increment = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "select",
-      { name: "type" },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "option",
-        { value: "increment", selected: true },
-        "Increment"
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "option",
-        { value: "decrement" },
-        "Decrement"
-      )
-    );
-
-    const decrement = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "select",
-      { name: "type" },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "option",
-        { value: "increment" },
-        "Increment"
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "option",
-        { value: "decrement", selected: true },
-        "Decrement"
-      )
-    );
-
-    const options = this.props.name == 'increment' ? increment : decrement;
-
-    return options;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = TypeSelector;
-
-
-/***/ }),
+/* 122 */,
 /* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -31421,7 +31383,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'command-id' },
+      { name: 'command-id', defaultValue: this.props.current },
       this.generateOptions()
     );
   }

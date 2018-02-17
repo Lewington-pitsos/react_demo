@@ -1,6 +1,5 @@
 import React from 'react'
 import BucketSelector from '../BucketSelector'
-import TypeSelector from './TypeSelector'
 import CommandSelector from './CommandSelector'
 
 export default class CommandEdit extends React.Component {
@@ -11,9 +10,12 @@ export default class CommandEdit extends React.Component {
 
     return(
       <div className="command-edit">
-        <TypeSelector name={command.constructor.name} />
-        <BucketSelector />
-        <CommandSelector />
+        <select name="type" defaultValue={command.constructor.name}>
+          <option value="Increment">Increment</option>
+          <option value="Decrement">Decrement</option>
+        </select>
+        <BucketSelector current={command.bucketId}/>
+        <CommandSelector current={command.nextId} />
       </div>
     )
   }
