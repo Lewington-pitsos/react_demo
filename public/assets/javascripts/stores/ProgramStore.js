@@ -68,20 +68,29 @@ class ProgramStore extends EventEmitter {
   }
 
   execute() {
-    var nextCommand = this.commands[0].id
+    // gets the id of the first command and feeds it to the recursive runCommand function
+    var commandId = this.commands[0].id
+    this.runCommand(commandId, 1400)
+  }
 
-    var interval = 0
+  runCommand(id, animationDuration) {
+    // animationDuration: the time it takes for ugg to move and add or take
+    // if id is falsy (i.e. 0) we just print out a message
+    if (id) {
 
-    while (nextCommand) {
-      setTimeout()
-      console.log('next command: ' + nextCommand);
-      // locates the command who'se id matches nextCommand
+      // otherwise we find the command that matches id, run it, and find it's speciefied next command
       var currentCommand = $.grep(this.commands, function(command){
-        return command.id == nextCommand
+        return command.id == id
       })[0]
       currentCommand.run()
-      nextCommand = currentCommand.next()
+      var newId = currentCommand.next()
+
+      // finally we recur with the new id after a animationDuration milliseconds
+      setTimeout(this.runCommand.bind(this), animationDuration, newId, animationDuration)
+    } else {
+      console.log('finished');
     }
+
   }
 }
 

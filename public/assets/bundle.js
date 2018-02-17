@@ -455,6 +455,17 @@ module.exports = emptyFunction;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_flux__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_flux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_flux__);
+
+
+/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_0_flux__["Dispatcher"]());
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -512,17 +523,6 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_flux__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_flux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_flux__);
-
-
-/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_0_flux__["Dispatcher"]());
 
 /***/ }),
 /* 8 */
@@ -10779,8 +10779,8 @@ module.exports = warning;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createLocation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return locationsAreEqual; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_resolve_pathname__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_value_equal__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_resolve_pathname__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_value_equal__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PathUtils__ = __webpack_require__(10);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
@@ -10860,6 +10860,276 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 /* 15 */
 /***/ (function(module, exports) {
 
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function (n) {
+  if (!isNumber(n) || n < 0 || isNaN(n)) throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function (type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events) this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error || isObject(this._events.error) && !this._events.error.length) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler)) return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    args = Array.prototype.slice.call(arguments, 1);
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++) listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function (type, listener) {
+  var m;
+
+  if (!isFunction(listener)) throw TypeError('listener must be a function');
+
+  if (!this._events) this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener) this.emit('newListener', type, isFunction(listener.listener) ? listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' + 'leak detected. %d listeners added. ' + 'Use emitter.setMaxListeners() to increase limit.', this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function (type, listener) {
+  if (!isFunction(listener)) throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function (type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener)) throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type]) return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener || isFunction(list.listener) && list.listener === listener) {
+    delete this._events[type];
+    if (this._events.removeListener) this.emit('removeListener', type, listener);
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener || list[i].listener && list[i].listener === listener) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0) return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener) this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function (type) {
+  var key, listeners;
+
+  if (!this._events) return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0) this._events = {};else if (this._events[type]) delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else if (listeners) {
+    // LIFO order
+    while (listeners.length) this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function (type) {
+  var ret;
+  if (!this._events || !this._events[type]) ret = [];else if (isFunction(this._events[type])) ret = [this._events[type]];else ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.prototype.listenerCount = function (type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener)) return 1;else if (evlistener) return evlistener.length;
+  }
+  return 0;
+};
+
+EventEmitter.listenerCount = function (emitter, type) {
+  return emitter.listenerCount(type);
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -10936,7 +11206,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11318,7 +11588,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11332,9 +11602,9 @@ function updateLink (link, options, obj) {
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(6);
+  var invariant = __webpack_require__(7);
   var warning = __webpack_require__(13);
-  var ReactPropTypesSecret = __webpack_require__(18);
+  var ReactPropTypesSecret = __webpack_require__(19);
   var loggedTypeFailures = {};
 }
 
@@ -11384,7 +11654,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11402,7 +11672,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11410,7 +11680,7 @@ module.exports = ReactPropTypesSecret;
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__BrowserRouter__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HashRouter__ = __webpack_require__(72);
 /* unused harmony reexport HashRouter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__(38);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__Link__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__ = __webpack_require__(74);
 /* unused harmony reexport MemoryRouter */
@@ -11420,9 +11690,9 @@ module.exports = ReactPropTypesSecret;
 /* unused harmony reexport Prompt */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Redirect__ = __webpack_require__(82);
 /* unused harmony reexport Redirect */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(39);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(23);
 /* unused harmony reexport Router */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__StaticRouter__ = __webpack_require__(88);
 /* unused harmony reexport StaticRouter */
@@ -11460,7 +11730,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11479,11 +11749,11 @@ var _extends = Object.assign || function (target) {
   }return target;
 };
 
-var _resolvePathname = __webpack_require__(36);
+var _resolvePathname = __webpack_require__(35);
 
 var _resolvePathname2 = _interopRequireDefault(_resolvePathname);
 
-var _valueEqual = __webpack_require__(37);
+var _valueEqual = __webpack_require__(36);
 
 var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
@@ -11554,7 +11824,7 @@ var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11647,18 +11917,18 @@ var createTransitionManager = function createTransitionManager() {
 exports.default = createTransitionManager;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(24);
 // Written in this round about way for babel-transform-imports
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__["a" /* default */]);
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11795,7 +12065,7 @@ Router.childContextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Router);
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11872,7 +12142,7 @@ var matchPath = function matchPath(pathname) {
 /* harmony default export */ __webpack_exports__["a"] = (matchPath);
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11957,340 +12227,144 @@ var createTransitionManager = function createTransitionManager() {
 /* harmony default export */ __webpack_exports__["a"] = (createTransitionManager);
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-function EventEmitter() {
-  this._events = this._events || {};
-  this._maxListeners = this._maxListeners || undefined;
-}
-module.exports = EventEmitter;
-
-// Backwards-compat with node 0.10.x
-EventEmitter.EventEmitter = EventEmitter;
-
-EventEmitter.prototype._events = undefined;
-EventEmitter.prototype._maxListeners = undefined;
-
-// By default EventEmitters will print a warning if more than 10 listeners are
-// added to it. This is a useful default which helps finding memory leaks.
-EventEmitter.defaultMaxListeners = 10;
-
-// Obviously not all Emitters should be limited to 10. This function allows
-// that to be increased. Set to zero for unlimited.
-EventEmitter.prototype.setMaxListeners = function (n) {
-  if (!isNumber(n) || n < 0 || isNaN(n)) throw TypeError('n must be a positive number');
-  this._maxListeners = n;
-  return this;
-};
-
-EventEmitter.prototype.emit = function (type) {
-  var er, handler, len, args, i, listeners;
-
-  if (!this._events) this._events = {};
-
-  // If there is no 'error' event listener then throw.
-  if (type === 'error') {
-    if (!this._events.error || isObject(this._events.error) && !this._events.error.length) {
-      er = arguments[1];
-      if (er instanceof Error) {
-        throw er; // Unhandled 'error' event
-      } else {
-        // At least give some kind of context to the user
-        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-        err.context = er;
-        throw err;
-      }
-    }
-  }
-
-  handler = this._events[type];
-
-  if (isUndefined(handler)) return false;
-
-  if (isFunction(handler)) {
-    switch (arguments.length) {
-      // fast cases
-      case 1:
-        handler.call(this);
-        break;
-      case 2:
-        handler.call(this, arguments[1]);
-        break;
-      case 3:
-        handler.call(this, arguments[1], arguments[2]);
-        break;
-      // slower
-      default:
-        args = Array.prototype.slice.call(arguments, 1);
-        handler.apply(this, args);
-    }
-  } else if (isObject(handler)) {
-    args = Array.prototype.slice.call(arguments, 1);
-    listeners = handler.slice();
-    len = listeners.length;
-    for (i = 0; i < len; i++) listeners[i].apply(this, args);
-  }
-
-  return true;
-};
-
-EventEmitter.prototype.addListener = function (type, listener) {
-  var m;
-
-  if (!isFunction(listener)) throw TypeError('listener must be a function');
-
-  if (!this._events) this._events = {};
-
-  // To avoid recursion in the case that type === "newListener"! Before
-  // adding it to the listeners, first emit "newListener".
-  if (this._events.newListener) this.emit('newListener', type, isFunction(listener.listener) ? listener.listener : listener);
-
-  if (!this._events[type])
-    // Optimize the case of one listener. Don't need the extra array object.
-    this._events[type] = listener;else if (isObject(this._events[type]))
-    // If we've already got an array, just append.
-    this._events[type].push(listener);else
-    // Adding the second element, need to change to array.
-    this._events[type] = [this._events[type], listener];
-
-  // Check for listener leak
-  if (isObject(this._events[type]) && !this._events[type].warned) {
-    if (!isUndefined(this._maxListeners)) {
-      m = this._maxListeners;
-    } else {
-      m = EventEmitter.defaultMaxListeners;
-    }
-
-    if (m && m > 0 && this._events[type].length > m) {
-      this._events[type].warned = true;
-      console.error('(node) warning: possible EventEmitter memory ' + 'leak detected. %d listeners added. ' + 'Use emitter.setMaxListeners() to increase limit.', this._events[type].length);
-      if (typeof console.trace === 'function') {
-        // not supported in IE 10
-        console.trace();
-      }
-    }
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-EventEmitter.prototype.once = function (type, listener) {
-  if (!isFunction(listener)) throw TypeError('listener must be a function');
-
-  var fired = false;
-
-  function g() {
-    this.removeListener(type, g);
-
-    if (!fired) {
-      fired = true;
-      listener.apply(this, arguments);
-    }
-  }
-
-  g.listener = listener;
-  this.on(type, g);
-
-  return this;
-};
-
-// emits a 'removeListener' event iff the listener was removed
-EventEmitter.prototype.removeListener = function (type, listener) {
-  var list, position, length, i;
-
-  if (!isFunction(listener)) throw TypeError('listener must be a function');
-
-  if (!this._events || !this._events[type]) return this;
-
-  list = this._events[type];
-  length = list.length;
-  position = -1;
-
-  if (list === listener || isFunction(list.listener) && list.listener === listener) {
-    delete this._events[type];
-    if (this._events.removeListener) this.emit('removeListener', type, listener);
-  } else if (isObject(list)) {
-    for (i = length; i-- > 0;) {
-      if (list[i] === listener || list[i].listener && list[i].listener === listener) {
-        position = i;
-        break;
-      }
-    }
-
-    if (position < 0) return this;
-
-    if (list.length === 1) {
-      list.length = 0;
-      delete this._events[type];
-    } else {
-      list.splice(position, 1);
-    }
-
-    if (this._events.removeListener) this.emit('removeListener', type, listener);
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.removeAllListeners = function (type) {
-  var key, listeners;
-
-  if (!this._events) return this;
-
-  // not listening for removeListener, no need to emit
-  if (!this._events.removeListener) {
-    if (arguments.length === 0) this._events = {};else if (this._events[type]) delete this._events[type];
-    return this;
-  }
-
-  // emit removeListener for all listeners on all events
-  if (arguments.length === 0) {
-    for (key in this._events) {
-      if (key === 'removeListener') continue;
-      this.removeAllListeners(key);
-    }
-    this.removeAllListeners('removeListener');
-    this._events = {};
-    return this;
-  }
-
-  listeners = this._events[type];
-
-  if (isFunction(listeners)) {
-    this.removeListener(type, listeners);
-  } else if (listeners) {
-    // LIFO order
-    while (listeners.length) this.removeListener(type, listeners[listeners.length - 1]);
-  }
-  delete this._events[type];
-
-  return this;
-};
-
-EventEmitter.prototype.listeners = function (type) {
-  var ret;
-  if (!this._events || !this._events[type]) ret = [];else if (isFunction(this._events[type])) ret = [this._events[type]];else ret = this._events[type].slice();
-  return ret;
-};
-
-EventEmitter.prototype.listenerCount = function (type) {
-  if (this._events) {
-    var evlistener = this._events[type];
-
-    if (isFunction(evlistener)) return 1;else if (evlistener) return evlistener.length;
-  }
-  return 0;
-};
-
-EventEmitter.listenerCount = function (emitter, type) {
-  return emitter.listenerCount(type);
-};
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-
-/***/ }),
-/* 27 */,
-/* 28 */,
-/* 29 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__ = __webpack_require__(113);
+ // 'events is like, part of nodejs'
 
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+
+
+class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+  constructor() {
+    super();
+    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
+
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__["a" /* default */]);
+  }
+
+  getInfo() {
+    return { buckets: this.buckets };
+  }
+
+  bucketNumber() {
+    return { number: this.buckets.length };
+  }
+
+  getBucket(index) {
+    return this.buckets[index];
+  }
+
+  handleActions(action) {
+    switch (action.type) {
+      case "ADD_BUCKET":
+        {
+          this.addBucket();
+          break;
+        }case "REMOVE_BUCKET":
+        {
+          this.removeBucket();
+          break;
+        }case "INCREMENT_BUCKET":
+        {
+          this.incrementBucket(action.id);
+          break;
+        }case "DECREMENT_BUCKET":
+        {
+          this.decrementBucket(action.id);
+          break;
+        }
+    }
+  }
+
   addBucket() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'ADD_BUCKET' });
-  },
+    // We record that all previously added buckets have been added already
+    this.buckets.forEach(bucket => bucket.justAdded = false);
+
+    // then we add a new bucket to the list of buckets
+    this.buckets.push({ stones: 0, justAdded: true });
+
+    this.emit('change');
+  }
 
   removeBucket() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'REMOVE_BUCKET' });
-  },
+    this.buckets.splice(-1, 1);
 
-  incremenetBucket(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'INCREMENT_BUCKET',
-      id: id
-    });
-  },
+    this.emit('change');
+  }
 
   decrementBucket(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'DECREMENT_BUCKET',
-      id: id
-    });
-  },
-
-  addDecrement() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'ADD_COMMAND',
-      commandProps: {
-        increment: false,
-        nextCommand: 1,
-        bucket: 1,
-        alternateNext: 1
-      }
-    });
-  },
-
-  addIncrement() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'ADD_COMMAND',
-      commandProps: {
-        increment: true,
-        nextCommand: 1,
-        bucket: 1
-      }
-    });
-  },
-
-  execute() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'EXECUTE'
-    });
+    this.moveUgg(id);
+    setTimeout(this.animateOutStone.bind(this), 600, id);
   }
-});
+
+  incrementBucket(id) {
+    this.moveUgg(id);
+    setTimeout(this.animateInStone.bind(this), 600, id);
+  }
+
+  addStoneTo(id) {
+    this.buckets[id].stones += 1;
+    this.emit('change');
+  }
+
+  animateInStone(id) {
+    this.uggAddStone();
+    setTimeout(this.addStoneTo.bind(this), 500, id);
+  }
+
+  takeStoneFrom(id) {
+    this.buckets[id].stones -= 1;
+    this.emit('change');
+  }
+
+  animateOutStone(id) {
+    this.uggTakeStone();
+    setTimeout(this.takeStoneFrom.bind(this), 500, id);
+  }
+}
+
+const executorStore = new ExecutorStore();
+
+__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(executorStore.handleActions.bind(executorStore));
+/* harmony default export */ __webpack_exports__["a"] = (executorStore);
 
 /***/ }),
-/* 30 */
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ExecutorStore__ = __webpack_require__(27);
+
+
+class Command {
+  // The basis for Increment and Decrement: perform an action and return the next comand when asked
+  // both need access to rmActions
+  // both are created with an id specificying a command and an id specifying a bucket and an id for the command itself
+
+  constructor(nextCommand, bucket, id) {
+    this.nextCommand = nextCommand;
+    this.bucketId = bucket;
+    this.store = __WEBPACK_IMPORTED_MODULE_0__ExecutorStore__["a" /* default */];
+    this.id = id;
+    // justAdded set to true by default so every new command is indeed registered as being just added
+    this.justAdded = true;
+  }
+
+  next() {
+    return this.nextCommand;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Command;
+
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12329,7 +12403,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12410,7 +12484,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12453,7 +12527,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12524,7 +12598,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12567,7 +12641,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12597,7 +12671,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12674,7 +12748,7 @@ function resolvePathname(to) {
 /* harmony default export */ __webpack_exports__["default"] = (resolvePathname);
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12723,7 +12797,7 @@ function valueEqual(a, b) {
 /* harmony default export */ __webpack_exports__["default"] = (valueEqual);
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12784,7 +12858,7 @@ var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isE
 };
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12916,18 +12990,18 @@ Link.contextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Link);
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Route__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Route__ = __webpack_require__(40);
 // Written in this round about way for babel-transform-imports
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_react_router_es_Route__["a" /* default */]);
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12939,7 +13013,7 @@ Link.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(25);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -13095,7 +13169,7 @@ Route.childContextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Route);
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13161,11 +13235,11 @@ var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
 };
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(6);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -13215,7 +13289,7 @@ var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
 });
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13252,7 +13326,7 @@ ControlPanel.defaultProps = {
 };
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13285,6 +13359,67 @@ Stone.defaultProps = {
   // sets default prop values
   size: 30
 };
+
+/***/ }),
+/* 45 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(6);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  addBucket() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'ADD_BUCKET' });
+  },
+
+  removeBucket() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'REMOVE_BUCKET' });
+  },
+
+  incremenetBucket(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'INCREMENT_BUCKET',
+      id: id
+    });
+  },
+
+  decrementBucket(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'DECREMENT_BUCKET',
+      id: id
+    });
+  },
+
+  addDecrement() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'ADD_COMMAND',
+      commandProps: {
+        increment: false,
+        nextCommand: 1,
+        bucket: 1,
+        alternateNext: 1
+      }
+    });
+  },
+
+  addIncrement() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'ADD_COMMAND',
+      commandProps: {
+        increment: true,
+        nextCommand: 1,
+        bucket: 1
+      }
+    });
+  },
+
+  execute() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'EXECUTE'
+    });
+  }
+});
 
 /***/ }),
 /* 46 */
@@ -13331,7 +13466,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(16)(content, options);
+var update = __webpack_require__(17)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -13366,7 +13501,7 @@ if(false) {
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(false);
+exports = module.exports = __webpack_require__(16)(false);
 // imports
 
 
@@ -13488,7 +13623,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(16)(content, options);
+var update = __webpack_require__(17)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -13523,7 +13658,7 @@ if(false) {
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(false);
+exports = module.exports = __webpack_require__(16)(false);
 // imports
 
 
@@ -13552,7 +13687,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(16)(content, options);
+var update = __webpack_require__(17)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -13587,7 +13722,7 @@ if(false) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(false);
+exports = module.exports = __webpack_require__(16)(false);
 // imports
 
 
@@ -19107,11 +19242,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.4
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_Layout__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_Home__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Flipper__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dispatcher__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_RM__ = __webpack_require__(109);
 
 
@@ -19273,10 +19408,10 @@ if (process.env.NODE_ENV !== "production") {
 
     var _assign = __webpack_require__(8);
     var emptyObject = __webpack_require__(12);
-    var invariant = __webpack_require__(6);
+    var invariant = __webpack_require__(7);
     var warning = __webpack_require__(13);
     var emptyFunction = __webpack_require__(5);
-    var checkPropTypes = __webpack_require__(17);
+    var checkPropTypes = __webpack_require__(18);
 
     // TODO: this is special because it gets imported during build.
 
@@ -20670,14 +20805,14 @@ if (process.env.NODE_ENV === 'production') {
 */
 
 var aa = __webpack_require__(0),
-    l = __webpack_require__(30),
+    l = __webpack_require__(29),
     B = __webpack_require__(8),
     C = __webpack_require__(5),
-    ba = __webpack_require__(31),
-    da = __webpack_require__(32),
-    ea = __webpack_require__(33),
-    fa = __webpack_require__(34),
-    ia = __webpack_require__(35),
+    ba = __webpack_require__(30),
+    da = __webpack_require__(31),
+    ea = __webpack_require__(32),
+    fa = __webpack_require__(33),
+    ia = __webpack_require__(34),
     D = __webpack_require__(12);
 function E(a) {
   for (var b = arguments.length - 1, c = "Minified React error #" + a + "; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d" + a, d = 0; d < b; d++) c += "\x26args[]\x3d" + encodeURIComponent(arguments[d + 1]);b = Error(c + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name = "Invariant Violation";b.framesToPop = 1;throw b;
@@ -22586,7 +22721,7 @@ module.exports = isNode;
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */if(process.env.NODE_ENV!=="production"){(function(){'use strict';var React=__webpack_require__(0);var invariant=__webpack_require__(6);var warning=__webpack_require__(13);var ExecutionEnvironment=__webpack_require__(30);var _assign=__webpack_require__(8);var emptyFunction=__webpack_require__(5);var EventListener=__webpack_require__(31);var getActiveElement=__webpack_require__(32);var shallowEqual=__webpack_require__(33);var containsNode=__webpack_require__(34);var focusNode=__webpack_require__(35);var emptyObject=__webpack_require__(12);var checkPropTypes=__webpack_require__(17);var hyphenateStyleName=__webpack_require__(64);var camelizeStyleName=__webpack_require__(66);/**
+ */if(process.env.NODE_ENV!=="production"){(function(){'use strict';var React=__webpack_require__(0);var invariant=__webpack_require__(7);var warning=__webpack_require__(13);var ExecutionEnvironment=__webpack_require__(29);var _assign=__webpack_require__(8);var emptyFunction=__webpack_require__(5);var EventListener=__webpack_require__(30);var getActiveElement=__webpack_require__(31);var shallowEqual=__webpack_require__(32);var containsNode=__webpack_require__(33);var focusNode=__webpack_require__(34);var emptyObject=__webpack_require__(12);var checkPropTypes=__webpack_require__(18);var hyphenateStyleName=__webpack_require__(64);var camelizeStyleName=__webpack_require__(66);/**
  * WARNING: DO NOT manually require this module.
  * This is a replacement for `invariant(...)` used by the error code system
  * and will _only_ be required by the corresponding babel pass.
@@ -25727,7 +25862,7 @@ module.exports = camelize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(23);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -25807,12 +25942,12 @@ BrowserRouter.propTypes = {
 
 
 var emptyFunction = __webpack_require__(5);
-var invariant = __webpack_require__(6);
+var invariant = __webpack_require__(7);
 var warning = __webpack_require__(13);
 var assign = __webpack_require__(8);
 
-var ReactPropTypesSecret = __webpack_require__(18);
-var checkPropTypes = __webpack_require__(17);
+var ReactPropTypesSecret = __webpack_require__(19);
+var checkPropTypes = __webpack_require__(18);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -26330,8 +26465,8 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 
 
 var emptyFunction = __webpack_require__(5);
-var invariant = __webpack_require__(6);
-var ReactPropTypesSecret = __webpack_require__(18);
+var invariant = __webpack_require__(7);
+var ReactPropTypesSecret = __webpack_require__(19);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -26407,15 +26542,15 @@ var _invariant = __webpack_require__(4);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(20);
+var _LocationUtils = __webpack_require__(21);
 
 var _PathUtils = __webpack_require__(9);
 
-var _createTransitionManager = __webpack_require__(21);
+var _createTransitionManager = __webpack_require__(22);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _DOMUtils = __webpack_require__(38);
+var _DOMUtils = __webpack_require__(37);
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -26711,7 +26846,7 @@ exports.default = createBrowserHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createHashHistory__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createHashHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createHashHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(23);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -26802,15 +26937,15 @@ var _invariant = __webpack_require__(4);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(20);
+var _LocationUtils = __webpack_require__(21);
 
 var _PathUtils = __webpack_require__(9);
 
-var _createTransitionManager = __webpack_require__(21);
+var _createTransitionManager = __webpack_require__(22);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _DOMUtils = __webpack_require__(38);
+var _DOMUtils = __webpack_require__(37);
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -27138,7 +27273,7 @@ exports.default = createHashHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(24);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -27234,9 +27369,9 @@ var _warning2 = _interopRequireDefault(_warning);
 
 var _PathUtils = __webpack_require__(9);
 
-var _LocationUtils = __webpack_require__(20);
+var _LocationUtils = __webpack_require__(21);
 
-var _createTransitionManager = __webpack_require__(21);
+var _createTransitionManager = __webpack_require__(22);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -27401,8 +27536,8 @@ exports.default = createMemoryHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Route__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Link__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Route__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Link__ = __webpack_require__(38);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -28207,8 +28342,8 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(41);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -28520,8 +28655,8 @@ var createBrowserHistory = function createBrowserHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(41);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -28846,7 +28981,7 @@ var createHashHistory = function createHashHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PathUtils__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(26);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -29042,7 +29177,7 @@ var createMemoryHistory = function createMemoryHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_history_PathUtils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(24);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -29256,7 +29391,7 @@ StaticRouter.childContextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(25);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -29353,7 +29488,7 @@ Switch.propTypes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(25);
 // Written in this round about way for babel-transform-imports
 
 
@@ -29381,7 +29516,7 @@ Switch.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Route__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Route__ = __webpack_require__(40);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -29507,7 +29642,7 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(20);
 
 
 
@@ -29617,8 +29752,8 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(108);
 
 
@@ -29807,7 +29942,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(42);
 
 
 
@@ -29916,7 +30051,7 @@ function _classCallCheck(instance, Constructor) {
   }
 }
 
-var invariant = __webpack_require__(6);
+var invariant = __webpack_require__(7);
 
 var _prefix = 'ID_';
 
@@ -30135,9 +30270,9 @@ module.exports = Dispatcher;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__ = __webpack_require__(106);
@@ -30483,9 +30618,9 @@ class SiblingsTracker {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
  // 'events is like, part of nodejs'
 
 
@@ -30540,10 +30675,10 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RM_Executor__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RM_Program__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__RM_BucketSelector__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RM_Program__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__RM_BucketSelector__ = __webpack_require__(119);
 
 
 
@@ -30633,7 +30768,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Executor_Ugg__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutorStore__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutorStore__ = __webpack_require__(27);
 
 
 
@@ -30691,7 +30826,7 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(44);
 
 
 
@@ -30725,7 +30860,7 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(44);
 
 
 
@@ -30769,17 +30904,66 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */
+/* 113 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
+  moveUgg(bucketId) {
+    // scrolls ugg to the middle of the bucket whose ide is passed in
+    var bucketSelector = '#bucket-' + bucketId;
+    var bucketHeight = $(bucketSelector).outerHeight(true);
+    console.log(bucketHeight);
+    var currentBucketMiddle = bucketHeight * bucketId + 10;
+    $('.ugg').animate({
+      top: currentBucketMiddle
+    }, 600);
+    $('.executor').animate({
+      scrollTop: currentBucketMiddle
+    }, 600);
+  },
+
+  uggAddStone() {
+    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
+    // immidiately retusn the stone to it's innitla position
+    var $stone = $('.uggs-stone');
+    $stone.animate({
+      right: this.stoneDistance()
+    }, 500, function () {
+      $stone.css('right', 0);
+    });
+  },
+
+  uggTakeStone() {
+    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
+    // animates the stone from the icon back to the sack
+    var $stone = $('.uggs-stone');
+    $stone.css('right', this.stoneDistance());
+    $stone.animate({
+      right: 0
+    }, 500);
+  },
+
+  stoneDistance() {
+    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
+    var uggWidth = $('.ugg').width();
+    var bucketDistance = $('#bucket-1').width() / 2 + 5;
+    return uggWidth + bucketDistance;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
+
+/***/ }),
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(118);
 
 
 
@@ -30816,7 +31000,158 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
+/* 115 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(6);
+ // 'events is like, part of nodejs'
+
+
+
+
+
+
+class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+  constructor() {
+    super();
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](3, 1, 2), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](4, 0, 3), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](5, 4, 4), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 0, 5)];
+    this.nextId = 2;
+  }
+
+  getInfo() {
+    return { commands: this.commands };
+  }
+
+  handleActions(action) {
+    switch (action.type) {
+      case "ADD_COMMAND":
+        {
+          this.addCommand(action.commandProps);
+          break;
+        }case "EXECUTE":
+        {
+          this.execute();
+          break;
+        }
+    }
+  }
+
+  getNextId() {
+    var id = this.nextId;
+
+    this.getId += 1;
+
+    return id;
+  }
+
+  addCommand(props) {
+    // set all currently added commands as old
+    this.commands.forEach(command => command.justAdded = false);
+    // checkes for the type of command to add
+    // creates and pushes the appripriate command to commands
+    var id = this.getNextId();
+
+    if (props.increment) {
+      this.commands.push(new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id));
+    } else {
+      this.commands.push(new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext));
+    }
+
+    this.emit('change');
+  }
+
+  execute() {
+    // gets the id of the first command and feeds it to the recursive runCommand function
+    var commandId = this.commands[0].id;
+    this.runCommand(commandId, 1400);
+  }
+
+  runCommand(id, animationDuration) {
+    // animationDuration: the time it takes for ugg to move and add or take
+    // if id is falsy (i.e. 0) we just print out a message
+    if (id) {
+
+      // otherwise we find the command that matches id, run it, and find it's speciefied next command
+      var currentCommand = $.grep(this.commands, function (command) {
+        return command.id == id;
+      })[0];
+      currentCommand.run();
+      var newId = currentCommand.next();
+
+      // finally we recur with the new id after a animationDuration milliseconds
+      setTimeout(this.runCommand.bind(this), animationDuration, newId, animationDuration);
+    } else {
+      console.log('finished');
+    }
+  }
+}
+
+const programStore = new ProgramStore();
+
+__WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
+
+window.programStore = programStore;
+/* harmony default export */ __webpack_exports__["a"] = (programStore);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
+
+/***/ }),
+/* 116 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(28);
+
+
+class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  constructor(next, index, id) {
+    super(next, index, id);
+  }
+
+  run() {
+    this.store.incrementBucket(this.bucketId);
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Increment;
+
+
+/***/ }),
 /* 117 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(28);
+
+
+class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  constructor(next, index, id, alternateNext, bucket) {
+    super(next, index, id);
+    this.defaultNext = next;
+    this.alternateNext = alternateNext;
+    this.bucketObject = this.store.getBucket(index);
+  }
+
+  run() {
+    // if there are any stones in the assigned bucket we decrement and switch the next command to the default command
+    // otherwise simply swicth the next command to the alternate command
+    if (this.bucketObject.stones) {
+      this.store.decrementBucket(this.bucketId);
+      this.nextCommand = this.defaultNext;
+    } else {
+      this.nextCommand = this.alternateNext;
+    }
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Decrement;
+
+
+/***/ }),
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30862,14 +31197,14 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(45);
 
 
 
@@ -30928,338 +31263,6 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = BucketSelector;
-
-
-/***/ }),
-/* 119 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__ = __webpack_require__(121);
- // 'events is like, part of nodejs'
-
-
-
-
-class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
-  constructor() {
-    super();
-    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
-
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__["a" /* default */]);
-  }
-
-  getInfo() {
-    return { buckets: this.buckets };
-  }
-
-  bucketNumber() {
-    return { number: this.buckets.length };
-  }
-
-  getBucket(index) {
-    return this.buckets[index];
-  }
-
-  handleActions(action) {
-    switch (action.type) {
-      case "ADD_BUCKET":
-        {
-          this.addBucket();
-          break;
-        }case "REMOVE_BUCKET":
-        {
-          this.removeBucket();
-          break;
-        }case "INCREMENT_BUCKET":
-        {
-          this.incrementBucket(action.id);
-          break;
-        }case "DECREMENT_BUCKET":
-        {
-          this.decrementBucket(action.id);
-          break;
-        }
-    }
-  }
-
-  addBucket() {
-    // We record that all previously added buckets have been added already
-    this.buckets.forEach(bucket => bucket.justAdded = false);
-
-    // then we add a new bucket to the list of buckets
-    this.buckets.push({ stones: 0, justAdded: true });
-
-    this.emit('change');
-  }
-
-  removeBucket() {
-    this.buckets.splice(-1, 1);
-
-    this.emit('change');
-  }
-
-  decrementBucket(id) {
-    this.moveUgg(id);
-    setTimeout(this.animateOutStone.bind(this), 600, id);
-  }
-
-  incrementBucket(id) {
-    this.moveUgg(id);
-    setTimeout(this.animateInStone.bind(this), 600, id);
-  }
-
-  addStoneTo(id) {
-    this.buckets[id].stones += 1;
-    this.emit('change');
-  }
-
-  animateInStone(id) {
-    this.uggAddStone();
-    setTimeout(this.addStoneTo.bind(this), 500, id);
-  }
-
-  takeStoneFrom(id) {
-    this.buckets[id].stones -= 1;
-    this.emit('change');
-  }
-
-  animateOutStone(id) {
-    this.uggTakeStone();
-    setTimeout(this.takeStoneFrom.bind(this), 500, id);
-  }
-}
-
-const executorStore = new ExecutorStore();
-
-__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(executorStore.handleActions.bind(executorStore));
-/* harmony default export */ __webpack_exports__["a"] = (executorStore);
-
-/***/ }),
-/* 120 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ExecutorStore__ = __webpack_require__(119);
-
-
-class Command {
-  // The basis for Increment and Decrement: perform an action and return the next comand when asked
-  // both need access to rmActions
-  // both are created with an id specificying a command and an id specifying a bucket and an id for the command itself
-
-  constructor(nextCommand, bucket, id) {
-    this.nextCommand = nextCommand;
-    this.bucketId = bucket;
-    this.store = __WEBPACK_IMPORTED_MODULE_0__ExecutorStore__["a" /* default */];
-    this.id = id;
-    // justAdded set to true by default so every new command is indeed registered as being just added
-    this.justAdded = true;
-  }
-
-  next() {
-    return this.nextCommand;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Command;
-
-
-/***/ }),
-/* 121 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
-  moveUgg(bucketId) {
-    // scrolls ugg to the middle of the bucket whose ide is passed in
-    var bucketSelector = '#bucket-' + bucketId;
-    var bucketHeight = $(bucketSelector).outerHeight(true);
-    console.log(bucketHeight);
-    var currentBucketMiddle = bucketHeight * bucketId + 10;
-    $('.ugg').animate({
-      top: currentBucketMiddle
-    }, 600);
-    $('.executor').animate({
-      scrollTop: currentBucketMiddle
-    }, 600);
-  },
-
-  uggAddStone() {
-    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
-    // immidiately retusn the stone to it's innitla position
-    var $stone = $('.uggs-stone');
-    $stone.animate({
-      right: this.stoneDistance()
-    }, 500, function () {
-      $stone.css('right', 0);
-    });
-  },
-
-  uggTakeStone() {
-    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
-    // animates the stone from the icon back to the sack
-    var $stone = $('.uggs-stone');
-    $stone.css('right', this.stoneDistance());
-    $stone.animate({
-      right: 0
-    }, 500);
-  },
-
-  stoneDistance() {
-    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
-    var uggWidth = $('.ugg').width();
-    var bucketDistance = $('#bucket-1').width() / 2 + 5;
-    return uggWidth + bucketDistance;
-  }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
-
-/***/ }),
-/* 122 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(7);
- // 'events is like, part of nodejs'
-
-
-
-
-
-
-class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
-  constructor() {
-    super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](3, 1, 2), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](4, 0, 3), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](5, 4, 4), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 0, 5)];
-    this.nextId = 2;
-  }
-
-  getInfo() {
-    return { commands: this.commands };
-  }
-
-  handleActions(action) {
-    switch (action.type) {
-      case "ADD_COMMAND":
-        {
-          this.addCommand(action.commandProps);
-          break;
-        }case "EXECUTE":
-        {
-          this.execute();
-          break;
-        }
-    }
-  }
-
-  getNextId() {
-    var id = this.nextId;
-
-    this.getId += 1;
-
-    return id;
-  }
-
-  addCommand(props) {
-    // set all currently added commands as old
-    this.commands.forEach(command => command.justAdded = false);
-    // checkes for the type of command to add
-    // creates and pushes the appripriate command to commands
-    var id = this.getNextId();
-
-    if (props.increment) {
-      this.commands.push(new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id));
-    } else {
-      this.commands.push(new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext));
-    }
-
-    this.emit('change');
-  }
-
-  execute() {
-    var nextCommand = this.commands[0].id;
-
-    var interval = 0;
-
-    while (nextCommand) {
-      setTimeout();
-      console.log('next command: ' + nextCommand);
-      // locates the command who'se id matches nextCommand
-      var currentCommand = $.grep(this.commands, function (command) {
-        return command.id == nextCommand;
-      })[0];
-      currentCommand.run();
-      nextCommand = currentCommand.next();
-    }
-  }
-}
-
-const programStore = new ProgramStore();
-
-__WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
-
-window.programStore = programStore;
-/* harmony default export */ __webpack_exports__["a"] = (programStore);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
-
-/***/ }),
-/* 123 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(120);
-
-
-class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
-  constructor(next, index, id) {
-    super(next, index, id);
-  }
-
-  run() {
-    this.store.incrementBucket(this.bucketId);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Increment;
-
-
-/***/ }),
-/* 124 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(120);
-
-
-class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
-  constructor(next, index, id, alternateNext, bucket) {
-    super(next, index, id);
-    this.defaultNext = next;
-    this.alternateNext = alternateNext;
-    this.bucketObject = this.store.getBucket(index);
-  }
-
-  run() {
-    // if there are any stones in the assigned bucket we decrement and switch the next command to the default command
-    // otherwise simply swicth the next command to the alternate command
-    if (this.bucketObject.stones) {
-      this.store.decrementBucket(this.bucketId);
-      this.nextCommand = this.defaultNext;
-    } else {
-      this.nextCommand = this.alternateNext;
-    }
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Decrement;
 
 
 /***/ })
