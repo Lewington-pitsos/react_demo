@@ -13231,7 +13231,9 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__ = __webpack_require__(115);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -13240,6 +13242,8 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
     super();
     this.nextId = 2;
     this.buckets = [{ stones: 1, id: 1, justAdded: true }];
+
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__["a" /* default */]);
   }
 
   getInfo() {
@@ -13259,6 +13263,10 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
         }case "REMOVE_BUCKET":
         {
           this.removeBucket();
+          break;
+        }case "INCREMENT_BUCKET":
+        {
+          this.incremenetBucket(action.id);
           break;
         }
     }
@@ -13284,6 +13292,14 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
 
     this.emit('change');
   }
+
+  incremenetBucket(id) {
+    this.moveUgg(id);
+    this.uggAddStone();
+    this.buckets[id - 1].stones -= 1;
+
+    this.emit('change');
+  }
 }
 
 const executorStore = new ExecutorStore();
@@ -13306,7 +13322,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascripts_basic_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_helpers_RMAnimationsHelper_js__ = __webpack_require__(114);
 // this is currently the only Webpack entry point so all JS that we could ever need must be requireed here
 
 // css
@@ -13316,7 +13331,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // js
  // yeah, this is just bootstrap js
-
 
 
 /***/ }),
@@ -30823,6 +30837,13 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   removeBucket() {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'REMOVE_BUCKET' });
+  },
+
+  incremenetBucket(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'INCREMENT_BUCKET',
+      id: id
+    });
   }
 });
 
@@ -30834,6 +30855,8 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(112);
+
 
 
 
@@ -30859,13 +30882,19 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
     for (var i = 1; i <= this.state.number; i++) {
       options.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'option',
-        { value: 'bucket-' + i },
+        { value: i, key: i },
         ' Bucket ',
         i
       ));
     }
 
     return options;
+  }
+
+  incremenetBucket(event) {
+    console.log(event.target.value);
+    // passes the bucket id to the addbucket action
+    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].incremenetBucket(event.target.value);
   }
 
   render() {
@@ -30875,7 +30904,7 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'bucket' },
+      { name: 'bucket', onChange: this.incremenetBucket.bind(this) },
       this.generateOptions()
     );
   }
@@ -30884,11 +30913,12 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
 
 /***/ }),
-/* 114 */
+/* 114 */,
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {const RMAnimationsHelper = {
+/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
   moveUgg(bucketId) {
     // scrolls ugg to the middle of the bucket whose ide is passed in
     var bucketSelector = '#bucket-' + bucketId;
@@ -30932,9 +30962,7 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
   }
 };
 
-window.RMAnimationsHelper = RMAnimationsHelper;
-
-/* unused harmony default export */ var _unused_webpack_default_export = (RMAnimationsHelper);
+/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
 
 /***/ })

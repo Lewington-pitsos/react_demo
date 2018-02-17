@@ -1,6 +1,7 @@
 import React from 'react'
 
 import executorStore from '../../stores/ExecutorStore'
+import rmActions from '../../actions/rmActions'
 
 export default class BucketSelector extends React.Component {
   constructor() {
@@ -22,11 +23,17 @@ export default class BucketSelector extends React.Component {
 
     for (var i = 1; i <= this.state.number; i++) {
       options.push(
-        <option value={'bucket-' + i} > Bucket {i}</option>
+        <option value={i} key={i} > Bucket {i}</option>
       )
     }
 
     return options
+  }
+
+  incremenetBucket(event) {
+    console.log(event.target.value);
+    // passes the bucket id to the addbucket action
+    rmActions.incremenetBucket(event.target.value)
   }
 
   render() {
@@ -35,7 +42,7 @@ export default class BucketSelector extends React.Component {
     console.log(this.state.number);
 
     return(
-      <select name="bucket">
+      <select name="bucket" onChange={this.incremenetBucket.bind(this)}>
         {this.generateOptions()}
       </select>
     )

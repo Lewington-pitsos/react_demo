@@ -11,5 +11,12 @@ export default {
     dispatcher.dispatch(
       {type: 'REMOVE_BUCKET'}
     )
+  },
+
+  incremenetBucket(id) {
+    dispatcher.dispatch({
+      type: 'INCREMENT_BUCKET',
+      id: id
+    })
   }
 }

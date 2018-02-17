@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
+import executorAnimations from './ExecutorStore/executorAnimations'
 
 class ExecutorStore extends EventEmitter {
   constructor() {
@@ -9,6 +10,8 @@ class ExecutorStore extends EventEmitter {
     this.buckets = [
       {stones: 1, id: 1, justAdded: true}
     ]
+
+    Object.assign(this, executorAnimations);
   }
 
   getInfo() {
@@ -26,6 +29,9 @@ class ExecutorStore extends EventEmitter {
         break
       } case "REMOVE_BUCKET": {
         this.removeBucket()
+        break
+      } case "INCREMENT_BUCKET": {
+        this.incremenetBucket(action.id)
         break
       }
     }
@@ -52,6 +58,14 @@ class ExecutorStore extends EventEmitter {
     this.nextId -= 1
 
     this.emit('change')
+  }
+
+  incremenetBucket(id) {
+    this.moveUgg(id)
+    this.uggAddStone()
+    this.buckets[id - 1].stones -= 1
+
+    this.emit('change');
   }
 }
 

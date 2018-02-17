@@ -1,4 +1,4 @@
-const RMAnimationsHelper =  {
+const executorAnimations =  {
   moveUgg(bucketId) {
     // scrolls ugg to the middle of the bucket whose ide is passed in
     var bucketSelector = '#bucket-' + bucketId
@@ -42,6 +42,4 @@ const RMAnimationsHelper =  {
   }
 }
 
-window.RMAnimationsHelper = RMAnimationsHelper
-
-export default RMAnimationsHelper
+export default executorAnimations
