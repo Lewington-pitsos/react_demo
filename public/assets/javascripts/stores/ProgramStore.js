@@ -37,6 +37,8 @@ class ProgramStore extends EventEmitter {
   }
 
   addCommand(props) {
+    // set all currently added commands as old
+    this.commands.forEach((command) => command.justAdded = false)
     // checkes for the type of command to add
     // creates and pushes the appripriate command to commands
     var id = this.getNextId()

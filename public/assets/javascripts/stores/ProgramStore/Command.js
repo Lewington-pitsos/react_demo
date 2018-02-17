@@ -10,6 +10,8 @@ export default class Command {
     this.bucketId = bucket
     this.actions = rmActions
     this.id = id
+    // justAdded set to true by default so every new command is indeed registered as being just added
+    this.justAdded = true
   }
 
   nextCommand() {

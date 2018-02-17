@@ -30938,11 +30938,7 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     var commands = this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Program_Command__["a" /* default */], {
       key: command.id,
-      id: command.id,
-      type: command.constructor.name,
-      bucketId: command.bucketId,
-      nextCommand: command.nextCommand,
-      alternateNext: command.alternateNext }));
+      command: command }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -31049,23 +31045,27 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     // renders a number of stones according to props
 
-    var nextCommand = this.props.alternateNext ? this.props.nextCommand + ', otherwise go to ' + this.props.alternateNext : this.props.nextCommand;
+    const command = this.props.command;
+
+    const classList = command.justAdded ? 'command animated fadeInUp' : 'command';
+
+    var nextCommand = command.alternateNext ? command.nextCommand + ', otherwise go to ' + command.alternateNext : command.nextCommand;
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'command', id: 'command-' + this.props.id },
+      { className: classList, id: 'command-' + command.id },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'p',
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'span',
           { className: 'command-id' },
-          this.props.id,
+          command.id,
           '.'
         ),
-        this.props.type,
+        command.type,
         ' bucket ',
-        this.props.bucketId,
+        command.bucketId,
         ' and go to  ',
         nextCommand
       )
@@ -31135,6 +31135,8 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   addCommand(props) {
+    // set all currently added commands as old
+    this.commands.forEach(command => command.justAdded = false);
     // checkes for the type of command to add
     // creates and pushes the appripriate command to commands
     var id = this.getNextId();
@@ -31172,6 +31174,8 @@ class Command {
     this.bucketId = bucket;
     this.actions = __WEBPACK_IMPORTED_MODULE_0__actions_rmActions__["a" /* default */];
     this.id = id;
+    // justAdded set to true by default so every new command is indeed registered as being just added
+    this.justAdded = true;
   }
 
   nextCommand() {

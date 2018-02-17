@@ -5,11 +5,15 @@ export default class Command extends React.Component {
   render() {
     // renders a number of stones according to props
 
-    var nextCommand = this.props.alternateNext ? this.props.nextCommand + ', otherwise go to ' + this.props.alternateNext : this.props.nextCommand
+    const command = this.props.command
+
+    const classList = command.justAdded ? 'command animated fadeInUp' : 'command'
+
+    var nextCommand = command.alternateNext ? command.nextCommand + ', otherwise go to ' + command.alternateNext : command.nextCommand
 
     return(
-      <div className="command" id={'command-' + this.props.id}>
-        <p><span className="command-id">{this.props.id}.</span>{this.props.type} bucket {this.props.bucketId} and go to  {nextCommand}</p>
+      <div className={classList} id={'command-' + command.id}>
+        <p><span className="command-id">{command.id}.</span>{command.type} bucket {command.bucketId} and go to  {nextCommand}</p>
       </div>
     )
   }
