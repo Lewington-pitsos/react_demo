@@ -8,11 +8,18 @@ export default class Ugg extends React.Component {
     return(
       <div className="ugg-wrapper">
         <h4>Ugg</h4>
-        <div className="ugg row">
-          <div className="col-6">
+        <div className="position-relative">
+          <div className="ugg row">
+            <div className="col-6">
+            </div>
+            <div className="col-6 d-flex uggs-sack align-items-center">
+              <p className="m-0">Ugg's Sack</p>
+            </div>
           </div>
-          <div className="col-6 uggs-stones d-flex align-items-center">
-            <p className="m-0">Ugg's Sack</p>
+          <div className="overlay d-flex align-items-center justify-content-end">
+            <div className="uggs-stone position-relative">
+              <Stone />
+            </div>
           </div>
         </div>
       </div>

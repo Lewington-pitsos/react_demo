@@ -59,6 +59,16 @@ a
 .hidden
   display: none
 
+.overlay
+  position: absolute
+  left: 0
+  right: 0
+  top: 0
+  bottom: 0
+
+.position-relative
+  position: relative
+
 // LAYOUT
 
 nav
@@ -140,5 +150,8 @@ nav
     background: $body-color
     &:hover
       cursor: pointer
-    .uggs-stones
+    .uggs-sack
+      z-index: 10
       background: $body-bg
+    .uggs-stone
+      z-index: 5
