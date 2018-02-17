@@ -124,10 +124,6 @@ nav
   max-height: 80vh
   overflow-y: scroll
 
-.buckets,
-.commands
-  padding-top: 2rem
-
 .bucket
   min-height: 150px
   padding: 1.5rem
@@ -138,22 +134,20 @@ nav
   margin-bottom: 1.5rem
 
 .stone
-  width: 30px
-  height: 30px
   border-radius: 50%
   background: $body-color
 
-.ugg-wrapper
+.ugg
+  min-height: 8rem
+  border: 3px solid $body-color
   position: relative
-  .ugg
-    min-height: 110px
-    padding: 0.5rem
-    flex-grow: 1
+  p
+    padding: 0
+  &:hover
+    cursor: pointer
+  .uggs-sack
+    z-index: 10
     background: $body-color
-    &:hover
-      cursor: pointer
-    .uggs-sack
-      z-index: 10
-      background: $body-bg
-    .uggs-stone
-      z-index: 5
+    color: $body-bg
+  .uggs-stone
+    z-index: 5

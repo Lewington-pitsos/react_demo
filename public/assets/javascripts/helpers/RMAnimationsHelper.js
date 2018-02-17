@@ -5,7 +5,7 @@ const RMAnimationsHelper =  {
     var bucketHeight = $(bucketSelector).outerHeight(true)
     console.log(bucketHeight);
     var currentBucketMiddle = ( bucketHeight * (bucketId - 1) )
-    $('.ugg-wrapper').animate({
+    $('.ugg').animate({
       top: currentBucketMiddle
     }, 1000)
   },

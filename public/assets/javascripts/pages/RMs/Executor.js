@@ -29,7 +29,7 @@ export default class Executor extends React.Component {
 
     return(
       <div className="col-md-7 executor">
-        <div className="row justify-content-between">
+        <div className="row justify-content-around">
           <div className="col-7 buckets d-flex flex-column">
             {buckets}
           </div>
