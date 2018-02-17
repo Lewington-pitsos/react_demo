@@ -48,5 +48,11 @@ export default {
         bucket: 1
       }
     })
+  },
+
+  execute() {
+    dispatcher.dispatch({
+      type: 'EXECUTE'
+    })
   }
 }

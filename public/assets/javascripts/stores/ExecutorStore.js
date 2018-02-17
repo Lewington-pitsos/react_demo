@@ -7,6 +7,7 @@ class ExecutorStore extends EventEmitter {
   constructor() {
     super()
     this.buckets = [
+      {stones: 1, justAdded: true},
       {stones: 1, justAdded: true}
     ]
 

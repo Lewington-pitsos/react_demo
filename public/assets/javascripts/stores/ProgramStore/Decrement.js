@@ -13,9 +13,9 @@ export default class Decrement extends Command {
     // otherwise simply swicth the next command to the alternate command
     if (this.bucketObject.stones) {
       this.actions.decrementBucket(this.bucketId)
-      this.nextCommand = defaultNext
+      this.nextCommand = this.defaultNext
     } else {
-      this.nextCommand = alternateNext
+      this.nextCommand = this.alternateNext
     }
   }
 }

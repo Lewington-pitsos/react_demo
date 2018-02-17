@@ -10,7 +10,8 @@ class ProgramStore extends EventEmitter {
   constructor() {
     super()
     this.commands = [
-      new Increment(1, 1, 1)
+      new Increment(2, 0, 1),
+      new Decrement(0, 1, 2, 1, executorStore.getBucket(1))
     ]
     this.nextId = 2
   }
@@ -23,6 +24,9 @@ class ProgramStore extends EventEmitter {
     switch(action.type) {
       case "ADD_COMMAND": {
         this.addCommand(action.commandProps)
+        break
+      } case "EXECUTE": {
+        this.execute()
         break
       }
     }
@@ -61,9 +65,24 @@ class ProgramStore extends EventEmitter {
 
     this.emit('change')
   }
+
+  execute() {
+    var nextCommand = this.commands[0].id
+
+    while (nextCommand) {
+      // locates the command who'se id matches nextCommand
+      var currentCommand = $.grep(this.commands, function(command){
+        return command.id == nextCommand
+      })[0]
+      currentCommand.run()
+      nextCommand = currentCommand.next()
+    }
+  }
 }
 
 const programStore = new ProgramStore;
 
 dispatcher.register(programStore.handleActions.bind(programStore))
+
+window.programStore = programStore
 export default programStore;

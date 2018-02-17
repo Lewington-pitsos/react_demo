@@ -13,18 +13,8 @@ export default class Command extends React.Component {
 
     return(
       <div className={classList} id={'command-' + command.id}>
-        <p><span className="command-id">{command.id}.</span>{command.type} bucket {command.bucketId} and go to  {nextCommand}</p>
+        <p><span className="command-id">{command.id}.</span>{command.constructor.name} bucket {command.bucketId} and go to  {nextCommand}</p>
       </div>
     )
   }
-}
-
-Command.propTypes = {
-  id: PropTypes.number.isRequired,
-  nextCommand: PropTypes.number.isRequired,
-  bucketId: PropTypes.number.isRequired
-}
-
-Command.defaultProps = {
-  alternateNext: false
 }

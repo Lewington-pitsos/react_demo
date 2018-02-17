@@ -23,6 +23,10 @@ export default class RM extends React.Component {
     rmActions.addIncrement()
   }
 
+  execute() {
+    rmActions.execute()
+  }
+
   render() {
     return(
       <div id="RMs-page">
@@ -37,6 +41,7 @@ export default class RM extends React.Component {
           <BucketSelector />
           <button className="btn btn-primary" onClick={this.addDecrement.bind(this)}>Add Decrement Command</button>
           <button className="btn btn-primary" onClick={this.addIncrement.bind(this)}>Add Increment Command</button>
+            <button className="btn btn-primary" onClick={this.execute.bind(this)}>Execute Progam</button>
         </ControlPanel>
       </div>
     )

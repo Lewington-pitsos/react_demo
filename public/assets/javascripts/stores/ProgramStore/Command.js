@@ -14,7 +14,7 @@ export default class Command {
     this.justAdded = true
   }
 
-  nextCommand() {
+  next() {
     return this.nextCommand
   }
 }
