@@ -1,6 +1,6 @@
 import React from 'react'
 
-import programStore from '../../stores/ProgramStore'
+import programStore from '../../../stores/ProgramStore'
 
 export default class CommandSelector extends React.Component {
   constructor() {
@@ -27,18 +27,13 @@ export default class CommandSelector extends React.Component {
           Command {command.id + 1}
         </option>
       )
-    }
-
-    return options
   }
 
   render() {
     // renders a selector with one option correspoinding to each bucket
 
-    console.log(this.state.number);
-
     return(
-      <select name="command-id"}>
+      <select name="command-id">
         {this.generateOptions()}
       </select>
     )

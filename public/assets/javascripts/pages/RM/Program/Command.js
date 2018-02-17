@@ -1,22 +1,32 @@
 import React from 'react'
 
 import CommandInfo from './CommandInfo'
+import CommandEdit from './CommandEdit'
 
 export default class Command extends React.Component {
-  editCommand() {
-    rmActions.editCommand()
+  constructor() {
+    super()
+    this.state = {display: 'info'}
+  }
+
+  editMode() {
+    this.setState({display: 'edit'})
   }
 
   render() {
-    // renders a number of stones according to props
+    // renders out a command in either display or edit mode depending on state
 
     const command = this.props.command
+
+    const display = this.state.display == 'info' ?
+      <CommandInfo command={command} /> :
+      <CommandEdit command={command} />
 
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command'
 
     return(
-      <div className={classList} id={'command-' + command.id} onClick={this.editCommand.bind(this)}>
-        <CommandInfo command={command} />
+      <div className={classList} id={'command-' + command.id} onClick={this.editMode.bind(this)}>
+        {display}
       </div>
     )
   }

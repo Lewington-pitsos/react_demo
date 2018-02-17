@@ -10,7 +10,7 @@ export default class CommandEdit extends React.Component {
     const command = this.props.command
 
     return(
-      <div className={classList} id={'command-' + command.id}>
+      <div className="command-edit">
         <TypeSelector name={command.constructor.name} />
         <BucketSelector />
         <CommandSelector />

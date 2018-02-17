@@ -5,20 +5,20 @@ export default class TypeSelector extends React.Component {
     // chooses which of the two options so start as selected according to the passed in name prop and renders a type selector accordingly
 
     const increment =
-                    <option value="increment" selected>Decrement</option>
-                    <option value="decrement">Decrement</option>
+      <select name="type">
+        <option value="increment" selected>Increment</option>
+        <option value="decrement">Decrement</option>
+      </select>
+
 
     const decrement =
-            <option value="increment" >Decrement</option>
-            <option value="decrement" selected>Decrement</option>
+      <select name="type">
+        <option value="increment">Increment</option>
+        <option value="decrement" selected>Decrement</option>
+      </select>
 
-    const options = this.props.name = 'increment' ? increment : decrement
+    const options = this.props.name == 'increment' ? increment : decrement
 
-    return(
-      <selector name="type">
-        {options}
-      </selector>
-
-    )
+    return(options)
   }
 }
