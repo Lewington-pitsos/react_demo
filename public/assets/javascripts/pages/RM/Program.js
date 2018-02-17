@@ -3,7 +3,7 @@ import React from 'react'
 import programStore from '../../stores/ProgramStore'
 import Command from './Program/Command'
 
-export default class Executor extends React.Component {
+export default class Program extends React.Component {
   constructor() {
     super()
     this.state = programStore.getInfo()
@@ -16,23 +16,23 @@ export default class Executor extends React.Component {
   }
   render() {
 
+    console.log(this.state);
+
+    var commands = this
+      .state
+      .commands
+      .map(command => <Command
+        key={command.id}
+        id={command.id}
+        type={command.constructor.name}
+        bucketId={command.bucketId}
+        nextCommand={command.nextCommand}
+        alternateNext={command.alternateNext} />
+      )
 
     return(
       <div className="col-md-4 commands">
-        <ol>
-          <li>
-            <p>Program</p>
-          </li>
-          <li>
-            <p>Program</p>
-          </li>
-          <li>
-            <p>Program</p>
-          </li>
-          <li>
-            <p>Program</p>
-          </li>
-        </ol>
+        {commands}
       </div>
     )
   }

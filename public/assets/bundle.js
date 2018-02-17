@@ -30872,74 +30872,45 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-throw new Error("Cannot find module \"../../stores/ProgramStore\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__ = __webpack_require__(126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(125);
 
 
 
 
 
-class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor() {
     super();
-    this.state = __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore___default.a.getInfo();
+    this.state = __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__["a" /* default */].getInfo();
   }
 
   componentWillMount() {
     // triggered on each innitial render of this component
-    __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore___default.a.on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore___default.a.getInfo());
+    __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__["a" /* default */].getInfo());
     });
   }
   render() {
 
+    console.log(this.state);
+
+    var commands = this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Program_Command__["a" /* default */], {
+      key: command.id,
+      id: command.id,
+      type: command.constructor.name,
+      bucketId: command.bucketId,
+      nextCommand: command.nextCommand,
+      alternateNext: command.alternateNext }));
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'col-md-4 commands' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'ol',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'li',
-          null,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'Program'
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'li',
-          null,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'Program'
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'li',
-          null,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'Program'
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'li',
-          null,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'Program'
-          )
-        )
-      )
+      commands
     );
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Executor;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Program;
 
 
 /***/ }),
@@ -31043,16 +31014,17 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       'div',
       { className: 'command', id: 'command-' + this.props.id },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'span',
-        { className: 'id' },
-        this.props.id
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'p',
         null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'span',
+          { className: 'command-id' },
+          this.props.id,
+          ':'
+        ),
         this.props.type,
-        ' Bucket ',
-        this.props.bucketNumber,
+        ' bucket ',
+        this.props.bucketId,
         ' and go to  ',
         nextCommand,
         ';'
@@ -31060,15 +31032,162 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     );
   }
 }
-/* unused harmony export default */
+/* harmony export (immutable) */ __webpack_exports__["a"] = Command;
 
 
 Command.propTypes = {
   id: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired,
   nextCommand: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired,
-  bucketNumber: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired
-  // also posible alternateNext
+  bucketId: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired
 };
+
+Command.defaultProps = {
+  alternateNext: false
+};
+
+/***/ }),
+/* 126 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ExecutorStore__ = __webpack_require__(43);
+ // 'events is like, part of nodejs'
+
+
+
+
+
+
+
+class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+  constructor() {
+    super();
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](1, 1, 1)];
+    this.nextId = 2;
+  }
+
+  getInfo() {
+    return { commands: this.commands };
+  }
+
+  handleActions(action) {
+    switch (action.type) {
+      case "ADD_COMMAND":
+        {
+          this.addCommand(action.commandProps);
+          break;
+        }
+    }
+  }
+
+  addCommand(props) {
+    // checkes for the type of command to add
+    // creates and pushes the appripriate command to commands
+    if (props.increment) {
+      this.commands.push(new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, this.getNextId));
+    } else {
+      this.commands.push(new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, this.getNextId, props.alternateNext, programStore.getBucket(props.bucket)));
+    }
+
+    this.emit('change');
+  }
+
+  getNextId() {
+    var id = this.nextId;
+
+    this.getNextId += 1;
+
+    return id;
+  }
+}
+
+const programStore = new ProgramStore();
+
+__WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
+/* harmony default export */ __webpack_exports__["a"] = (programStore);
+
+/***/ }),
+/* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_rmActions__ = __webpack_require__(44);
+
+
+class Command {
+  // The basis for Increment and Decrement: perform an action and return the next comand when asked
+  // both need access to rmActions
+  // both are created with an id specificying a command and an id specifying a bucket and an id for the command itself
+
+  constructor(nextCommand, bucket, id) {
+    this.nextCommand = nextCommand;
+    this.bucketId = bucket;
+    this.actions = __WEBPACK_IMPORTED_MODULE_0__actions_rmActions__["a" /* default */];
+    this.id = id;
+  }
+
+  nextCommand() {
+    return this.nextCommand;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Command;
+
+
+/***/ }),
+/* 128 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(127);
+
+
+class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  constructor(next, index, id) {
+    super(next, index, id);
+  }
+
+  run() {
+    this.actions.incremenetBucket(this.bucketId);
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Increment;
+
+
+/***/ }),
+/* 129 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(127);
+
+
+class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  constructor(next, index, id, alternateNext, bucket) {
+    super(next, index, id);
+    this.defaultNext = next;
+    this.alternateNext = alternateNext;
+    this.bucketObject = bucket;
+  }
+
+  run() {
+    // if there are any stones in the assigned bucket we decrement and switch the next command to the default command
+    // otherwise simply swicth the next command to the alternate command
+    if (this.bucketObject.stones) {
+      this.actions.decrementBucket(this.bucketId);
+      this.nextCommand = defaultNext;
+    } else {
+      this.nextCommand = alternateNext;
+    }
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Decrement;
+
 
 /***/ })
 /******/ ]);

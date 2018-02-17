@@ -1,8 +1,8 @@
 import Command from './Command.js'
 
-export default class Decrement extends Command {
-  constructor(next, index) {
-    super(next, index)
+export default class Increment extends Command {
+  constructor(next, index, id) {
+    super(next, index, id)
   }
 
   run() {
