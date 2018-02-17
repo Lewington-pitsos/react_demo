@@ -13240,8 +13240,7 @@ Stone.defaultProps = {
 class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.nextId = 2;
-    this.buckets = [{ stones: 1, id: 1, justAdded: true }];
+    this.buckets = [{ stones: 1, justAdded: true }];
 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__["a" /* default */]);
   }
@@ -13281,18 +13280,13 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
     this.buckets.forEach(bucket => bucket.justAdded = false);
 
     // then we add a new bucket to the list of buckets
-    this.buckets.push({ stones: 0, id: this.nextId, justAdded: true });
-
-    // update the next Id
-    this.nextId += 1;
+    this.buckets.push({ stones: 0, justAdded: true });
 
     this.emit('change');
   }
 
   removeBucket() {
     this.buckets.splice(-1, 1);
-
-    this.nextId -= 1;
 
     this.emit('change');
   }
@@ -13303,7 +13297,7 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
   }
 
   addStoneTo(id) {
-    this.buckets[id - 1].stones += 1;
+    this.buckets[id].stones += 1;
     this.emit('change');
   }
 
@@ -13313,7 +13307,7 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
   }
 
   takeStoneFrom(id) {
-    this.buckets[id - 1].stones -= 1;
+    this.buckets[id].stones -= 1;
     this.emit('change');
   }
 
@@ -30702,10 +30696,10 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const buckets = this.state.buckets.map(bucket => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], {
+    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], {
       stoneNumber: bucket.stones,
-      id: bucket.id,
-      key: bucket.id,
+      id: index,
+      key: index,
       newBucket: bucket.justAdded }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -30826,7 +30820,7 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var bucketSelector = '#bucket-' + bucketId;
     var bucketHeight = $(bucketSelector).outerHeight(true);
     console.log(bucketHeight);
-    var currentBucketMiddle = bucketHeight * (bucketId - 1) + 10;
+    var currentBucketMiddle = bucketHeight * bucketId + 10;
     $('.ugg').animate({
       top: currentBucketMiddle
     }, 600);
@@ -30959,12 +30953,12 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
     // generates bucket options (starting at one and ending ON the total number of buckets) and pushes them to an array
     var options = [];
 
-    for (var i = 1; i <= this.state.number; i++) {
+    for (var i = 0; i < this.state.number; i++) {
       options.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'option',
         { value: i, key: i },
         ' Bucket ',
-        i
+        i + 1
       ));
     }
 

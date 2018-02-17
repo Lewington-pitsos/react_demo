@@ -4,7 +4,7 @@ const executorAnimations =  {
     var bucketSelector = '#bucket-' + bucketId
     var bucketHeight = $(bucketSelector).outerHeight(true)
     console.log(bucketHeight);
-    var currentBucketMiddle = ( ( bucketHeight * (bucketId - 1) ) + 10  )
+    var currentBucketMiddle = ( ( bucketHeight * bucketId ) + 10  )
     $('.ugg').animate({
       top: currentBucketMiddle
     }, 600)

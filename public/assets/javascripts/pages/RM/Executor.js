@@ -21,10 +21,10 @@ export default class Executor extends React.Component {
     const buckets = this
                   .state
                   .buckets
-                  .map((bucket) => <Bucket
+                  .map((bucket, index) => <Bucket
                                             stoneNumber={bucket.stones}
-                                            id={bucket.id}
-                                            key={bucket.id}
+                                            id={index}
+                                            key={index}
                                             newBucket={bucket.justAdded}/> )
 
     return(

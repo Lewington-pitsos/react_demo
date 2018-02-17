@@ -6,9 +6,8 @@ import executorAnimations from './ExecutorStore/executorAnimations'
 class ExecutorStore extends EventEmitter {
   constructor() {
     super()
-    this.nextId = 2
     this.buckets = [
-      {stones: 1, id: 1, justAdded: true}
+      {stones: 1, justAdded: true}
     ]
 
     Object.assign(this, executorAnimations);
@@ -46,19 +45,14 @@ class ExecutorStore extends EventEmitter {
 
     // then we add a new bucket to the list of buckets
     this.buckets.push(
-      {stones: 0, id: this.nextId, justAdded: true}
+      {stones: 0, justAdded: true}
     )
-
-    // update the next Id
-    this.nextId += 1
 
     this.emit('change')
   }
 
   removeBucket() {
     this.buckets.splice(-1,1)
-
-    this.nextId -= 1
 
     this.emit('change')
   }
@@ -69,7 +63,7 @@ class ExecutorStore extends EventEmitter {
   }
 
   addStoneTo(id) {
-    this.buckets[id - 1].stones += 1
+    this.buckets[id].stones += 1
     this.emit('change');
   }
 
@@ -79,7 +73,7 @@ class ExecutorStore extends EventEmitter {
   }
 
   takeStoneFrom(id) {
-    this.buckets[id - 1].stones -= 1
+    this.buckets[id].stones -= 1
     this.emit('change');
   }
 

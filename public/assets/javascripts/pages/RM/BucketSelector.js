@@ -21,9 +21,9 @@ export default class BucketSelector extends React.Component {
     // generates bucket options (starting at one and ending ON the total number of buckets) and pushes them to an array
     var options = []
 
-    for (var i = 1; i <= this.state.number; i++) {
+    for (var i = 0; i < this.state.number; i++) {
       options.push(
-        <option value={i} key={i} > Bucket {i}</option>
+        <option value={i} key={i} > Bucket {i + 1}</option>
       )
     }
 
