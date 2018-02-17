@@ -7,7 +7,7 @@ import Layout from './pages/Layout';
 import Home from './pages/Home';
 import Flipper from './pages/Flipper';
 import dispatcher from './dispatcher'
-import RMs from './pages/RMs'
+import RM from './pages/RM'
 
 const main = document.getElementById('main')
 
@@ -16,7 +16,7 @@ ReactDOM.render(
     <Layout>
       <Route exact path="/" component={Home} />
       <Route path="/flipper" component={Flipper} />
-      <Route path="/register_machines" component={RMs} />
+      <Route path="/register_machines" component={RM} />
     </Layout>
   </BrowserRouter>
   , main // i.e. main is the element that everything is being inserted into

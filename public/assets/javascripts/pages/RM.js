@@ -1,11 +1,12 @@
 import React from 'react'
 
-import Executor from './RMs/Executor'
-import Program from './RMs/Program'
+import Executor from './RM/Executor'
+import Program from './RM/Program'
 import ControlPanel from './shared/ControlPanel'
 import rmActions from '../actions/rmActions'
+import BucketSelector from './RM/BucketSelector'
 
-export default class RMs extends React.Component {
+export default class RM extends React.Component {
   addBucket() {
     rmActions.addBucket()
   }
@@ -25,6 +26,7 @@ export default class RMs extends React.Component {
         <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
           <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
           <button className="btn btn-primary" onClick={this.removeBucket.bind(this)}>Remove Bucket</button>
+          <BucketSelector />
         </ControlPanel>
       </div>
     )

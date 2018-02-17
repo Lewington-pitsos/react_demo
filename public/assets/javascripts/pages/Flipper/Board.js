@@ -10,7 +10,7 @@ export default class Board extends React.Component {
     this.state = boardStore.cellSpecs()
   }
 
-  componentWillMount() { // triggered just before a render occurs apparently
+  componentWillMount() { // triggered just before the innitial render of the whole component
     boardStore.on('change', () => {
       this.setState( boardStore.cellSpecs() )
     })
