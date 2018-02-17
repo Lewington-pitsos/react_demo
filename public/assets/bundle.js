@@ -13295,10 +13295,17 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
 
   incremenetBucket(id) {
     this.moveUgg(id);
-    this.uggAddStone();
-    this.buckets[id - 1].stones -= 1;
+    setTimeout(this.animateInStone.bind(this), 400, id);
+  }
 
+  addStoneTo(id) {
+    this.buckets[id - 1].stones += 1;
     this.emit('change');
+  }
+
+  animateInStone(id) {
+    this.uggAddStone();
+    setTimeout(this.addStoneTo.bind(this), 450, id);
   }
 }
 
