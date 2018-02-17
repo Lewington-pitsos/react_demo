@@ -11,7 +11,7 @@ export default class Bucket extends React.Component {
     return(
       <div className={'bucket d-flex justify-content-center align-items-center ' + animationClasses} id={'bucket-' + this.props.id}>
         <h2>{this.props.stoneNumber}x</h2>
-        <Stone />
+        <Stone size={50}/>
       </div>
     )
   }

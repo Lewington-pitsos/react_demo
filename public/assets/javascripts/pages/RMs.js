@@ -18,7 +18,7 @@ export default class RMs extends React.Component {
     return(
       <div id="RMs-page">
         <h1>Register Machines</h1>
-        <div className="row justify-content-around">
+        <div className="row justify-content-around register-machine m-0">
           <Program />
           <Executor />
         </div>
