@@ -13253,6 +13253,10 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
     return { number: this.buckets.length };
   }
 
+  getBucket(index) {
+    return this.buckets[index];
+  }
+
   handleActions(action) {
     switch (action.type) {
       case "ADD_BUCKET":

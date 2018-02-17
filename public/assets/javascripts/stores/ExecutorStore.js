@@ -21,6 +21,10 @@ class ExecutorStore extends EventEmitter {
     return {number: this.buckets.length}
   }
 
+  getBucket(index) {
+    return this.buckets[index]
+  }
+
   handleActions(action) {
     switch(action.type) {
       case "ADD_BUCKET": {
