@@ -13,10 +13,18 @@ const RMAnimationsHelper =  {
   uggAddStone() {
     var $stone = $('.uggs-stone')
     $stone.animate({
-      right: 200
-    }, 400, function() {
+      right: 300
+    }, 500, function() {
       $stone.css('right', 0)
     })
+  },
+
+  uggTakeStone() {
+    var $stone = $('.uggs-stone')
+    $stone.css('right', 300)
+    $stone.animate({
+      right: 0
+    }, 500)
   }
 }
 
