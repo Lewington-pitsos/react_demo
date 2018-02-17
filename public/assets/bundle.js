@@ -30872,50 +30872,67 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+throw new Error("Cannot find module \"../../stores/ProgramStore\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(125);
+
+
+
 
 
 class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore___default.a.getInfo();
+  }
+
+  componentWillMount() {
+    // triggered on each innitial render of this component
+    __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore___default.a.on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore___default.a.getInfo());
+    });
+  }
   render() {
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "div",
-      { className: "col-md-4 commands" },
+      'div',
+      { className: 'col-md-4 commands' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "ol",
+        'ol',
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          "li",
+          'li',
           null,
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "Program"
+            'Program'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          "li",
+          'li',
           null,
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "Program"
+            'Program'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          "li",
+          'li',
           null,
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "Program"
+            'Program'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          "li",
+          'li',
           null,
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "Program"
+            'Program'
           )
         )
       )
@@ -30993,6 +31010,65 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = BucketSelector;
 
+
+/***/ }),
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+
+
+
+class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    // renders a number of stones according to props
+
+    var nextCommand = this.props.alternateNext ? this.props.nextCommand + ', otherwise go to ' + this.props.alternateNext : this.props.nextCommand;
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'command', id: 'command-' + this.props.id },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'span',
+        { className: 'id' },
+        this.props.id
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        this.props.type,
+        ' Bucket ',
+        this.props.bucketNumber,
+        ' and go to  ',
+        nextCommand,
+        ';'
+      )
+    );
+  }
+}
+/* unused harmony export default */
+
+
+Command.propTypes = {
+  id: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired,
+  nextCommand: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired,
+  bucketNumber: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired
+  // also posible alternateNext
+};
 
 /***/ })
 /******/ ]);
