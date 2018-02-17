@@ -30851,7 +30851,7 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         ),
         command.constructor.name,
         ' bucket ',
-        command.bucketId,
+        command.bucketId + 1,
         ' and go to  ',
         nextCommand
       )
@@ -31004,12 +31004,12 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
 
   decrementBucket(id) {
     this.moveUgg(id);
-    setTimeout(this.animateOutStone.bind(this), 400, id);
+    setTimeout(this.animateOutStone.bind(this), 600, id);
   }
 
   incrementBucket(id) {
     this.moveUgg(id);
-    setTimeout(this.animateInStone.bind(this), 400, id);
+    setTimeout(this.animateInStone.bind(this), 600, id);
   }
 
   addStoneTo(id) {
@@ -31019,7 +31019,7 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
 
   animateInStone(id) {
     this.uggAddStone();
-    setTimeout(this.addStoneTo.bind(this), 450, id);
+    setTimeout(this.addStoneTo.bind(this), 500, id);
   }
 
   takeStoneFrom(id) {
@@ -31028,8 +31028,8 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
   }
 
   animateOutStone(id) {
-    setTimeout(this.uggTakeStone.bind(this), 150);
-    setTimeout(this.takeStoneFrom.bind(this), 200, id);
+    this.uggTakeStone();
+    setTimeout(this.takeStoneFrom.bind(this), 500, id);
   }
 }
 
@@ -31140,7 +31140,7 @@ class Command {
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 0, 1)];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](3, 1, 2), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](4, 0, 3), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](5, 4, 4), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 0, 5)];
     this.nextId = 2;
   }
 
@@ -31189,7 +31189,10 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   execute() {
     var nextCommand = this.commands[0].id;
 
+    var interval = 0;
+
     while (nextCommand) {
+      setTimeout();
       console.log('next command: ' + nextCommand);
       // locates the command who'se id matches nextCommand
       var currentCommand = $.grep(this.commands, function (command) {

@@ -64,12 +64,12 @@ class ExecutorStore extends EventEmitter {
 
   decrementBucket(id) {
     this.moveUgg(id)
-    setTimeout(this.animateOutStone.bind(this), 400, id)
+    setTimeout(this.animateOutStone.bind(this), 600, id)
   }
 
   incrementBucket(id) {
     this.moveUgg(id)
-    setTimeout(this.animateInStone.bind(this), 400, id)
+    setTimeout(this.animateInStone.bind(this), 600, id)
   }
 
   addStoneTo(id) {
@@ -79,7 +79,7 @@ class ExecutorStore extends EventEmitter {
 
   animateInStone(id) {
     this.uggAddStone()
-    setTimeout(this.addStoneTo.bind(this), 450, id)
+    setTimeout(this.addStoneTo.bind(this), 500, id)
   }
 
   takeStoneFrom(id) {
@@ -88,8 +88,8 @@ class ExecutorStore extends EventEmitter {
   }
 
   animateOutStone(id) {
-    setTimeout(this.uggTakeStone.bind(this), 150)
-    setTimeout(this.takeStoneFrom.bind(this), 200, id)
+    this.uggTakeStone()
+    setTimeout(this.takeStoneFrom.bind(this), 500, id)
   }
 }
 

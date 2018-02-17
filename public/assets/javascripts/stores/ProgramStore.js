@@ -9,7 +9,11 @@ class ProgramStore extends EventEmitter {
   constructor() {
     super()
     this.commands = [
-      new Increment(0, 0, 1)
+      new Decrement(2, 0, 1, 0),
+      new Increment(3, 1, 2),
+      new Increment(4, 0, 3),
+      new Increment(5, 4, 4),
+      new Increment(0, 0, 5)
     ]
     this.nextId = 2
   }
@@ -66,7 +70,10 @@ class ProgramStore extends EventEmitter {
   execute() {
     var nextCommand = this.commands[0].id
 
+    var interval = 0
+
     while (nextCommand) {
+      setTimeout()
       console.log('next command: ' + nextCommand);
       // locates the command who'se id matches nextCommand
       var currentCommand = $.grep(this.commands, function(command){

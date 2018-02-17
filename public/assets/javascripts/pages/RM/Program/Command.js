@@ -13,7 +13,7 @@ export default class Command extends React.Component {
 
     return(
       <div className={classList} id={'command-' + command.id}>
-        <p><span className="command-id">{command.id}.</span>{command.constructor.name} bucket {command.bucketId} and go to  {nextCommand}</p>
+        <p><span className="command-id">{command.id}.</span>{command.constructor.name} bucket {command.bucketId + 1} and go to  {nextCommand}</p>
       </div>
     )
   }
