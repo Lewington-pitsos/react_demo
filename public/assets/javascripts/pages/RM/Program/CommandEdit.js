@@ -1,6 +1,7 @@
 import React from 'react'
 import BucketSelector from '../BucketSelector'
 import TypeSelector from './TypeSelector'
+import CommandSelector from './CommandSelector'
 
 export default class CommandEdit extends React.Component {
   render() {
@@ -12,7 +13,7 @@ export default class CommandEdit extends React.Component {
       <div className={classList} id={'command-' + command.id}>
         <TypeSelector name={command.constructor.name} />
         <BucketSelector />
-        <p><span className="command-id">{command.id}.</span>{command.constructor.name} bucket {command.bucketId + 1} and go to  {nextCommand}</p>
+        <CommandSelector />
       </div>
     )
   }

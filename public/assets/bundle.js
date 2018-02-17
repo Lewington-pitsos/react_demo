@@ -31160,9 +31160,16 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandInfo__ = __webpack_require__(120);
+
+
 
 
 class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  editCommand() {
+    rmActions.editCommand();
+  }
+
   render() {
     // renders a number of stones according to props
 
@@ -31170,26 +31177,10 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command';
 
-    var nextCommand = command.alternateNext ? command.nextCommand + ', otherwise go to ' + command.alternateNext : command.nextCommand;
-
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: classList, id: 'command-' + command.id },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'p',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'span',
-          { className: 'command-id' },
-          command.id,
-          '.'
-        ),
-        command.constructor.name,
-        ' bucket ',
-        command.bucketId + 1,
-        ' and go to  ',
-        nextCommand
-      )
+      { className: classList, id: 'command-' + command.id, onClick: this.editCommand.bind(this) },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command })
     );
   }
 }
@@ -31204,8 +31195,6 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(45);
-
 
 
 
@@ -31240,16 +31229,6 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
     return options;
   }
 
-  incremenetBucket(event) {
-    // target.value is the bucket id
-    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].incremenetBucket(event.target.value);
-  }
-
-  decrementBucket(event) {
-    // target.value is the bucket id
-    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].decrementBucket(event.target.value);
-  }
-
   render() {
     // renders a selector with one option correspoinding to each bucket
 
@@ -31257,12 +31236,54 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'bucket', onChange: this.decrementBucket.bind(this) },
+      { name: 'bucket' },
       this.generateOptions()
     );
   }
 }
 /* unused harmony export default */
+
+
+/***/ }),
+/* 120 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    // renders out the substantive info of a command
+
+    const command = this.props.command;
+
+    // works out if the command is increment or decrement
+    if (command.alternateNext) {
+      var nextCommand = command.nextCommand + ', otherwise go to ' + command.alternateNext;
+    } else {
+      var nextCommand = command.nextCommand;
+    }
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'p',
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'span',
+        { className: 'command-id' },
+        command.id,
+        '.'
+      ),
+      command.constructor.name,
+      ' bucket ',
+      command.bucketId + 1,
+      ' and go to  ',
+      nextCommand
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = CommandInfo;
 
 
 /***/ })

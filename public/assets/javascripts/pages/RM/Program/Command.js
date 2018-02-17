@@ -1,6 +1,12 @@
 import React from 'react'
 
+import CommandInfo from './CommandInfo'
+
 export default class Command extends React.Component {
+  editCommand() {
+    rmActions.editCommand()
+  }
+
   render() {
     // renders a number of stones according to props
 
@@ -8,11 +14,9 @@ export default class Command extends React.Component {
 
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command'
 
-    var nextCommand = command.alternateNext ? command.nextCommand + ', otherwise go to ' + command.alternateNext : command.nextCommand
-
     return(
-      <div className={classList} id={'command-' + command.id}>
-        <p><span className="command-id">{command.id}.</span>{command.constructor.name} bucket {command.bucketId + 1} and go to  {nextCommand}</p>
+      <div className={classList} id={'command-' + command.id} onClick={this.editCommand.bind(this)}>
+        <CommandInfo command={command} />
       </div>
     )
   }

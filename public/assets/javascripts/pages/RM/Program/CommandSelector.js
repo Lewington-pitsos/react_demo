@@ -1,43 +1,35 @@
 import React from 'react'
 
 import programStore from '../../stores/ProgramStore'
-import rmActions from '../../actions/rmActions'
 
-export default class BucketSelector extends React.Component {
+export default class CommandSelector extends React.Component {
   constructor() {
     super()
-    this.state = executorStore.bucketNumber()
+    this.state = programStore.getInfo()
 
     this.generateOptions.bind(this)
   }
 
   componentWillMount() {
-    executorStore.on('change', () => {
-      this.setState( executorStore.bucketNumber() )
+    programStore.on('change', () => {
+      this.setState( programStore.getInfo() )
     })
   }
 
   generateOptions() {
-    // generates bucket options (starting at one and ending ON the total number of buckets) and pushes them to an array
-    var options = []
-
-    for (var i = 0; i < this.state.number; i++) {
-      options.push(
-        <option value={i} key={i} > Bucket {i + 1}</option>
+    // generates command options (assigning ids to the values) and pushes them to an array
+    // we're not bothered that some commands might be missing if they get deleted. on execution the Id's will get reset
+    return this
+      .state
+      .commands
+      .map((command) =>
+        <option value={command.id} key={command.id} >
+          Command {command.id + 1}
+        </option>
       )
     }
 
     return options
-  }
-
-  incremenetBucket(event) {
-    // target.value is the bucket id
-    rmActions.incremenetBucket(event.target.value)
-  }
-
-  decrementBucket(event) {
-    // target.value is the bucket id
-    rmActions.decrementBucket(event.target.value)
   }
 
   render() {
@@ -46,7 +38,7 @@ export default class BucketSelector extends React.Component {
     console.log(this.state.number);
 
     return(
-      <select name="bucket" onChange={this.decrementBucket.bind(this)}>
+      <select name="command-id"}>
         {this.generateOptions()}
       </select>
     )

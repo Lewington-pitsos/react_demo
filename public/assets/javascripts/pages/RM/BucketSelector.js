@@ -1,7 +1,6 @@
 import React from 'react'
 
 import executorStore from '../../stores/ExecutorStore'
-import rmActions from '../../actions/rmActions'
 
 export default class BucketSelector extends React.Component {
   constructor() {
@@ -30,23 +29,13 @@ export default class BucketSelector extends React.Component {
     return options
   }
 
-  incremenetBucket(event) {
-    // target.value is the bucket id
-    rmActions.incremenetBucket(event.target.value)
-  }
-
-  decrementBucket(event) {
-    // target.value is the bucket id
-    rmActions.decrementBucket(event.target.value)
-  }
-
   render() {
     // renders a selector with one option correspoinding to each bucket
 
     console.log(this.state.number);
 
     return(
-      <select name="bucket" onChange={this.decrementBucket.bind(this)}>
+      <select name="bucket">
         {this.generateOptions()}
       </select>
     )
