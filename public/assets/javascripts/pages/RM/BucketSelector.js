@@ -31,9 +31,13 @@ export default class BucketSelector extends React.Component {
   }
 
   incremenetBucket(event) {
-    console.log(event.target.value);
-    // passes the bucket id to the addbucket action
+    // target.value is the bucket id
     rmActions.incremenetBucket(event.target.value)
+  }
+
+  decrementBucket(event) {
+    // target.value is the bucket id
+    rmActions.decrementBucket(event.target.value)
   }
 
   render() {
@@ -42,7 +46,7 @@ export default class BucketSelector extends React.Component {
     console.log(this.state.number);
 
     return(
-      <select name="bucket" onChange={this.incremenetBucket.bind(this)}>
+      <select name="bucket" onChange={this.decrementBucket.bind(this)}>
         {this.generateOptions()}
       </select>
     )

@@ -31,7 +31,10 @@ class ExecutorStore extends EventEmitter {
         this.removeBucket()
         break
       } case "INCREMENT_BUCKET": {
-        this.incremenetBucket(action.id)
+        this.alterBucket(action.id, this.animateInStone.bind(this))
+        break
+      } case "DECREMENT_BUCKET": {
+        this.alterBucket(action.id, this.animateOutStone.bind(this))
         break
       }
     }
@@ -60,9 +63,9 @@ class ExecutorStore extends EventEmitter {
     this.emit('change')
   }
 
-  incremenetBucket(id) {
+  alterBucket(id, method) {
     this.moveUgg(id)
-    setTimeout(this.animateInStone.bind(this), 400, id)
+    setTimeout(method, 400, id)
   }
 
   addStoneTo(id) {
@@ -73,6 +76,16 @@ class ExecutorStore extends EventEmitter {
   animateInStone(id) {
     this.uggAddStone()
     setTimeout(this.addStoneTo.bind(this), 450, id)
+  }
+
+  takeStoneFrom(id) {
+    this.buckets[id - 1].stones -= 1
+    this.emit('change');
+  }
+
+  animateOutStone(id) {
+    setTimeout(this.uggTakeStone.bind(this), 150)
+    setTimeout(this.takeStoneFrom.bind(this), 200, id)
   }
 }
 

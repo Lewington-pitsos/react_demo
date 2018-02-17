@@ -18,5 +18,12 @@ export default {
       type: 'INCREMENT_BUCKET',
       id: id
     })
+  },
+
+  decrementBucket(id) {
+    dispatcher.dispatch({
+      type: 'DECREMENT_BUCKET',
+      id: id
+    })
   }
 }
