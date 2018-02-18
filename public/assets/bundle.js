@@ -13403,6 +13403,10 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.updateCommand(action.specs);
           break;
+        }case "DELETE_COMMAND":
+        {
+          this.deleteCommand(action.id);
+          break;
         }
     }
   }
@@ -13475,6 +13479,10 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     }
 
     this.emit('change');
+  }
+
+  deleteCommand(id) {
+    console.log('store picked up delete command');
   }
 }
 
@@ -13605,6 +13613,13 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'UPDATE_COMMAND',
       specs: specs
+    });
+  },
+
+  deleteCommand(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'DELETE_COMMAND',
+      id: id
     });
   }
 });
@@ -31246,7 +31261,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor() {
     super();
-    this.state = { editMode: false };
+    this.state = { editMode: true };
   }
 
   editMode() {
@@ -31262,7 +31277,7 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     const command = this.props.command;
 
-    const display = this.state.editMode || command.justAdded ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, submit: this.infoMode.bind(this) }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
+    const display = this.state.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, submit: this.infoMode.bind(this) }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
 
     // generates a class list depending on whether the command is nwely added
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command';
@@ -31382,6 +31397,11 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     this.props.submit();
   }
 
+  deleteCommand() {
+    window.alert('Are you sure you want to delete this command?');
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].deleteCommand(this.state.id);
+  }
+
   render() {
     // renders a number of stones according to props
 
@@ -31410,7 +31430,17 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: this.state.bucket, update: this.changeBucket.bind(this) }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.nextCommand, update: this.changeNext.bind(this) }),
         alternateNext,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'submit' })
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'submit' }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary cancel', onClick: this.props.submit },
+          ' Cancel '
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary delete', onClick: this.deleteCommand.bind(this) },
+          ' Delete '
+        )
       )
     );
   }

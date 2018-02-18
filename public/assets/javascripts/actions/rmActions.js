@@ -61,5 +61,12 @@ export default {
       type: 'UPDATE_COMMAND',
       specs: specs
     })
+  },
+
+  deleteCommand(id) {
+    dispatcher.dispatch({
+      type: 'DELETE_COMMAND',
+      id: id
+    })
   }
 }

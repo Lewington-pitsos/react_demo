@@ -30,6 +30,9 @@ class ProgramStore extends EventEmitter {
       } case "UPDATE_COMMAND": {
         this.updateCommand(action.specs)
         break
+      } case "DELETE_COMMAND": {
+        this.deleteCommand(action.id)
+        break
       }
     }
   }
@@ -102,6 +105,10 @@ class ProgramStore extends EventEmitter {
     }
 
     this.emit('change')
+  }
+
+  deleteCommand(id) {
+    console.log('store picked up delete command');
   }
 }
 

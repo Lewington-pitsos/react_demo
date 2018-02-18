@@ -39,6 +39,11 @@ export default class CommandEdit extends React.Component {
     this.props.submit()
   }
 
+  deleteCommand() {
+    window.alert('Are you sure you want to delete this command?')
+    rmActions.deleteCommand(this.state.id)
+  }
+
   render() {
     // renders a number of stones according to props
 
@@ -57,6 +62,8 @@ export default class CommandEdit extends React.Component {
           <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)}/>
           {alternateNext}
           <input type="submit" value="submit" />
+          <button className="btn btn-primary cancel" onClick={this.props.submit} > Cancel </button>
+          <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
         </form>
       </div>
     )

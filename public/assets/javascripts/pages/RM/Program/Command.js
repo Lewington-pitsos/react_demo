@@ -6,7 +6,7 @@ import CommandEdit from './CommandEdit'
 export default class Command extends React.Component {
   constructor() {
     super()
-    this.state = {editMode: false}
+    this.state = {editMode: true}
   }
 
   editMode() {
@@ -22,7 +22,7 @@ export default class Command extends React.Component {
 
     const command = this.props.command
 
-    const display = this.state.editMode || command.justAdded ?
+    const display = this.state.editMode ?
       <CommandEdit command={command} submit={this.infoMode.bind(this)}/> :
       <CommandInfo command={command} />
 
