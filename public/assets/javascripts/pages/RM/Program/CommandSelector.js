@@ -19,14 +19,23 @@ export default class CommandSelector extends React.Component {
   generateOptions() {
     // generates command options (assigning ids to the values) and pushes them to an array
     // we're not bothered that some commands might be missing if they get deleted. on execution the Id's will get reset
-    return this
+
+    var options = this
       .state
       .commands
       .map((command) =>
         <option value={command.id} key={command.id} >
-          Command {command.id + 1}
+          Command {command.id}
         </option>
       )
+
+    options.push(
+      <option value={0} key={0} >
+        End Execution
+      </option>
+    )
+
+    return options
   }
 
   render() {

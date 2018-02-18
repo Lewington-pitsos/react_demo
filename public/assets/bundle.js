@@ -13382,7 +13382,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   constructor() {
     super();
     this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 1, 2)];
-    this.nextId = 2;
+    this.nextId = 3;
   }
 
   getInfo() {
@@ -13425,10 +13425,11 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   newCommand(props) {
-    console.log(props);
     // generates an id for the new command
     // returns a new command object given an object of command properties
-    var id = this.getNextId();
+    console.log(props);
+
+    var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
     if (props.increment) {
       return new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id);
     } else {
@@ -31247,7 +31248,7 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     const command = this.props.command;
 
     // works out if the command is increment or decrement
-    if (command.alternateNext) {
+    if (command.constructor.name == "Decrement") {
       var nextCommand = command.nextCommand + ', otherwise go to ' + command.alternateNext;
     } else {
       var nextCommand = command.nextCommand;
@@ -31289,7 +31290,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
       id: props.command.id,
       increment: props.command.constructor.name == "Increment",
       bucket: props.command.bucketId,
-      nextCommand: props.command.nextId,
+      nextCommand: props.command.nextCommand,
       alternateNext: props.command.alternateNext
     };
 
@@ -31301,15 +31302,15 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   }
 
   changeBucket(event) {
-    this.setState({ bucket: event.target.value });
+    this.setState({ bucket: parseInt(event.target.value) });
   }
 
   changeNext(event) {
-    this.setState({ next: event.target.value });
+    this.setState({ nextCommand: parseInt(event.target.value) });
   }
 
   changeAlternateNext(event) {
-    this.setState({ alternateNext: event.target.value });
+    this.setState({ alternateNext: parseInt(event.target.value) });
   }
 
   handleSubmit(event) {
@@ -31321,7 +31322,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   render() {
     // renders a number of stones according to props
 
-    var alternateNext = this.state.increment ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext, update: this.changeNext.bind(this) });
+    var alternateNext = this.state.increment ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext || 0, update: this.changeAlternateNext.bind(this) });
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -31344,7 +31345,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: this.state.bucket, update: this.changeBucket.bind(this) }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.next, update: this.changeNext.bind(this) }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.nextCommand, update: this.changeNext.bind(this) }),
         alternateNext,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'submit' })
       )
@@ -31383,12 +31384,21 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
   generateOptions() {
     // generates command options (assigning ids to the values) and pushes them to an array
     // we're not bothered that some commands might be missing if they get deleted. on execution the Id's will get reset
-    return this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+
+    var options = this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'option',
       { value: command.id, key: command.id },
       'Command ',
-      command.id + 1
+      command.id
     ));
+
+    options.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'option',
+      { value: 0, key: 0 },
+      'End Execution'
+    ));
+
+    return options;
   }
 
   render() {

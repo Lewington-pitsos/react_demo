@@ -12,7 +12,7 @@ class ProgramStore extends EventEmitter {
       new Decrement(2, 0, 1, 0),
       new Increment(0, 1, 2)
     ]
-    this.nextId = 2
+    this.nextId = 3
   }
 
   getInfo() {
@@ -52,10 +52,11 @@ class ProgramStore extends EventEmitter {
   }
 
   newCommand(props) {
-    console.log(props);
     // generates an id for the new command
     // returns a new command object given an object of command properties
-    var id = this.getNextId()
+    console.log(props);
+
+    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
     if (props.increment) {
       return(new Increment(props.nextCommand, props.bucket, id))
     } else {

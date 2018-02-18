@@ -7,7 +7,7 @@ export default class CommandInfo extends React.Component {
     const command = this.props.command
 
     // works out if the command is increment or decrement
-    if (command.alternateNext) {
+    if (command.constructor.name == "Decrement") {
       var nextCommand = command.nextCommand +
                         ', otherwise go to ' +
                         command.alternateNext

@@ -10,7 +10,7 @@ export default class CommandEdit extends React.Component {
       id: props.command.id,
       increment: props.command.constructor.name == "Increment",
       bucket: props.command.bucketId,
-      nextCommand: props.command.nextId,
+      nextCommand: props.command.nextCommand,
       alternateNext: props.command.alternateNext
     }
 
@@ -22,15 +22,15 @@ export default class CommandEdit extends React.Component {
   }
 
   changeBucket(event) {
-    this.setState({bucket: event.target.value})
+    this.setState({bucket: parseInt(event.target.value)})
   }
 
   changeNext(event) {
-    this.setState({next: event.target.value})
+    this.setState({nextCommand: parseInt(event.target.value)})
   }
 
   changeAlternateNext(event) {
-    this.setState({alternateNext: event.target.value})
+    this.setState({alternateNext: parseInt(event.target.value)})
   }
 
   handleSubmit(event) {
@@ -44,7 +44,7 @@ export default class CommandEdit extends React.Component {
 
     var alternateNext = this.state.increment ?
       null :
-      <CommandSelector current={this.state.alternateNext} update={this.changeNext.bind(this)}/>
+      <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)}/>
 
     return(
       <div className="command-edit">
@@ -54,7 +54,7 @@ export default class CommandEdit extends React.Component {
             <option value={false}>Decrement</option>
           </select>
           <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)}/>
-          <CommandSelector current={this.state.next} update={this.changeNext.bind(this)}/>
+          <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)}/>
           {alternateNext}
           <input type="submit" value="submit" />
         </form>
