@@ -7,9 +7,10 @@ export default class CommandEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      type: props.command.constructor.name,
+      id: props.command.id,
+      increment: props.command.constructor.name == "Increment",
       bucket: props.command.bucketId,
-      next: props.command.nextId,
+      nextCommand: props.command.nextId,
       alternateNext: props.command.alternateNext
     }
 
@@ -17,7 +18,7 @@ export default class CommandEdit extends React.Component {
   }
 
   changeType(event) {
-    this.setState({type: event.target.value})
+    this.setState({increment: !this.state.increment})
   }
 
   changeBucket(event) {
@@ -41,16 +42,16 @@ export default class CommandEdit extends React.Component {
   render() {
     // renders a number of stones according to props
 
-    var alternateNext = this.state.type == 'Decrement' ?
-      <CommandSelector current={this.state.alternateNext} update={this.changeNext.bind(this)}/> :
-      null
+    var alternateNext = this.state.increment ?
+      null :
+      <CommandSelector current={this.state.alternateNext} update={this.changeNext.bind(this)}/>
 
     return(
       <div className="command-edit">
       <form onSubmit={this.handleSubmit.bind(this)} >
-          <select name="type" defaultValue={this.state.type} onChange={this.changeType.bind(this)}>
-            <option value="Increment">Increment</option>
-            <option value="Decrement">Decrement</option>
+          <select name="type" defaultValue={this.state.increment} onChange={this.changeType.bind(this)}>
+            <option value={true}>Increment</option>
+            <option value={false}>Decrement</option>
           </select>
           <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)}/>
           <CommandSelector current={this.state.next} update={this.changeNext.bind(this)}/>

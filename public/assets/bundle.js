@@ -13381,7 +13381,7 @@ Stone.defaultProps = {
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](3, 1, 2), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](4, 0, 3), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](5, 4, 4), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 0, 5)];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 1, 2)];
     this.nextId = 2;
   }
 
@@ -13425,6 +13425,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   newCommand(props) {
+    console.log(props);
     // generates an id for the new command
     // returns a new command object given an object of command properties
     var id = this.getNextId();
@@ -13464,7 +13465,15 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   updateCommand(specs) {
-    console.log('picked up by store');
+    // searches the command list for a command whose id matches the id in specs
+    // switches that command out for a new one created using specs
+    for (var i = 0; i < this.commands.length; i++) {
+      if (this.commands[i].id == specs.id) {
+        this.commands[i] = this.newCommand(specs);
+      }
+    }
+
+    this.emit('change');
   }
 }
 
@@ -31277,9 +31286,10 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   constructor(props) {
     super(props);
     this.state = {
-      type: props.command.constructor.name,
+      id: props.command.id,
+      increment: props.command.constructor.name == "Increment",
       bucket: props.command.bucketId,
-      next: props.command.nextId,
+      nextCommand: props.command.nextId,
       alternateNext: props.command.alternateNext
     };
 
@@ -31287,7 +31297,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   }
 
   changeType(event) {
-    this.setState({ type: event.target.value });
+    this.setState({ increment: !this.state.increment });
   }
 
   changeBucket(event) {
@@ -31311,7 +31321,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   render() {
     // renders a number of stones according to props
 
-    var alternateNext = this.state.type == 'Decrement' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext, update: this.changeNext.bind(this) }) : null;
+    var alternateNext = this.state.increment ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext, update: this.changeNext.bind(this) });
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -31321,15 +31331,15 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         { onSubmit: this.handleSubmit.bind(this) },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'select',
-          { name: 'type', defaultValue: this.state.type, onChange: this.changeType.bind(this) },
+          { name: 'type', defaultValue: this.state.increment, onChange: this.changeType.bind(this) },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'option',
-            { value: 'Increment' },
+            { value: true },
             'Increment'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'option',
-            { value: 'Decrement' },
+            { value: false },
             'Decrement'
           )
         ),

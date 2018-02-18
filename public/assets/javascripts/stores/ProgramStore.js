@@ -10,10 +10,7 @@ class ProgramStore extends EventEmitter {
     super()
     this.commands = [
       new Decrement(2, 0, 1, 0),
-      new Increment(3, 1, 2),
-      new Increment(4, 0, 3),
-      new Increment(5, 4, 4),
-      new Increment(0, 0, 5)
+      new Increment(0, 1, 2)
     ]
     this.nextId = 2
   }
@@ -55,6 +52,7 @@ class ProgramStore extends EventEmitter {
   }
 
   newCommand(props) {
+    console.log(props);
     // generates an id for the new command
     // returns a new command object given an object of command properties
     var id = this.getNextId()
@@ -94,7 +92,15 @@ class ProgramStore extends EventEmitter {
   }
 
   updateCommand(specs) {
-    console.log('picked up by store');
+    // searches the command list for a command whose id matches the id in specs
+    // switches that command out for a new one created using specs
+    for (var i = 0; i < this.commands.length; i++) {
+      if (this.commands[i].id == specs.id) {
+        this.commands[i] = this.newCommand(specs)
+      }
+    }
+
+    this.emit('change')
   }
 }
 
