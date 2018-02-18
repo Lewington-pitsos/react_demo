@@ -27,7 +27,14 @@ export default class Command extends React.Component {
 
     return(
       <div className={classList} id={'command-' + command.id} onClick={this.editMode.bind(this)}>
-        {display}
+        <div className="row">
+          <div className="col-1">
+            <span className="command-id">{command.id}.</span>
+          </div>
+          <div className="col-11">
+            {display}
+          </div>
+        </div>
       </div>
     )
   }

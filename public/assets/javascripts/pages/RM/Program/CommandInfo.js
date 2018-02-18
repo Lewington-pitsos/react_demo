@@ -16,7 +16,7 @@ export default class CommandInfo extends React.Component {
     }
 
     return(
-      <p><span className="command-id">{command.id}.</span>{command.constructor.name} bucket {command.bucketId + 1} and go to  {nextCommand}</p>
+      <p>{command.constructor.name} bucket {command.bucketId + 1} and go to  {nextCommand}</p>
     )
   }
 }
