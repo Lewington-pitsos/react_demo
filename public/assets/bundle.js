@@ -13515,7 +13515,7 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'bucket', defaultValue: this.props.current },
+      { name: 'bucket', defaultValue: this.props.current, onChange: this.props.update },
       this.generateOptions()
     );
   }
@@ -31273,31 +31273,35 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   changeType(event) {
     console.log(event);
     this.setState({ type: event.target.value });
+    console.log(this.state.type);
   }
 
   changeBucket(event) {
+    console.log(event);
     this.setState({ bucket: event.target.value });
   }
 
   changeNext(event) {
+    console.log(event);
     this.setState({ next: event.target.value });
   }
 
   changeAlternateNext(event) {
+    console.log(event);
     this.setState({ alternateNext: event.target.value });
   }
 
   render() {
     // renders a number of stones according to props
 
-    const command = this.props.command;
+    var alternateNext = this.state.type == 'Decrement' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext, update: this.changeNext.bind(this) }) : null;
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'command-edit' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'select',
-        { name: 'type', defaultValue: command.constructor.name, onChange: this.changeType.bind(this) },
+        { name: 'type', defaultValue: this.state.type, onChange: this.changeType.bind(this) },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'option',
           { value: 'Increment' },
@@ -31309,8 +31313,9 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
           'Decrement'
         )
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: command.bucketId }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: command.nextId })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: this.state.bucket, update: this.changeBucket.bind(this) }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.next, update: this.changeNext.bind(this) }),
+      alternateNext
     );
   }
 }
@@ -31359,7 +31364,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'command-id', defaultValue: this.props.current },
+      { name: 'command-id', defaultValue: this.props.current, onChange: this.props.update },
       this.generateOptions()
     );
   }

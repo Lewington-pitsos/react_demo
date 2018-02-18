@@ -33,7 +33,7 @@ export default class CommandSelector extends React.Component {
     // renders a selector with one option correspoinding to each bucket
 
     return(
-      <select name="command-id" defaultValue={this.props.current}>
+      <select name="command-id" defaultValue={this.props.current} onChange={this.props.update}>
         {this.generateOptions()}
       </select>
     )
