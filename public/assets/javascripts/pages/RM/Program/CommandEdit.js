@@ -52,7 +52,7 @@ export default class CommandEdit extends React.Component {
       <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)}/>
 
     return(
-      <div className="command-edit">
+      <div>
       <form onSubmit={this.handleSubmit.bind(this)} >
           <select name="type" defaultValue={this.state.increment} onChange={this.changeType.bind(this)}>
             <option value={true}>Increment</option>

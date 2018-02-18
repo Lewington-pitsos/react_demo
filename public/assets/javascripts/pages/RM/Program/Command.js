@@ -22,13 +22,18 @@ export default class Command extends React.Component {
 
     const command = this.props.command
 
-    const display = this.state.editMode ?
-      <CommandEdit command={command} submit={this.infoMode.bind(this)}/> :
-      <CommandInfo command={command} />
+    var display = <CommandInfo command={command} />
 
+    var classList = 'command '
 
-    // generates a class list depending on whether the command is nwely added
-    const classList = command.justAdded ? 'command animated fadeInUp' : 'command'
+    if (command.justAdded) {
+      classList += 'animated fadeInUp '
+    }
+
+    if (this.state.editMode) {
+      classList += ' command-edit '
+      display =  <CommandEdit command={command} submit={this.infoMode.bind(this)}/>
+    }
 
     return(
       <div className={classList} id={'command-' + command.id} onClick={this.editMode.bind(this)}>
