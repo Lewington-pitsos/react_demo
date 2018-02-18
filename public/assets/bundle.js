@@ -31260,6 +31260,33 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 
 
 class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: props.command.constructor.name,
+      bucket: props.command.bucketId,
+      next: props.command.nextId,
+      alternateNext: props.command.alternateNext
+    };
+  }
+
+  changeType(event) {
+    console.log(event);
+    this.setState({ type: event.target.value });
+  }
+
+  changeBucket(event) {
+    this.setState({ bucket: event.target.value });
+  }
+
+  changeNext(event) {
+    this.setState({ next: event.target.value });
+  }
+
+  changeAlternateNext(event) {
+    this.setState({ alternateNext: event.target.value });
+  }
+
   render() {
     // renders a number of stones according to props
 
@@ -31270,7 +31297,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
       { className: 'command-edit' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'select',
-        { name: 'type', defaultValue: command.constructor.name },
+        { name: 'type', defaultValue: command.constructor.name, onChange: this.changeType.bind(this) },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'option',
           { value: 'Increment' },
