@@ -30,6 +30,9 @@ class ProgramStore extends EventEmitter {
       } case "EXECUTE": {
         this.execute()
         break
+      } case "UPDATE_COMMAND": {
+        this.updateCommand(action.specs)
+        break
       }
     }
   }
@@ -88,6 +91,10 @@ class ProgramStore extends EventEmitter {
     return $.grep(this.commands, function(command){
       return command.id == id
     })[0]
+  }
+
+  updateCommand(specs) {
+    console.log('picked up by store');
   }
 }
 

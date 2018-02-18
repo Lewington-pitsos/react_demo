@@ -1,6 +1,7 @@
 import React from 'react'
 import BucketSelector from '../BucketSelector'
 import CommandSelector from './CommandSelector'
+import rmActions from '../../../actions/rmActions'
 
 export default class CommandEdit extends React.Component {
   constructor(props) {
@@ -11,27 +12,29 @@ export default class CommandEdit extends React.Component {
       next: props.command.nextId,
       alternateNext: props.command.alternateNext
     }
+
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   changeType(event) {
-    console.log(event);
     this.setState({type: event.target.value})
-    console.log(this.state.type);
   }
 
   changeBucket(event) {
-    console.log(event);
     this.setState({bucket: event.target.value})
   }
 
   changeNext(event) {
-        console.log(event);
     this.setState({next: event.target.value})
   }
 
   changeAlternateNext(event) {
-        console.log(event);
     this.setState({alternateNext: event.target.value})
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    rmActions.updateCommand(this.state)
   }
 
   render() {
@@ -43,13 +46,16 @@ export default class CommandEdit extends React.Component {
 
     return(
       <div className="command-edit">
-        <select name="type" defaultValue={this.state.type} onChange={this.changeType.bind(this)}>
-          <option value="Increment">Increment</option>
-          <option value="Decrement">Decrement</option>
-        </select>
-        <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)}/>
-        <CommandSelector current={this.state.next} update={this.changeNext.bind(this)}/>
-        {alternateNext}
+      <form onSubmit={this.handleSubmit.bind(this)} >
+          <select name="type" defaultValue={this.state.type} onChange={this.changeType.bind(this)}>
+            <option value="Increment">Increment</option>
+            <option value="Decrement">Decrement</option>
+          </select>
+          <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)}/>
+          <CommandSelector current={this.state.next} update={this.changeNext.bind(this)}/>
+          {alternateNext}
+          <input type="submit" value="submit" />
+        </form>
       </div>
     )
   }

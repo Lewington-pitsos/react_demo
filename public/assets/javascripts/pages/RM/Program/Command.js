@@ -6,11 +6,11 @@ import CommandEdit from './CommandEdit'
 export default class Command extends React.Component {
   constructor() {
     super()
-    this.state = {display: 'info'}
+    this.state = {editMode: false}
   }
 
   editMode() {
-    this.setState({display: 'edit'})
+    this.setState({editMode: true})
   }
 
   render() {
@@ -18,9 +18,10 @@ export default class Command extends React.Component {
 
     const command = this.props.command
 
-    const display = this.state.display == 'info' ?
-      <CommandInfo command={command} /> :
-      <CommandEdit command={command} />
+    const display = this.state.editMode ?
+      <CommandEdit command={command} /> :
+      <CommandInfo command={command} />
+
 
     // generates a class list depending on whether the command is nwely added
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command'

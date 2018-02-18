@@ -54,5 +54,12 @@ export default {
     dispatcher.dispatch({
       type: 'EXECUTE'
     })
+  },
+
+  updateCommand(specs) {
+    dispatcher.dispatch({
+      type: 'UPDATE_COMMAND',
+      specs: specs
+    })
   }
 }
