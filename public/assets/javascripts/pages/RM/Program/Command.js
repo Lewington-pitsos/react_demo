@@ -22,7 +22,7 @@ export default class Command extends React.Component {
 
     const command = this.props.command
 
-    const display = this.state.editMode ?
+    const display = this.state.editMode || command.justAdded ?
       <CommandEdit command={command} submit={this.infoMode.bind(this)}/> :
       <CommandInfo command={command} />
 
