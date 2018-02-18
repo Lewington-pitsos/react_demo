@@ -13,13 +13,17 @@ export default class Command extends React.Component {
     this.setState({editMode: true})
   }
 
+  infoMode() {
+    this.setState({editMode: false})
+  }
+
   render() {
     // renders out a command in either display or edit mode depending on state
 
     const command = this.props.command
 
     const display = this.state.editMode ?
-      <CommandEdit command={command} /> :
+      <CommandEdit command={command} submit={this.infoMode.bind(this)}/> :
       <CommandInfo command={command} />
 
 

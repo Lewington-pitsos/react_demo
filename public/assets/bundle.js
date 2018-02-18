@@ -31180,12 +31180,16 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     this.setState({ editMode: true });
   }
 
+  infoMode() {
+    this.setState({ editMode: false });
+  }
+
   render() {
     // renders out a command in either display or edit mode depending on state
 
     const command = this.props.command;
 
-    const display = this.state.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
+    const display = this.state.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, submit: this.infoMode.bind(this) }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
 
     // generates a class list depending on whether the command is nwely added
     const classList = command.justAdded ? 'command animated fadeInUp' : 'command';
@@ -31301,6 +31305,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   handleSubmit(event) {
     event.preventDefault();
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].updateCommand(this.state);
+    this.props.submit();
   }
 
   render() {

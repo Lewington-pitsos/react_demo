@@ -35,6 +35,7 @@ export default class CommandEdit extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     rmActions.updateCommand(this.state)
+    this.props.submit()
   }
 
   render() {
