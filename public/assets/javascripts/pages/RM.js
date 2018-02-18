@@ -30,7 +30,6 @@ export default class RM extends React.Component {
   render() {
     return(
       <div id="RMs-page">
-        <h1>Register Machines</h1>
         <div className="row justify-content-around register-machine m-0">
           <Program />
           <Executor />
