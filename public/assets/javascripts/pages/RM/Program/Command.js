@@ -22,6 +22,8 @@ export default class Command extends React.Component {
 
     const command = this.props.command
 
+    console.log(command);
+
     var display = <CommandInfo command={command} />
 
     var classList = 'command '

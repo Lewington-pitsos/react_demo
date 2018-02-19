@@ -98,7 +98,10 @@ class ProgramStore extends EventEmitter {
     // switches that command out for a new one created using specs
     for (var i = 0; i < this.commands.length; i++) {
       if (this.commands[i].id == specs.id) {
-        this.commands[i] = this.newCommand(specs)
+        // we create a new command, specify that it had already been added, and overwrite the old command with it
+        var newCommand = this.newCommand(specs)
+        newCommand.justAdded = false
+        this.commands[i] = newCommand
       }
     }
 

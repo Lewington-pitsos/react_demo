@@ -15,9 +15,6 @@ export default class Program extends React.Component {
     })
   }
   render() {
-
-    console.log(this.state);
-
     var commands = this
       .state
       .commands

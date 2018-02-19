@@ -13472,7 +13472,10 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     // switches that command out for a new one created using specs
     for (var i = 0; i < this.commands.length; i++) {
       if (this.commands[i].id == specs.id) {
-        this.commands[i] = this.newCommand(specs);
+        // we create a new command, specify that it had already been added, and overwrite the old command with it
+        var newCommand = this.newCommand(specs);
+        newCommand.justAdded = false;
+        this.commands[i] = newCommand;
       }
     }
 
@@ -31187,9 +31190,6 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     });
   }
   render() {
-
-    console.log(this.state);
-
     var commands = this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Program_Command__["a" /* default */], {
       key: command.id,
       command: command }));
@@ -31290,6 +31290,8 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     // renders out a command in either display or edit mode depending on state
 
     const command = this.props.command;
+
+    console.log(command);
 
     var display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
 
