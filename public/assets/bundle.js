@@ -13481,8 +13481,23 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.emit('change');
   }
 
+  getCommandIndex(id) {
+    // takes the id of a command and returns its index
+    this.commands.forEach(function (command, index) {
+      if (command.id == id) {
+        return index;
+      }
+    });
+  }
+
   deleteCommand(id) {
-    console.log('store picked up delete command');
+    console.log(this.commands);
+    console.log(id);
+    const index = this.getCommandIndex(id);
+
+    this.commands.splice(index, 1);
+
+    this.emit('change');
   }
 }
 
