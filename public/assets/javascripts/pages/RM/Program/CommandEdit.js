@@ -39,9 +39,11 @@ export default class CommandEdit extends React.Component {
     this.props.submit()
   }
 
-  deleteCommand() {
-    window.alert('Are you sure you want to delete this command?')
-    rmActions.deleteCommand(this.state.id)
+  deleteCommand(event) {
+    event.preventDefault()
+    if (window.confirm('Are you sure you want to delete this command?')) {
+      rmActions.deleteCommand(this.state.id)
+    }
   }
 
   render() {

@@ -31421,9 +31421,11 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     this.props.submit();
   }
 
-  deleteCommand() {
-    window.alert('Are you sure you want to delete this command?');
-    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].deleteCommand(this.state.id);
+  deleteCommand(event) {
+    event.preventDefault();
+    if (window.confirm('Are you sure you want to delete this command?')) {
+      __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].deleteCommand(this.state.id);
+    }
   }
 
   render() {
