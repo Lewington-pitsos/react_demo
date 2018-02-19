@@ -13431,8 +13431,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   newCommand(props) {
     // generates an id for the new command
     // returns a new command object given an object of command properties
-    console.log(props);
-
     var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
     if (props.increment) {
       return new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id);
@@ -13483,20 +13481,21 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
   getCommandIndex(id) {
     // takes the id of a command and returns its index
-    this.commands.forEach(function (command, index) {
-      if (command.id == id) {
-        return index;
+    for (var i = 0; i < this.commands.length; i++) {
+      if (this.commands[i].id == id) {
+        return i;
       }
-    });
+    }
+
+    // returns false if there is no match
+    return false;
   }
 
   deleteCommand(id) {
-    console.log(this.commands);
-    console.log(id);
+    // finds the index of the command whose id matches the passed in int
+    // conducts a single element splice at that index and triggers a change
     const index = this.getCommandIndex(id);
-
     this.commands.splice(index, 1);
-
     this.emit('change');
   }
 }
