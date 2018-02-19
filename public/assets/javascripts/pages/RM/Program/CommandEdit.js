@@ -36,7 +36,7 @@ export default class CommandEdit extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     rmActions.updateCommand(this.state)
-    this.props.submit()
+    this.props.cancelEdit()
   }
 
   deleteCommand(event) {
@@ -64,7 +64,7 @@ export default class CommandEdit extends React.Component {
           <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)}/>
           {alternateNext}
           <input type="submit" value="submit" />
-          <button className="btn btn-primary cancel" onClick={this.props.submit} > Cancel </button>
+          <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
           <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
         </form>
       </div>

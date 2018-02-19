@@ -14,14 +14,20 @@ export default class Program extends React.Component {
       this.setState( programStore.getInfo() )
     })
   }
-  render() {
-    var commands = this
+
+  renderCommands() {
+    return this
       .state
       .commands
       .map(command => <Command
         key={command.id}
-        command={command} />
-      )
+        command={command}
+        editMode={this.state.editingCommand == command.id} />)
+  }
+  
+  render() {
+
+    var commands = this.renderCommands()
 
     return(
       <div className="col-md-4 commands">

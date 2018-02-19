@@ -13,10 +13,11 @@ class ProgramStore extends EventEmitter {
       new Increment(0, 1, 2)
     ]
     this.nextId = 3
+    this.editingCommand = 2
   }
 
   getInfo() {
-    return {commands: this.commands}
+    return {commands: this.commands, editingCommand: this.editingCommand}
   }
 
   handleActions(action) {
@@ -33,13 +34,23 @@ class ProgramStore extends EventEmitter {
       } case "DELETE_COMMAND": {
         this.deleteCommand(action.id)
         break
+      } case "SWITCH_EDITOR": {
+        this.switchEditor(action.id)
+        break
       }
     }
   }
 
+  switchEditor(id) {
+    this.editingCommand = id
+
+    this.emit('change')
+  }
+
   addCommand(props) {
-    // set all currently added commands as old
+    // set all currently added commands as old, and switches the editing command to be the new one
     // creates and then pushes a new command object, and emits a change event
+    this.switchEditor(this.nextId)
     this.commands.forEach((command) => command.justAdded = false)
     this.commands.push(this.newCommand(props))
 

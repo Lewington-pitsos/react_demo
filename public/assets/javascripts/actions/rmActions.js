@@ -68,5 +68,12 @@ export default {
       type: 'DELETE_COMMAND',
       id: id
     })
+  },
+
+  switchEditor(id) {
+    dispatcher.dispatch({
+      type: 'SWITCH_EDITOR',
+      id: id
+    })
   }
 }

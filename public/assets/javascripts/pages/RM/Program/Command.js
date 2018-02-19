@@ -2,6 +2,7 @@ import React from 'react'
 
 import CommandInfo from './CommandInfo'
 import CommandEdit from './CommandEdit'
+import rmActions from '../../../actions/rmActions'
 
 export default class Command extends React.Component {
   constructor() {
@@ -9,12 +10,12 @@ export default class Command extends React.Component {
     this.state = {editMode: true}
   }
 
-  editMode() {
-    this.setState({editMode: true})
+  switchEditor() {
+    rmActions.switchEditor(this.props.command.id)
   }
 
-  infoMode() {
-    this.setState({editMode: false})
+  noEditor() {
+    rmActions.switchEditor(0)
   }
 
   render() {
@@ -32,13 +33,13 @@ export default class Command extends React.Component {
       classList += 'animated fadeInUp '
     }
 
-    if (this.state.editMode) {
+    if (this.props.editMode) {
       classList += ' command-edit '
-      display =  <CommandEdit command={command} submit={this.infoMode.bind(this)}/>
+      display =  <CommandEdit command={command} cancelEdit={this.noEditor.bind(this)}/>
     }
 
     return(
-      <div className={classList} id={'command-' + command.id} onClick={this.editMode.bind(this)}>
+      <div className={classList} id={'command-' + command.id} onClick={this.switchEditor.bind(this)}>
         <div className="row p-0">
           <div className="col-1 p-0">
             <span className="command-id">{command.id}.</span>

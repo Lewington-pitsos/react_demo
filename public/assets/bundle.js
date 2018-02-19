@@ -13383,10 +13383,11 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     super();
     this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 1, 2)];
     this.nextId = 3;
+    this.editingCommand = 2;
   }
 
   getInfo() {
-    return { commands: this.commands };
+    return { commands: this.commands, editingCommand: this.editingCommand };
   }
 
   handleActions(action) {
@@ -13407,13 +13408,24 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.deleteCommand(action.id);
           break;
+        }case "SWITCH_EDITOR":
+        {
+          this.switchEditor(action.id);
+          break;
         }
     }
   }
 
+  switchEditor(id) {
+    this.editingCommand = id;
+
+    this.emit('change');
+  }
+
   addCommand(props) {
-    // set all currently added commands as old
+    // set all currently added commands as old, and switches the editing command to be the new one
     // creates and then pushes a new command object, and emits a change event
+    this.switchEditor(this.nextId);
     this.commands.forEach(command => command.justAdded = false);
     this.commands.push(this.newCommand(props));
 
@@ -13636,6 +13648,13 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
   deleteCommand(id) {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'DELETE_COMMAND',
+      id: id
+    });
+  },
+
+  switchEditor(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'SWITCH_EDITOR',
       id: id
     });
   }
@@ -31189,10 +31208,17 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       this.setState(__WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__["a" /* default */].getInfo());
     });
   }
-  render() {
-    var commands = this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Program_Command__["a" /* default */], {
+
+  renderCommands() {
+    return this.state.commands.map(command => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Program_Command__["a" /* default */], {
       key: command.id,
-      command: command }));
+      command: command,
+      editMode: this.state.editingCommand == command.id }));
+  }
+
+  render() {
+
+    var commands = this.renderCommands();
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -31267,6 +31293,8 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandInfo__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandEdit__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(47);
+
 
 
 
@@ -31278,12 +31306,12 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     this.state = { editMode: true };
   }
 
-  editMode() {
-    this.setState({ editMode: true });
+  switchEditor() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(this.props.command.id);
   }
 
-  infoMode() {
-    this.setState({ editMode: false });
+  noEditor() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(0);
   }
 
   render() {
@@ -31301,14 +31329,14 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       classList += 'animated fadeInUp ';
     }
 
-    if (this.state.editMode) {
+    if (this.props.editMode) {
       classList += ' command-edit ';
-      display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, submit: this.infoMode.bind(this) });
+      display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, cancelEdit: this.noEditor.bind(this) });
     }
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: classList, id: 'command-' + command.id, onClick: this.editMode.bind(this) },
+      { className: classList, id: 'command-' + command.id, onClick: this.switchEditor.bind(this) },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'row p-0' },
@@ -31418,7 +31446,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   handleSubmit(event) {
     event.preventDefault();
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].updateCommand(this.state);
-    this.props.submit();
+    this.props.cancelEdit();
   }
 
   deleteCommand(event) {
@@ -31459,7 +31487,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'submit' }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
-          { className: 'btn btn-primary cancel', onClick: this.props.submit },
+          { className: 'btn btn-primary cancel', onClick: this.props.cancelEdit },
           ' Cancel '
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
