@@ -31148,6 +31148,19 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     $('.executor').animate({
       scrollTop: currentBucketMiddle
     }, 600);
+    this.moveExecutionTracker(1);
+  },
+
+  moveExecutionTracker(commandId) {
+    var commandSelector = '#command-' + commandId;
+    var commandHeight = 100;
+    var currentCommandTop = commandHeight * commandId;
+    $('#command-execution-tracker').animate({
+      top: currentCommandTop
+    }, 600);
+    $('.commands').animate({
+      scrollTop: currentCommandTop
+    }, 600);
   },
 
   uggAddStone() {
