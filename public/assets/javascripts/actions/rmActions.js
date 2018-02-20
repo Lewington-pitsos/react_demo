@@ -75,5 +75,12 @@ export default {
       type: 'SWITCH_EDITOR',
       id: id
     })
+  },
+
+  switchBucketEditor(id) {
+    dispatcher.dispatch({
+      type: 'SWITCH_BUCKET_EDITOR',
+      id: id
+    })
   }
 }

@@ -48,6 +48,9 @@ class ExecutorStore extends EventEmitter {
       } case "DECREMENT_BUCKET": {
         this.decrementBucket(action.id)
         break
+      } case "SWITCH_BUCKET_EDITOR": {
+        this.switchEditor(action.id)
+        break
       }
     }
   }

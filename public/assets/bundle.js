@@ -12286,6 +12286,10 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
         {
           this.decrementBucket(action.id);
           break;
+        }case "SWITCH_BUCKET_EDITOR":
+        {
+          this.switchEditor(action.id);
+          break;
         }
     }
   }
@@ -13642,6 +13646,13 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
   switchEditor(id) {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'SWITCH_EDITOR',
+      id: id
+    });
+  },
+
+  switchBucketEditor(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'SWITCH_BUCKET_EDITOR',
       id: id
     });
   }
@@ -31043,12 +31054,22 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(47);
+
 
 
 
 
 
 class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  switchBucketEditor() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(this.props.id);
+  }
+
+  noBucketEditor() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
+  }
+
   render() {
     // renders a number of stones according to props
 
@@ -31061,7 +31082,8 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id },
+        { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id,
+          onClick: this.switchBucketEditor.bind(this) },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h2',
           null,
