@@ -29,7 +29,7 @@ export default class Buckets extends React.Component {
           editMode={index == this.state.editingBucket}/> )
 
     return(
-      <div className="col-md-7 bucket">
+      <div className="col-md-7 buckets-holder">
         <div className="row justify-content-around">
           <div className="col-7 buckets d-flex flex-column">
             {buckets}
