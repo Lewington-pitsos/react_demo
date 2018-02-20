@@ -31372,16 +31372,34 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  renderCommandId(id) {
+    // returns a formatted string depending on the passed in id for nicer command displaying
+    if (id) {
+      return 'to go ' + id;
+    } else {
+      return 'End Execution';
+    }
+  }
+
   render() {
     // renders out the substantive info of a command
 
     const command = this.props.command;
 
-    // works out if the command is increment or decrement
+    // works out if the command is increment or decrement and displays renders a display accordingly
     if (command.constructor.name == "Decrement") {
-      var nextCommand = command.nextCommand + ', otherwise go to ' + command.alternateNext;
+      var nextCommand = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'span',
+        null,
+        ' ',
+        this.renderCommandId(command.nextCommand),
+        '. ',
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+        ' Otherwise ',
+        this.renderCommandId(command.alternateNext)
+      );
     } else {
-      var nextCommand = command.nextCommand;
+      var nextCommand = this.renderCommandId(command.nextCommand);
     }
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -31390,8 +31408,9 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
       command.constructor.name,
       ' bucket ',
       command.bucketId + 1,
-      ' and go to  ',
-      nextCommand
+      ' and ',
+      nextCommand,
+      '.'
     );
   }
 }
