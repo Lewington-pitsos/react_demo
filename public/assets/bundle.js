@@ -13570,7 +13570,7 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'bucket', defaultValue: this.props.current, onChange: this.props.update },
+      { name: 'bucket', defaultValue: this.props.current, onChange: this.props.update, className: 'form-control' },
       this.generateOptions()
     );
   }
@@ -31459,17 +31459,31 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   render() {
     // renders a number of stones according to props
 
-    var alternateNext = this.state.increment ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext || 0, update: this.changeAlternateNext.bind(this) });
+    var alternateNext = this.state.increment ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'form-group' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'label',
+        { htmlFor: 'alternate-next-command' },
+        'Alternate next command'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext || 0, update: this.changeAlternateNext.bind(this), id: 'alternate-next-command' })
+    );
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      null,
+      'form',
+      { onSubmit: this.handleSubmit.bind(this) },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'form',
-        { onSubmit: this.handleSubmit.bind(this) },
+        'div',
+        { className: 'form-group' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'label',
+          { htmlFor: 'command-type' },
+          'Commnad Type'
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'select',
-          { name: 'type', defaultValue: this.state.increment, onChange: this.changeType.bind(this) },
+          { name: 'type', className: 'form-control', defaultValue: this.state.increment, onChange: this.changeType.bind(this), id: 'command-type' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'option',
             { value: true },
@@ -31480,21 +31494,39 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
             { value: false },
             'Decrement'
           )
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: this.state.bucket, update: this.changeBucket.bind(this) }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.nextCommand, update: this.changeNext.bind(this) }),
-        alternateNext,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'submit' }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary cancel', onClick: this.props.cancelEdit },
-          ' Cancel '
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary delete', onClick: this.deleteCommand.bind(this) },
-          ' Delete '
         )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'form-group' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'label',
+          { htmlFor: 'command-bucket' },
+          'Bucket to interact with'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__BucketSelector__["a" /* default */], { current: this.state.bucket, update: this.changeBucket.bind(this), id: 'command-bucket' })
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'form-group' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'label',
+          { htmlFor: 'default-next-command' },
+          'Deafult next command'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.nextCommand, update: this.changeNext.bind(this), id: 'default-next-command' })
+      ),
+      alternateNext,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'submit' }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary cancel', onClick: this.props.cancelEdit },
+        ' Cancel '
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary delete', onClick: this.deleteCommand.bind(this) },
+        ' Delete '
       )
     );
   }
@@ -31553,7 +31585,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { name: 'command-id', defaultValue: this.props.current, onChange: this.props.update },
+      { name: 'command-id', defaultValue: this.props.current, onChange: this.props.update, className: 'form-control' },
       this.generateOptions()
     );
   }

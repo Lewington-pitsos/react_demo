@@ -51,23 +51,33 @@ export default class CommandEdit extends React.Component {
 
     var alternateNext = this.state.increment ?
       null :
-      <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)}/>
+      <div className="form-group">
+        <label htmlFor="alternate-next-command">Alternate next command</label>
+        <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)} id="alternate-next-command"/>
+      </div>
 
     return(
-      <div>
       <form onSubmit={this.handleSubmit.bind(this)} >
-          <select name="type" defaultValue={this.state.increment} onChange={this.changeType.bind(this)}>
+        <div className="form-group">
+          <label htmlFor="command-type">Commnad Type</label>
+          <select name="type" className="form-control" defaultValue={this.state.increment} onChange={this.changeType.bind(this)} id="command-type">
             <option value={true}>Increment</option>
             <option value={false}>Decrement</option>
           </select>
-          <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)}/>
-          <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)}/>
-          {alternateNext}
-          <input type="submit" value="submit" />
-          <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
-          <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
-        </form>
-      </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="command-bucket">Bucket to interact with</label>
+          <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)} id="command-bucket"/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="default-next-command">Deafult next command</label>
+          <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)} id="default-next-command"/>
+        </div>
+        {alternateNext}
+        <input type="submit" className="btn btn-primary" value="submit" />
+        <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
+        <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
+      </form>
     )
   }
 }
