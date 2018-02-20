@@ -1,12 +1,27 @@
 import React from 'react'
 import Stone from './Stone'
 
+import flashActions from '../../../actions/flashActions'
 
 export default class Ugg extends React.Component {
 
+  grunt() {
+    var grunts = [
+      '*Rrrrr*',
+      '*hugrrg*',
+      '*Hrumff*',
+      '*RrrGgh!*',
+      '*Agrooo?*',
+      '*Rogen?*',
+      '*oork*'
+    ]
+
+    flashActions.flash(grunts[Math.floor(Math.random() * grunts.length)])
+  }
+
   render() {
     return(
-        <div className="ugg row p-0 position-relative">
+        <div className="ugg row p-0 position-relative" onClick={this.grunt.bind(this)}>
           <div className="col-6 pt-2">
             <h4>Ugg</h4>
           </div>

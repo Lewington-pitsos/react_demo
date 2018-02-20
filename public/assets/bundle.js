@@ -31404,15 +31404,24 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(131);
+
+
 
 
 
 class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
+  grunt() {
+    var grunts = ['*Rrrrr*', '*hugrrg*', '*Hrumff*', '*RrrGgh!*', '*Agrooo?*', '*Rogen?*', '*oork*'];
+
+    __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash(grunts[Math.floor(Math.random() * grunts.length)]);
+  }
+
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'ugg row p-0 position-relative' },
+      { className: 'ugg row p-0 position-relative', onClick: this.grunt.bind(this) },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'col-6 pt-2' },
