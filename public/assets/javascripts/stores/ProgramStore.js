@@ -76,9 +76,38 @@ class ProgramStore extends EventEmitter {
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.stopped = false
-    var commandId = this.commands[0].id
-    this.runNextCommand(commandId, 1600)
+    if (this.validateCommands()) {
+      this.stopped = false
+      var commandId = this.commands[0].id
+      this.runNextCommand(commandId, 1600)
+    } else {
+      setTimeout(function() {
+        // to stop simaltanious dispatch errors
+        rmActions.stopExecution()
+      }, 0)
+    }
+
+  }
+
+  validateCommands() {
+    // gets an array of all the ids of all the commands and confirms that all existing command successors either refer to ids in that list or are falsey
+    var ids = this.commands.map((command) => command.id)
+    return this.commands.every((command) => this.commandValidates(command, ids) )
+  }
+
+  commandValidates(command, allCommandIds) {
+    // returns true iff both command's successors are either falsy or exist in the passed in array
+    return this.successorExists(command.nextCommand, allCommandIds) &&
+      this.successorExists(command.alternateNext, allCommandIds)
+  }
+
+  successorExists(successor, allCommandIds) {
+    // returns true iff the successor id is falsy (0 or undefined) or exists as a value in the passed in array
+    if (successor) {
+      return allCommandIds.includes(successor)
+    }
+
+    return true
   }
 
   finish() {
