@@ -23,6 +23,8 @@ class ProgramStore extends EventEmitter {
     this.nextId = 3
     this.editingCommand = 2
 
+    this.stopped = false
+
     Object.assign(this, executionAnimations);
     Object.assign(this, programHelpers);
   }
@@ -38,6 +40,9 @@ class ProgramStore extends EventEmitter {
         break
       } case "EXECUTE": {
         this.execute()
+        break
+      } case "STOP_EXECUTION": {
+        this.finish()
         break
       } case "UPDATE_COMMAND": {
         this.updateCommand(action.specs)
@@ -70,26 +75,29 @@ class ProgramStore extends EventEmitter {
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runNextCommand function
+    this.stopped = false
     var commandId = this.commands[0].id
     this.runNextCommand(commandId, 1600)
   }
 
-  endExecution() {
-    executionStore.finish()
+  finish() {
+    this.stopped = true
   }
 
   runNextCommand(id, animationDuration) {
-    // animationDuration: the time it takes for ugg to move and add or take
-    // if id is falsy (i.e. 0) we exit and reset the execution tracker
-    if (id) {
+    // if we get stopped by a stop action, simply cease executing new commands (the execution store will also be stopped by the same actions)
+    if (!this.stopped) {
+      // othwesie keep executing new commands untill we hit the end exectution command (id = 0)
+      if (id) {
 
-      // otherwise we execute the current command and find its id
-      var newId = this.executeCommand(id)
-      // finally we recur with the new id after a animationDuration milliseconds
-      setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
-    } else {
-
-      this.endExecution()
+        // otherwise we execute the current command and find its id
+        var newId = this.executeCommand(id)
+        // finally we recur with the new id after a animationDuration milliseconds
+        setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
+      } else {
+        // in which case we let the executor store know that execution is finished
+        executionStore.finish()
+      }
     }
   }
 
