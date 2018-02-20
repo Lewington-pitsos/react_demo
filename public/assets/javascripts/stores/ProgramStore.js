@@ -4,6 +4,7 @@ import Command from './ProgramStore/Command'
 import Increment from './ProgramStore/Increment'
 import Decrement from './ProgramStore/Decrement'
 import dispatcher from '../dispatcher'
+import executionAnimations from './ProgramStore/executionAnimations'
 
 class ProgramStore extends EventEmitter {
   constructor() {
@@ -19,6 +20,8 @@ class ProgramStore extends EventEmitter {
     ]
     this.nextId = 3
     this.editingCommand = 2
+
+    Object.assign(this, executionAnimations);
   }
 
   getInfo() {
@@ -83,13 +86,14 @@ class ProgramStore extends EventEmitter {
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runCommand function
+    this.showExecutionTracker()
     var commandId = this.commands[0].id
     this.runCommand(commandId, 1600)
   }
 
   runCommand(id, animationDuration) {
     // animationDuration: the time it takes for ugg to move and add or take
-    // if id is falsy (i.e. 0) we exit
+    // if id is falsy (i.e. 0) we exit and reset the execution tracker
     if (id) {
 
       // otherwise we find the command that matches id, run it, and find it's speciefied next command
@@ -100,6 +104,8 @@ class ProgramStore extends EventEmitter {
 
       // finally we recur with the new id after a animationDuration milliseconds
       setTimeout(this.runCommand.bind(this), animationDuration, newId, animationDuration)
+    } else {
+      this.resetExecutionTracker()
     }
   }
 
@@ -143,18 +149,6 @@ class ProgramStore extends EventEmitter {
     const index = this.getCommandIndex(id)
     this.commands.splice(index, 1)
     this.emit('change')
-  }
-
-  moveExecutionTracker(commandId) {
-    var commandSelector = '#command-' + commandId
-    var commandHeight = 100
-    var currentCommandTop = commandHeight * (commandId - 1)
-    $('#command-execution-tracker').animate({
-      top: currentCommandTop
-    }, 400)
-    $('.commands').animate({
-      scrollTop: currentCommandTop
-    }, 400)
   }
 }
 
