@@ -1,5 +1,6 @@
 @import "custom"
 @import "~bootstrap/scss/bootstrap"
+@import "spinner"
 
 $body-color-dark: #ccc
 
@@ -72,6 +73,16 @@ a
 .squished
   max-height: 0
   overflow: hidden
+
+.button-looking
+  background: $body-color
+  color: $body-bg
+  padding: 1rem
+  margin-bottom: 1rem
+  display: flex
+  justify-content: space-around
+  p
+    margin-bottom: 0
 
 // LAYOUT
 
@@ -148,8 +159,7 @@ nav
   max-height: 65vh
   overflow-y: scroll
 
-
-// EXECUTOR
+// BUCKETS
 
 .bucket
   min-height: 150px

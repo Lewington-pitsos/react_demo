@@ -29,7 +29,7 @@ export default class ExecuteButton extends React.Component {
     var contents = this.state.contents.join(', ')
 
     return(
-      <button className="execute-button" onClick={this.execute.bind(this)}>
+      <button className="execute-button btn btn-primary" onClick={this.execute.bind(this)}>
         Execute program({contents})
       </button>
     )

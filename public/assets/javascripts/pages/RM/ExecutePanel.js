@@ -28,9 +28,10 @@ export default class ExecutePanel extends React.Component {
 
     if (this.state.executing) {
       var contents =
-      <div>
-        <div className="execution-spinner">
-          Executing...
+      <div className="d-flex justify-content-around flex-wrap">
+        <div className="execution-spinner button-looking">
+          <p>Executing</p>
+          <div class="loader"></div>
         </div>
         <button className="btn btn-primary" onClick={this.stop.bind(this)}>Stop </button>
       </div>
