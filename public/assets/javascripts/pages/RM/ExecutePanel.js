@@ -31,7 +31,7 @@ export default class ExecutePanel extends React.Component {
       <div className="d-flex justify-content-end flex-wrap">
         <div className="execution-spinner button-looking">
           <p>Executing</p>
-          <div class="loader"></div>
+          <div className="loader"></div>
         </div>
         <button className="btn btn-primary stop" onClick={this.stop.bind(this)}>Halt</button>
       </div>

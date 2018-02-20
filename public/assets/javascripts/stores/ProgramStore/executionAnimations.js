@@ -7,8 +7,10 @@ export default {
     $('#command-execution-tracker').animate({
       top: currentCommandTop
     }, 400)
+
+    var commandsHeight = $('.commands').height()
     $('.commands').animate({
-      scrollTop: currentCommandTop
+      scrollTop: currentCommandTop - (commandsHeight - 130)
     }, 400)
   }
 }
