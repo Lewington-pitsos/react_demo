@@ -5,6 +5,7 @@ import Increment from './ProgramStore/Increment'
 import Decrement from './ProgramStore/Decrement'
 import dispatcher from '../dispatcher'
 import executionAnimations from './ProgramStore/executionAnimations'
+import programHelpers from './ProgramStore/programHelpers'
 
 class ProgramStore extends EventEmitter {
   constructor() {
@@ -22,6 +23,7 @@ class ProgramStore extends EventEmitter {
     this.editingCommand = 2
 
     Object.assign(this, executionAnimations);
+    Object.assign(this, programHelpers);
   }
 
   getInfo() {
@@ -65,25 +67,6 @@ class ProgramStore extends EventEmitter {
     this.emit('change')
   }
 
-  getNextId() {
-    var id = this.nextId
-
-    this.nextId += 1
-
-    return id
-  }
-
-  newCommand(props) {
-    // generates an id for the new command
-    // returns a new command object given an object of command properties
-    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
-    if (props.increment) {
-      return(new Increment(props.nextCommand, props.bucket, id))
-    } else {
-      return(new Decrement(props.nextCommand, props.bucket, id, props.alternateNext))
-    }
-  }
-
   execute() {
     // gets the id of the first command and feeds it to the recursive runCommand function
     this.showExecutionTracker()
@@ -109,13 +92,6 @@ class ProgramStore extends EventEmitter {
     }
   }
 
-  findCommand(id) {
-    // returns the command that matches the passed in id
-    return $.grep(this.commands, function(command){
-      return command.id == id
-    })[0]
-  }
-
   updateCommand(specs) {
     // searches the command list for a command whose id matches the id in specs
     // switches that command out for a new one created using specs
@@ -131,24 +107,15 @@ class ProgramStore extends EventEmitter {
     this.emit('change')
   }
 
-  getCommandIndex(id) {
-    // takes the id of a command and returns its index
-    for (var i = 0; i < this.commands.length; i++) {
-      if (this.commands[i].id == id) {
-        return i
-      }
+  newCommand(props) {
+    // generates an id for the new command
+    // returns a new command object given an object of command properties
+    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
+    if (props.increment) {
+      return(new Increment(props.nextCommand, props.bucket, id))
+    } else {
+      return(new Decrement(props.nextCommand, props.bucket, id, props.alternateNext))
     }
-
-    // returns false if there is no match
-    return false
-  }
-
-  deleteCommand(id) {
-    // finds the index of the command whose id matches the passed in int
-    // conducts a single element splice at that index and triggers a change
-    const index = this.getCommandIndex(id)
-    this.commands.splice(index, 1)
-    this.emit('change')
   }
 }
 

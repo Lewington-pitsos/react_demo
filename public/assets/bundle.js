@@ -13365,14 +13365,16 @@ Stone.defaultProps = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(124);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -13388,6 +13390,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.editingCommand = 2;
 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__["a" /* default */]);
   }
 
   getInfo() {
@@ -13436,25 +13439,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.emit('change');
   }
 
-  getNextId() {
-    var id = this.nextId;
-
-    this.nextId += 1;
-
-    return id;
-  }
-
-  newCommand(props) {
-    // generates an id for the new command
-    // returns a new command object given an object of command properties
-    var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
-    if (props.increment) {
-      return new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id);
-    } else {
-      return new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext);
-    }
-  }
-
   execute() {
     // gets the id of the first command and feeds it to the recursive runCommand function
     this.showExecutionTracker();
@@ -13480,13 +13464,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     }
   }
 
-  findCommand(id) {
-    // returns the command that matches the passed in id
-    return $.grep(this.commands, function (command) {
-      return command.id == id;
-    })[0];
-  }
-
   updateCommand(specs) {
     // searches the command list for a command whose id matches the id in specs
     // switches that command out for a new one created using specs
@@ -13502,24 +13479,15 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.emit('change');
   }
 
-  getCommandIndex(id) {
-    // takes the id of a command and returns its index
-    for (var i = 0; i < this.commands.length; i++) {
-      if (this.commands[i].id == id) {
-        return i;
-      }
+  newCommand(props) {
+    // generates an id for the new command
+    // returns a new command object given an object of command properties
+    var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
+    if (props.increment) {
+      return new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id);
+    } else {
+      return new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext);
     }
-
-    // returns false if there is no match
-    return false;
-  }
-
-  deleteCommand(id) {
-    // finds the index of the command whose id matches the passed in int
-    // conducts a single element splice at that index and triggers a change
-    const index = this.getCommandIndex(id);
-    this.commands.splice(index, 1);
-    this.emit('change');
   }
 }
 
@@ -13527,7 +13495,6 @@ const programStore = new ProgramStore();
 
 __WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
 /* harmony default export */ __webpack_exports__["a"] = (programStore);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
 
 /***/ }),
 /* 46 */
@@ -31628,9 +31595,10 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = ({
   moveExecutionTracker(commandId) {
-    var commandSelector = '#command-' + commandId;
+    // finds the index of the current command
+    // shifts the command-execution-tracker down to cover it and scolls the window to follow the command-execution-tracker
     var commandHeight = 100;
-    var currentCommandTop = commandHeight * (commandId - 1);
+    var currentCommandTop = commandHeight * this.getCommandIndex(commandId);
     $('#command-execution-tracker').animate({
       top: currentCommandTop
     }, 400);
@@ -31640,12 +31608,14 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
   },
 
   showExecutionTracker() {
+    // makes the command-execution-tracker visible, then fades it in
     var $tracker = $('#command-execution-tracker');
     $tracker.removeClass('hidden');
     $tracker.fadeTo(300, 1);
   },
 
   resetExecutionTracker() {
+    // fades the CET out, makes it invisible and then resets it's position to the very top again
     var $tracker = $('#command-execution-tracker');
     $tracker.fadeTo(300, 0);
     setTimeout(function () {
@@ -31654,6 +31624,46 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
         top: 0
       });
     }, 301);
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
+
+/***/ }),
+/* 124 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = ({
+  findCommand(id) {
+    // returns the command object that matches the passed in id
+    return $.grep(this.commands, function (command) {
+      return command.id == id;
+    })[0];
+  },
+
+  getCommandIndex(id) {
+    // takes the id of a command and returns its index
+    for (var i = 0; i < this.commands.length; i++) {
+      if (this.commands[i].id == id) {
+        return i;
+      }
+    }
+
+    // returns false if there is no match
+    return false;
+  },
+
+  deleteCommand(id) {
+    // finds the index of the command whose id matches the passed in int
+    // conducts a single element splice at that index and triggers a change
+    const index = this.getCommandIndex(id);
+    this.commands.splice(index, 1);
+    this.emit('change');
+  },
+
+  getNextId() {
+    // increments returns and then increments the nextId property
+    return this.nextId++;
   }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
