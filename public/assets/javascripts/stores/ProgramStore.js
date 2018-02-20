@@ -78,6 +78,12 @@ class ProgramStore extends EventEmitter {
     // sets up the UI for execution
     this.switchEditor(0)
     this.showExecutionTracker()
+    $('#RM-overlay').removeClass('hidden')
+  }
+
+  endExecution() {
+    this.resetExecutionTracker()
+    $('#RM-overlay').addClass('hidden')
   }
 
   runNextCommand(id, animationDuration) {
@@ -91,7 +97,7 @@ class ProgramStore extends EventEmitter {
       setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
     } else {
 
-      this.resetExecutionTracker()
+      this.endExecution()
     }
   }
 

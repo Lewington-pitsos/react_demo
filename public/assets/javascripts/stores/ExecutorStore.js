@@ -9,14 +9,14 @@ class ExecutorStore extends EventEmitter {
     this.buckets = [
       {stones: 1, justAdded: true},
       {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true}
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true},
+      {stones: 0, justAdded: true}
     ]
 
     this.editingBucket = 0

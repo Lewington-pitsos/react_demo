@@ -30,6 +30,8 @@ export default class RM extends React.Component {
         <div className="row justify-content-around register-machine m-0">
           <Program />
           <Executor />
+          <div  className="overlay hidden" id="RM-overlay">
+          </div>
         </div>
         <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
           <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
