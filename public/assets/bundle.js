@@ -13566,7 +13566,7 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__BucketsStore__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(132);
  // 'events is like, part of nodejs'
 
 
@@ -13591,6 +13591,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__["a" /* default */]);
   }
 
   getInfo() {
@@ -13658,30 +13659,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__["a" /* default */].flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.');
       }, 0);
     }
-  }
-
-  validateCommands() {
-    // gets an array of all the ids of all the commands
-    // confirms that all existing command successors either refer to ids in that list or are falsey
-    // also grabs the total number of bukcets
-    // and confirms that all existing comamnd buckets have index-ids below the bucket number
-    var ids = this.commands.map(command => command.id);
-    var bucketLength = __WEBPACK_IMPORTED_MODULE_10__BucketsStore__["a" /* default */].bucketNumber().number;
-    return this.commands.every(command => this.commandValidates(command, ids, bucketLength));
-  }
-
-  commandValidates(command, allCommandIds, bucketLength) {
-    // returns true iff both command's successors are either falsy or exist in the passed in array AND the command bucket has an id below the passed in BucketLength
-    return this.successorExists(command.nextCommand, allCommandIds) && this.successorExists(command.alternateNext, allCommandIds) && command.bucketId < bucketLength;
-  }
-
-  successorExists(successor, allCommandIds) {
-    // returns true iff the successor id is falsy (0 or undefined) or exists as a value in the passed in array
-    if (successor) {
-      return allCommandIds.includes(successor);
-    }
-
-    return true;
   }
 
   finish() {
@@ -32215,6 +32192,40 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flashStore
       type: 'FLASH',
       message: message
     });
+  }
+});
+
+/***/ }),
+/* 132 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BucketsStore__ = __webpack_require__(17);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  validateCommands() {
+    // gets an array of all the ids of all the commands
+    // confirms that all existing command successors either refer to ids in that list or are falsey
+    // also grabs the total number of bukcets
+    // and confirms that all existing comamnd buckets have index-ids below the bucket number
+    var ids = this.commands.map(command => command.id);
+    var bucketLength = __WEBPACK_IMPORTED_MODULE_0__BucketsStore__["a" /* default */].bucketNumber().number;
+    return this.commands.every(command => this.commandValidates(command, ids, bucketLength));
+  },
+
+  commandValidates(command, allCommandIds, bucketLength) {
+    // returns true iff both command's successors are either falsy or exist in the passed in array AND the command bucket has an id below the passed in BucketLength
+    return this.successorExists(command.nextCommand, allCommandIds) && this.successorExists(command.alternateNext, allCommandIds) && command.bucketId < bucketLength;
+  },
+
+  successorExists(successor, allCommandIds) {
+    // returns true iff the successor id is falsy (0 or undefined) or exists as a value in the passed in array
+    if (successor) {
+      return allCommandIds.includes(successor);
+    }
+
+    return true;
   }
 });
 
