@@ -13,9 +13,19 @@ export default class Layout extends React.Component {
     })
   }
 
+  componentDidMount() {
+    // only when the whole flash component is mounted for the first time, we make it hidden. Afterwards we rely on animations
+    $('#flash').addClass('hidden')
+  }
+
   render() {
+
+    var animation = this.state.recede ?
+      'fadeOutUp' :
+      'fadeInDown'
+
     return(
-      <div id="flash animated fadeInDown">
+      <div id="flash" className={'animated ' + animation}>
         <h3>{this.state.message}</h3>
       </div>
     )

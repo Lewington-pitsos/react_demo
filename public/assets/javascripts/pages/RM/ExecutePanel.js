@@ -1,6 +1,7 @@
 import React from 'react'
 
 import rmActions from '../../actions/rmActions'
+import flashActions from '../../actions/flashActions'
 import executionStore from '../../stores/ExecutionStore'
 import ExecuteButton from './ExecutePanel/ExecuteButton'
 
@@ -19,6 +20,7 @@ export default class ExecutePanel extends React.Component {
   stop() {
     console.log('lololo');
     rmActions.stopExecution()
+    flashActions.flash('Execution succesfully halted.')
   }
 
 

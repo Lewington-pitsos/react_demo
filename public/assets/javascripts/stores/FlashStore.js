@@ -7,24 +7,25 @@ class FlashStore extends EventEmitter {
   constructor() {
     super()
     this.message = null
+    this.recede = false
   }
 
   getInfo() {
-    return {message: this.message}
+    return {message: this.message, recede: this.recede}
   }
 
   flash(message) {
+    this.recede = false
     this.message = message
-    $flash = $('#flash')
+    const $flash = $('#flash')
     $flash.removeClass('hidden')
 
     this.emit('change')
-
-    setTimeout(this.unFlash.bind(this), 6000)
+    setTimeout(this.unFlash.bind(this), 4000)
   }
 
   unFlash() {
-    this.message = null
+    this.recede = true
 
     this.emit('change')
   }
