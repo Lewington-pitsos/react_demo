@@ -1,9 +1,11 @@
 import React from 'react'
 
+import rmActions from '../../actions/rmActions'
+
 export default class Tutorial extends React.Component {
 
   exit() {
-
+    rmActions.exitTutorial()
   }
 
   render() {

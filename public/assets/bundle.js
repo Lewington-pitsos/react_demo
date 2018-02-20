@@ -10506,6 +10506,12 @@ module.exports = emptyFunction;
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'HALT_EXECUTION'
     });
+  },
+
+  exitTutorial() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'EXIT_TUTORIAL'
+    });
   }
 });
 
@@ -12558,6 +12564,12 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
     return { tutorial: this.tutorial };
   }
 
+  exitTutorial() {
+    this.tutorial = false;
+
+    this.emit('change');
+  }
+
   getInfo() {
     return { executing: this.executing };
   }
@@ -12615,6 +12627,10 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
         }case "FINISH_EXECUTION":
         {
           this.finish();
+          break;
+        }case "EXIT_TUTORIAL":
+        {
+          this.exitTutorial();
           break;
         }
     }
@@ -32247,100 +32263,105 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(8);
+
+
 
 
 class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
-  exit() {}
+  exit() {
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].exitTutorial();
+  }
 
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "div",
-      { className: "tutorial container-fluid" },
+      'div',
+      { className: 'tutorial container-fluid' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "div",
-        { className: "row justify-content-center" },
+        'div',
+        { className: 'row justify-content-center' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          "div",
-          { className: "col-md-8 p-3" },
+          'div',
+          { className: 'col-md-8 p-3' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "h2",
+            'h2',
             null,
-            "Welcome to my ",
+            'Welcome to my ',
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              "a",
-              { className: "dark", href: "https://en.wikipedia.org/wiki/Register_machine" },
-              "Register Machine"
+              'a',
+              { className: 'dark', href: 'https://en.wikipedia.org/wiki/Register_machine' },
+              'Register Machine'
             ),
-            " simulator"
+            ' simulator'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "tldr: It's a lot like a Turing machine, but more intuitive."
+            'tldr: It\'s a lot like a Turing machine, but more intuitive.'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "h4",
+            'h4',
             null,
-            "The Rules:"
+            'The Rules:'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "ol",
+            'ol',
             null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              "li",
+              'li',
               null,
-              "you have infinite buckets with infinite volume and infinite stones to put in them"
+              'you have infinite buckets with infinite volume and infinite stones to put in them'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              "li",
+              'li',
               null,
-              "you have a caveman named Ugg who is very strong and will do whatever you tell him to."
+              'you have a caveman named Ugg who is very strong and will do whatever you tell him to.'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              "li",
+              'li',
               null,
-              "Ugg is also very stupid. He only understands commands of two different formats:",
+              'Ugg is also very stupid. He only understands commands of two different formats:',
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "ol",
+                'ol',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  "li",
+                  'li',
                   null,
-                  "Put a rock in a given bucket and move on to some command"
+                  'Put a rock in a given bucket and move on to some command'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  "li",
+                  'li',
                   null,
-                  "take a rock out of a bucket and move on to some command OR, if the bucket was empty, move on to some command (perhaps a different one)"
+                  'take a rock out of a bucket and move on to some command OR, if the bucket was empty, move on to some command (perhaps a different one)'
                 )
               )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              "li",
+              'li',
               null,
-              "And he's deaf, so you have to write down all the commands on a sheet and number them before sending them off (we might call this sheet a 'program')."
+              'And he\'s deaf, so you have to write down all the commands on a sheet and number them before sending them off (we might call this sheet a \'program\').'
             )
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "The point of all of this is that this system is Turing complete, which is to say, given enough time, you can use it to compute anything. There are a bunch of ways you could define inputs and outputs for this system, but this one just uses the basic setup of considering the initial number of rocks in each bucket as a separate argument passed in or inputted to the program, and the number of rocks in the first bucket when the program terminates as it's output."
+            'The point of all of this is that this system is Turing complete, which is to say, given enough time, you can use it to compute anything. There are a bunch of ways you could define inputs and outputs for this system, but this one just uses the basic setup of considering the initial number of rocks in each bucket as a separate argument passed in or inputted to the program, and the number of rocks in the first bucket when the program terminates as it\'s output.'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "For example, I've already rigged up a program that gets Ugg to calculate simple two-integer addition. If you're still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly."
+            'For example, I\'ve already rigged up a program that gets Ugg to calculate simple two-integer addition. If you\'re still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "p",
+            'p',
             null,
-            "Otherwise, go ahead and knock yourself out."
+            'Otherwise, go ahead and knock yourself out.'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "button",
-            { className: "btn btn-primary dark", onClick: this.exit.bind(this) },
-            "OK, got it"
+            'button',
+            { className: 'btn btn-primary dark', onClick: this.exit.bind(this) },
+            'OK, got it'
           )
         )
       )

@@ -115,5 +115,11 @@ export default {
     dispatcher.dispatch({
       type: 'HALT_EXECUTION'
     })
+  },
+
+  exitTutorial() {
+    dispatcher.dispatch({
+      type: 'EXIT_TUTORIAL'
+    })
   }
 }
