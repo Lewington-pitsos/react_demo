@@ -57,7 +57,10 @@ class ExecutionStore extends EventEmitter {
       case "EXECUTE": {
         this.execute()
         break
-      } case "STOP_EXECUTION": {
+      } case "HALT_EXECUTION": {
+        this.finish()
+        break
+      } case "FINISH_EXECUTION": {
         this.finish()
         break
       }

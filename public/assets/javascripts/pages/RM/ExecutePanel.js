@@ -19,8 +19,8 @@ export default class ExecutePanel extends React.Component {
 
   stop() {
     console.log('lololo');
-    rmActions.stopExecution()
-    flashActions.flash('Execution succesfully halted.')
+    rmActions.haltExecution()
+    flashActions.flash('Execution halted.')
   }
 
 

@@ -573,9 +573,15 @@ module.exports = emptyFunction;
     });
   },
 
-  stopExecution() {
+  finishExecution() {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'STOP_EXECUTION'
+      type: 'FINISH_EXECUTION'
+    });
+  },
+
+  haltExecution() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'HALT_EXECUTION'
     });
   }
 });
@@ -11342,7 +11348,7 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.empty(action.id);
           break;
-        }case "STOP_EXECUTION":
+        }case "FINISH_EXECUTION":
         {
           this.flashReturnValue();
           break;
@@ -13559,7 +13565,9 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__ = __webpack_require__(131);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -13597,7 +13605,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.execute();
           break;
-        }case "STOP_EXECUTION":
+        }case "HALT_EXECUTION":
         {
           this.finish();
           break;
@@ -13634,15 +13642,18 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   execute() {
-    // gets the id of the first command and feeds it to the recursive runNextCommand function
+    // first validates the command list
+    // if the list validates, gets the id of the first command and feeds it to the recursive runNextCommand function
+    // otherwise triggers a halt execution action
     if (this.validateCommands()) {
       this.stopped = false;
       var commandId = this.commands[0].id;
       this.runNextCommand(commandId, 1600);
     } else {
       setTimeout(function () {
-        // to stop simaltanious dispatch errors
-        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].stopExecution();
+        // timeout to stop simaltanious dispatch errors
+        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].haltExecution();
+        __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__["a" /* default */].flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.');
       }, 0);
     }
   }
@@ -13683,7 +13694,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
       } else {
         // in which case trigger an execution stopping action
-        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].stopExecution();
+        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].finishExecution();
       }
     }
   }
@@ -13796,7 +13807,11 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
         {
           this.execute();
           break;
-        }case "STOP_EXECUTION":
+        }case "HALT_EXECUTION":
+        {
+          this.finish();
+          break;
+        }case "FINISH_EXECUTION":
         {
           this.finish();
           break;
@@ -31982,8 +31997,8 @@ class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 
   stop() {
     console.log('lololo');
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].stopExecution();
-    __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash('Execution succesfully halted.');
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].haltExecution();
+    __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash('Execution halted.');
   }
 
   render() {

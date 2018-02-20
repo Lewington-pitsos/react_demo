@@ -91,7 +91,7 @@ class BucketsStore extends EventEmitter {
       } case "EMPTY_BUCKET": {
         this.empty(action.id)
         break
-      } case "STOP_EXECUTION": {
+      } case "FINISH_EXECUTION": {
         this.flashReturnValue()
         break
       }

@@ -105,9 +105,15 @@ export default {
     })
   },
 
-  stopExecution() {
+  finishExecution() {
     dispatcher.dispatch({
-      type: 'STOP_EXECUTION'
+      type: 'FINISH_EXECUTION'
+    })
+  },
+
+ haltExecution() {
+    dispatcher.dispatch({
+      type: 'HALT_EXECUTION'
     })
   }
 }

@@ -8,6 +8,7 @@ import executionAnimations from './ProgramStore/executionAnimations'
 import programHelpers from './ProgramStore/programHelpers'
 import executionStore from  './ExecutionStore'
 import rmActions from '../actions/rmActions'
+import flashActions from '../actions/flashActions'
 
 class ProgramStore extends EventEmitter {
   constructor() {
@@ -42,7 +43,7 @@ class ProgramStore extends EventEmitter {
       } case "EXECUTE": {
         this.execute()
         break
-      } case "STOP_EXECUTION": {
+      } case "HALT_EXECUTION": {
         this.finish()
         break
       } case "UPDATE_COMMAND": {
@@ -75,15 +76,18 @@ class ProgramStore extends EventEmitter {
   }
 
   execute() {
-    // gets the id of the first command and feeds it to the recursive runNextCommand function
+    // first validates the command list
+    // if the list validates, gets the id of the first command and feeds it to the recursive runNextCommand function
+    // otherwise triggers a halt execution action
     if (this.validateCommands()) {
       this.stopped = false
       var commandId = this.commands[0].id
       this.runNextCommand(commandId, 1600)
     } else {
       setTimeout(function() {
-        // to stop simaltanious dispatch errors
-        rmActions.stopExecution()
+        // timeout to stop simaltanious dispatch errors
+        rmActions.haltExecution()
+        flashActions.flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.')
       }, 0)
     }
 
@@ -126,7 +130,7 @@ class ProgramStore extends EventEmitter {
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
         // in which case trigger an execution stopping action
-        rmActions.stopExecution()
+        rmActions.finishExecution()
       }
     }
   }
