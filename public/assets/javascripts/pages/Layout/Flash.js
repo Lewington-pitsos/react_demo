@@ -25,7 +25,7 @@ export default class Layout extends React.Component {
       'fadeInDown'
 
     return(
-      <div id="flash" className={'animated text-align-center ' + animation}>
+      <div id="flash" className={'animated text-center ' + animation}>
         <h5>{this.state.message}</h5>
       </div>
     )

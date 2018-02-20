@@ -49,7 +49,7 @@ export default class RM extends React.Component {
           </div>
         </div>
         <ControlPanel classes="animated row" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
-            <div className="col-md-6 p-0 edit d-flex justify-content-around flex-wrap position-relative">
+            <div className="col-md-6 p-0 edit d-flex state-panel flex-wrap position-relative">
               <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
               <button className="btn btn-primary" onClick={this.removeBucket.bind(this)}>Remove Bucket</button>
               <button className="btn btn-primary" onClick={this.addIncrement.bind(this)}>Add Command</button>
