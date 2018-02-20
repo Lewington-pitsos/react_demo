@@ -31498,7 +31498,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'label',
           { htmlFor: 'command-type' },
-          'Commnad Type'
+          'Command Type'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'select',
@@ -31531,7 +31531,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'label',
           { htmlFor: 'default-next-command' },
-          'Deafult next command'
+          'Default next command'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.nextCommand, update: this.changeNext.bind(this), id: 'default-next-command' })
       ),
@@ -31546,7 +31546,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         { className: 'btn btn-primary delete', onClick: this.deleteCommand.bind(this) },
         ' Delete '
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'submit' })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'Save' })
     );
   }
 }

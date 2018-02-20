@@ -59,7 +59,7 @@ export default class CommandEdit extends React.Component {
     return(
       <form onSubmit={this.handleSubmit.bind(this)} >
         <div className="form-group">
-          <label htmlFor="command-type">Commnad Type</label>
+          <label htmlFor="command-type">Command Type</label>
           <select name="type" className="custom-select" defaultValue={this.state.increment} onChange={this.changeType.bind(this)} id="command-type">
             <option value={true}>Increment</option>
             <option value={false}>Decrement</option>
@@ -70,13 +70,13 @@ export default class CommandEdit extends React.Component {
           <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)} id="command-bucket"/>
         </div>
         <div className="form-group">
-          <label htmlFor="default-next-command">Deafult next command</label>
+          <label htmlFor="default-next-command">Default next command</label>
           <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)} id="default-next-command"/>
         </div>
         {alternateNext}
         <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
         <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
-        <input type="submit" className="btn btn-primary" value="submit" />
+        <input type="submit" className="btn btn-primary" value="Save" />
       </form>
     )
   }
