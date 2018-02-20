@@ -67,10 +67,15 @@ a
   right: 0
   top: 0
   bottom: 0
+  overflow: hidden
   &.fadeOut
     z-index: -1
   &.dark
     background: rgba(15, 0, 9, 0.3)
+  &.opaque-light
+    background: $body-color
+    color: $body-bg
+    z-index: 11
 
 .position-relative
   position: relative
@@ -170,7 +175,8 @@ nav
 .stop
   margin-left: 1rem
 
-
+.tutorial
+  line-height: 2rem
 
 // BUCKETS
 

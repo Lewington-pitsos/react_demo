@@ -7,6 +7,7 @@ import rmActions from '../actions/rmActions'
 import BucketSelector from './RM/BucketSelector'
 import ExecutePanel from './RM/ExecutePanel'
 import executionStore from '../stores/ExecutionStore'
+import Tutorial from './RM/Tutorial'
 
 export default class RM extends React.Component {
   constructor() {
@@ -45,7 +46,7 @@ export default class RM extends React.Component {
         <div className="row justify-content-around register-machine m-0">
           <Program />
           <Buckets />
-          <div  className="overlay hidden" id="RM-overlay">
+          <div className="overlay hidden" id="RM-overlay">
           </div>
         </div>
         <ControlPanel classes="animated row" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
@@ -60,6 +61,7 @@ export default class RM extends React.Component {
               <ExecutePanel />
             </div>
         </ControlPanel>
+        <Tutorial />
       </div>
     )
   }
