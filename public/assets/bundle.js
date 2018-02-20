@@ -31315,15 +31315,25 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id,
+        { className: 'bucket ' + animationClasses, id: 'bucket-' + this.props.id,
           onClick: this.switchBucketEditor.bind(this) },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'h2',
+          'h5',
           null,
-          this.props.stoneNumber,
-          'x'
+          this.props.id,
+          '.'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { size: 50 })
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'd-flex justify-content-center align-items-center' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h2',
+            null,
+            this.props.stoneNumber,
+            'x'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { size: 50 })
+        )
       ),
       editor
     );

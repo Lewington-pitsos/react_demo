@@ -24,10 +24,13 @@ export default class Bucket extends React.Component {
 
     return(
       <div>
-        <div className={'bucket d-flex justify-content-center align-items-center ' + animationClasses} id={'bucket-' + this.props.id}
+        <div className={'bucket ' + animationClasses} id={'bucket-' + this.props.id}
         onClick={this.switchBucketEditor.bind(this)}>
+        <h5>{this.props.id}.</h5>
+        <div className='d-flex justify-content-center align-items-center'>
           <h2>{this.props.stoneNumber}x</h2>
           <Stone size={50}/>
+        </div>
         </div>
         {editor}
       </div>
