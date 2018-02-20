@@ -69,9 +69,15 @@ class ProgramStore extends EventEmitter {
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.showExecutionTracker()
+    this.prepairExecutionUi()
     var commandId = this.commands[0].id
     this.runNextCommand(commandId, 1600)
+  }
+
+  prepairExecutionUi() {
+    // sets up the UI for execution
+    this.switchEditor(0)
+    this.showExecutionTracker()
   }
 
   runNextCommand(id, animationDuration) {
@@ -84,6 +90,7 @@ class ProgramStore extends EventEmitter {
       // finally we recur with the new id after a animationDuration milliseconds
       setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
     } else {
+
       this.resetExecutionTracker()
     }
   }

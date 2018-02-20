@@ -12243,7 +12243,7 @@ var createTransitionManager = function createTransitionManager() {
 class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
+    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
 
     this.editingBucket = 0;
 
@@ -12254,6 +12254,28 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
     this.editingBucket = index;
 
     this.emit('change');
+  }
+
+  getBucketContents() {
+    return { contents: this.bucketContents() };
+  }
+
+  bucketContents() {
+    // iterate backwards through buckets and as soon as we find a bucket with > 0 stones in it, add it and all the other bucket's stone counts to the empty contents array
+    var contents = [];
+    var addAllTheRest = false;
+
+    for (var i = this.buckets.length - 1; i >= 0; i--) {
+      if (addAllTheRest) {
+        contents.push(this.buckets[i].stones);
+      } else if (this.buckets[i].stones) {
+        contents.push(this.buckets[i].stones);
+        addAllTheRest = true;
+      }
+    }
+
+    // return a reversed version of contents
+    return contents.reverse();
   }
 
   getInfo() {
@@ -13473,9 +13495,15 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.showExecutionTracker();
+    this.prepairExecutionUi();
     var commandId = this.commands[0].id;
     this.runNextCommand(commandId, 1600);
+  }
+
+  prepairExecutionUi() {
+    // sets up the UI for execution
+    this.switchEditor(0);
+    this.showExecutionTracker();
   }
 
   runNextCommand(id, animationDuration) {
@@ -13488,6 +13516,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
       // finally we recur with the new id after a animationDuration milliseconds
       setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
     } else {
+
       this.resetExecutionTracker();
     }
   }
@@ -30957,6 +30986,8 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__RM_BucketSelector__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__RM_ExecuteButton__ = __webpack_require__(127);
+
 
 
 
@@ -30980,10 +31011,6 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   addIncrement() {
     __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addIncrement();
-  }
-
-  execute() {
-    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].execute();
   }
 
   render() {
@@ -31014,11 +31041,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           { className: 'btn btn-primary', onClick: this.addIncrement.bind(this) },
           'Add Command'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary', onClick: this.execute.bind(this) },
-          'Execute Progam'
-        )
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__RM_ExecuteButton__["a" /* default */], null)
       )
     );
   }
@@ -31804,6 +31827,54 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = BucketEditor;
+
+
+/***/ }),
+/* 126 */,
+/* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__ = __webpack_require__(27);
+
+
+
+
+
+class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__["a" /* default */].getBucketContents();
+  }
+
+  componentWillMount() {
+    __WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__["a" /* default */].getBucketContents());
+    });
+  }
+
+  execute() {
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
+  }
+
+  render() {
+    // renders a number of stones according to props
+
+    var contents = this.state.contents.join(', ');
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { className: 'execute-button', onClick: this.execute.bind(this) },
+      'Execute program(',
+      contents,
+      ')'
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
 
 
 /***/ })

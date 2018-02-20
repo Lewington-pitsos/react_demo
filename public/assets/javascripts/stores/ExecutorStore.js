@@ -8,6 +8,14 @@ class ExecutorStore extends EventEmitter {
     super()
     this.buckets = [
       {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
+      {stones: 1, justAdded: true},
       {stones: 1, justAdded: true}
     ]
 
@@ -20,6 +28,28 @@ class ExecutorStore extends EventEmitter {
     this.editingBucket = index
 
     this.emit('change')
+  }
+
+  getBucketContents() {
+    return {contents: this.bucketContents()}
+  }
+
+  bucketContents() {
+    // iterate backwards through buckets and as soon as we find a bucket with > 0 stones in it, add it and all the other bucket's stone counts to the empty contents array
+    var contents =  []
+    var addAllTheRest = false
+
+    for (var i = this.buckets.length - 1; i >= 0; i--) {
+      if (addAllTheRest) {
+        contents.push(this.buckets[i].stones)
+      } else if (this.buckets[i].stones) {
+        contents.push(this.buckets[i].stones)
+        addAllTheRest = true
+      }
+    }
+
+    // return a reversed version of contents
+    return contents.reverse()
   }
 
   getInfo() {
