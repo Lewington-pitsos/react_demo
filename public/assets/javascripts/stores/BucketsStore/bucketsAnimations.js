@@ -7,7 +7,7 @@ const executorAnimations =  {
     $('.ugg').animate({
       top: currentBucketMiddle
     }, 900)
-    $('.executor').animate({
+    $('.buckets-holder').animate({
       scrollTop: currentBucketMiddle
     }, 900)
   },

@@ -57,7 +57,7 @@ export default class CommandEdit extends React.Component {
       </div>
 
     return(
-      <form onSubmit={this.handleSubmit.bind(this)} >
+      <form onSubmit={this.handleSubmit.bind(this)} className="animated fadeIn" >
         <div className="form-group">
           <label htmlFor="command-type">Command Type</label>
           <select name="type" className="custom-select" defaultValue={this.state.increment} onChange={this.changeType.bind(this)} id="command-type">

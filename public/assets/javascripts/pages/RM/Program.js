@@ -30,7 +30,7 @@ export default class Program extends React.Component {
     var commands = this.renderCommands()
 
     return(
-      <div className="col-md-4 commands">
+      <div className="col-md-5 commands">
         <div className="command-list">
           {commands}
           <div id="command-execution-tracker" className="hidden">
