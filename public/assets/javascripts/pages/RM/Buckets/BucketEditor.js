@@ -16,7 +16,7 @@ export default class BucketEditor extends React.Component {
 
   render() {
     return(
-      <div className="bucket-editor d-flex justify-content-between flex-wrap">
+      <div className="bucket-editor d-flex justify-content-between flex-wrap animated fadeInDown">
         <button className="btn btn-primary" onClick={this.increment.bind(this)}>Increment</button>
         <button className="btn btn-primary" onClick={this.decrement.bind(this)}>Decrement</button>
         <button className="btn btn-primary" onClick={this.empty.bind(this)}>Empty</button>
