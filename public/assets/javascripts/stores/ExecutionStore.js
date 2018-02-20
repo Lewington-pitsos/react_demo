@@ -14,10 +14,10 @@ class ExecutionStore extends EventEmitter {
   }
 
   exitTutorial() {
+    $('#RMs-page').removeClass('hidden')
     setTimeout(function() {
       $('.tutorial').addClass('hidden')
     }, 801)
-
     this.tutorial = false
 
     this.emit('change')
@@ -33,6 +33,9 @@ class ExecutionStore extends EventEmitter {
   enterTutorial() {
     this.setTutorialHeight()
     $('.tutorial').removeClass('hidden')
+    setTimeout(function() {
+      $('#RMs-page').addClass('hidden')
+    }, 801)
     this.tutorial = true
 
     this.emit('change')

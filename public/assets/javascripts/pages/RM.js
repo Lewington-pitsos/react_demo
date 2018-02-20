@@ -22,8 +22,7 @@ export default class RM extends React.Component {
 
   render() {
 
-    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown to-hide'
-
+    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown'
 
     return(
       <div className="RM position-relative">

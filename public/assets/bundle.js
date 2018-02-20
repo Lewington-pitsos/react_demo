@@ -12571,10 +12571,10 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
   }
 
   exitTutorial() {
+    $('#RMs-page').removeClass('hidden');
     setTimeout(function () {
       $('.tutorial').addClass('hidden');
     }, 801);
-
     this.tutorial = false;
 
     this.emit('change');
@@ -12590,6 +12590,9 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
   enterTutorial() {
     this.setTutorialHeight();
     $('.tutorial').removeClass('hidden');
+    setTimeout(function () {
+      $('#RMs-page').addClass('hidden');
+    }, 801);
     this.tutorial = true;
 
     this.emit('change');
@@ -31298,7 +31301,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown to-hide';
+    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
