@@ -13566,7 +13566,9 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__BucketsStore__ = __webpack_require__(17);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -13659,14 +13661,18 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   validateCommands() {
-    // gets an array of all the ids of all the commands and confirms that all existing command successors either refer to ids in that list or are falsey
+    // gets an array of all the ids of all the commands
+    // confirms that all existing command successors either refer to ids in that list or are falsey
+    // also grabs the total number of bukcets
+    // and confirms that all existing comamnd buckets have index-ids below the bucket number
     var ids = this.commands.map(command => command.id);
-    return this.commands.every(command => this.commandValidates(command, ids));
+    var bucketLength = __WEBPACK_IMPORTED_MODULE_10__BucketsStore__["a" /* default */].bucketNumber().number;
+    return this.commands.every(command => this.commandValidates(command, ids, bucketLength));
   }
 
-  commandValidates(command, allCommandIds) {
-    // returns true iff both command's successors are either falsy or exist in the passed in array
-    return this.successorExists(command.nextCommand, allCommandIds) && this.successorExists(command.alternateNext, allCommandIds);
+  commandValidates(command, allCommandIds, bucketLength) {
+    // returns true iff both command's successors are either falsy or exist in the passed in array AND the command bucket has an id below the passed in BucketLength
+    return this.successorExists(command.nextCommand, allCommandIds) && this.successorExists(command.alternateNext, allCommandIds) && command.bucketId < bucketLength;
   }
 
   successorExists(successor, allCommandIds) {
@@ -31193,6 +31199,11 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
+          { className: 'btn btn-primary', onClick: this.removeBucket.bind(this) },
+          'Add Bucket'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
           { className: 'btn btn-primary', onClick: this.addIncrement.bind(this) },
           'Add Command'
         ),
@@ -31996,7 +32007,6 @@ class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
   }
 
   stop() {
-    console.log('lololo');
     __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].haltExecution();
     __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash('Execution halted.');
   }
