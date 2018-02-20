@@ -10,7 +10,12 @@ class ProgramStore extends EventEmitter {
     super()
     this.commands = [
       new Decrement(2, 0, 1, 0),
-      new Increment(0, 1, 2)
+      new Increment(3, 1, 2),
+      new Increment(4, 2, 3),
+      new Increment(5, 0, 4),
+      new Increment(6, 1, 5),
+      new Increment(0, 2, 6),
+
     ]
     this.nextId = 3
     this.editingCommand = 2
@@ -79,7 +84,7 @@ class ProgramStore extends EventEmitter {
   execute() {
     // gets the id of the first command and feeds it to the recursive runCommand function
     var commandId = this.commands[0].id
-    this.runCommand(commandId, 1200)
+    this.runCommand(commandId, 1600)
   }
 
   runCommand(id, animationDuration) {
@@ -89,6 +94,7 @@ class ProgramStore extends EventEmitter {
 
       // otherwise we find the command that matches id, run it, and find it's speciefied next command
       var currentCommand = this.findCommand(id)
+      this.moveExecutionTracker(id)
       currentCommand.run()
       var newId = currentCommand.next()
 
@@ -137,6 +143,18 @@ class ProgramStore extends EventEmitter {
     const index = this.getCommandIndex(id)
     this.commands.splice(index, 1)
     this.emit('change')
+  }
+
+  moveExecutionTracker(commandId) {
+    var commandSelector = '#command-' + commandId
+    var commandHeight = 100
+    var currentCommandTop = commandHeight * (commandId - 1)
+    $('#command-execution-tracker').animate({
+      top: currentCommandTop
+    }, 400)
+    $('.commands').animate({
+      scrollTop: currentCommandTop
+    }, 400)
   }
 }
 

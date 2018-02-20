@@ -13381,7 +13381,7 @@ Stone.defaultProps = {
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 1, 2)];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](3, 1, 2), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](4, 2, 3), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](5, 0, 4), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](6, 1, 5), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 2, 6)];
     this.nextId = 3;
     this.editingCommand = 2;
   }
@@ -13454,7 +13454,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   execute() {
     // gets the id of the first command and feeds it to the recursive runCommand function
     var commandId = this.commands[0].id;
-    this.runCommand(commandId, 1200);
+    this.runCommand(commandId, 1600);
   }
 
   runCommand(id, animationDuration) {
@@ -13464,6 +13464,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
       // otherwise we find the command that matches id, run it, and find it's speciefied next command
       var currentCommand = this.findCommand(id);
+      this.moveExecutionTracker(id);
       currentCommand.run();
       var newId = currentCommand.next();
 
@@ -13512,6 +13513,18 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     const index = this.getCommandIndex(id);
     this.commands.splice(index, 1);
     this.emit('change');
+  }
+
+  moveExecutionTracker(commandId) {
+    var commandSelector = '#command-' + commandId;
+    var commandHeight = 100;
+    var currentCommandTop = commandHeight * (commandId - 1);
+    $('#command-execution-tracker').animate({
+      top: currentCommandTop
+    }, 400);
+    $('.commands').animate({
+      scrollTop: currentCommandTop
+    }, 400);
   }
 }
 
@@ -31144,23 +31157,10 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var currentBucketMiddle = bucketHeight * bucketId + 10;
     $('.ugg').animate({
       top: currentBucketMiddle
-    }, 600);
+    }, 900);
     $('.executor').animate({
       scrollTop: currentBucketMiddle
-    }, 600);
-    this.moveExecutionTracker(1);
-  },
-
-  moveExecutionTracker(commandId) {
-    var commandSelector = '#command-' + commandId;
-    var commandHeight = 100;
-    var currentCommandTop = commandHeight * commandId;
-    $('#command-execution-tracker').animate({
-      top: currentCommandTop
-    }, 600);
-    $('.commands').animate({
-      scrollTop: currentCommandTop
-    }, 600);
+    }, 900);
   },
 
   uggAddStone() {
