@@ -121,5 +121,11 @@ export default {
     dispatcher.dispatch({
       type: 'EXIT_TUTORIAL'
     })
+  },
+
+  enterTutorial() {
+    dispatcher.dispatch({
+      type: 'ENTER_TUTORIAL'
+    })
   }
 }

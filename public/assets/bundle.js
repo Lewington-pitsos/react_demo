@@ -10512,6 +10512,12 @@ module.exports = emptyFunction;
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'EXIT_TUTORIAL'
     });
+  },
+
+  enterTutorial() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'ENTER_TUTORIAL'
+    });
   }
 });
 
@@ -12570,6 +12576,12 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
     this.emit('change');
   }
 
+  enterTutorial() {
+    this.tutorial = true;
+
+    this.emit('change');
+  }
+
   getInfo() {
     return { executing: this.executing };
   }
@@ -12631,6 +12643,10 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
         }case "EXIT_TUTORIAL":
         {
           this.exitTutorial();
+          break;
+        }case "ENTER_TUTORIAL":
+        {
+          this.enterTutorial();
           break;
         }
     }
@@ -32424,6 +32440,10 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
     __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addIncrement();
   }
 
+  enterTutorial() {
+    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].enterTutorial();
+  }
+
   render() {
 
     const animation = this.state.executing ? 'fadeIn' : 'fadeOut';
@@ -32458,6 +32478,11 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
             'button',
             { className: 'btn btn-primary', onClick: this.addIncrement.bind(this) },
             'Add Command'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { className: 'btn btn-primary', onClick: this.enterTutorial.bind(this) },
+            'Tutorial'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay dark animated ' + animation })
         ),

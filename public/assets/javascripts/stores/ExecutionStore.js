@@ -19,6 +19,12 @@ class ExecutionStore extends EventEmitter {
     this.emit('change')
   }
 
+  enterTutorial() {
+    this.tutorial = true
+
+    this.emit('change')
+  }
+
   getInfo() {
     return {executing: this.executing}
   }
@@ -76,6 +82,9 @@ class ExecutionStore extends EventEmitter {
         break
       } case "EXIT_TUTORIAL": {
         this.exitTutorial()
+        break
+      } case "ENTER_TUTORIAL": {
+        this.enterTutorial()
         break
       }
     }

@@ -36,6 +36,10 @@ export default class RegisterMachine extends React.Component {
     rmActions.addIncrement()
   }
 
+  enterTutorial() {
+    rmActions.enterTutorial()
+  }
+
   render() {
 
     const animation = this.state.executing ? 'fadeIn' : 'fadeOut'
@@ -53,6 +57,7 @@ export default class RegisterMachine extends React.Component {
               <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
               <button className="btn btn-primary" onClick={this.removeBucket.bind(this)}>Remove Bucket</button>
               <button className="btn btn-primary" onClick={this.addIncrement.bind(this)}>Add Command</button>
+              <button className="btn btn-primary" onClick={this.enterTutorial.bind(this)}>Tutorial</button>
               <div className={'overlay dark animated ' + animation}>
               </div>
             </div>
