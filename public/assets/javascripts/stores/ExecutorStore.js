@@ -103,7 +103,10 @@ class ExecutorStore extends EventEmitter {
   }
 
   takeStoneFrom(id) {
-    this.buckets[id].stones -= 1
+    // no decrementing to negative integers
+    if (this.buckets[id].stones > 0) {
+      this.buckets[id].stones -= 1
+    }
     this.emit('change');
   }
 
