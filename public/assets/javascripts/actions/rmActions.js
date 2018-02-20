@@ -103,5 +103,11 @@ export default {
       type: 'SWITCH_BUCKET_EDITOR',
       id: id
     })
+  },
+
+  stopExecution() {
+    dispatcher.dispatch({
+      type: 'STOP_EXECUTION'
+    })
   }
 }

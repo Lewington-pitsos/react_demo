@@ -10,12 +10,14 @@ class ExecutionStore extends EventEmitter {
 
 
   getInfo() {
-    return {execution: this.execution, editingBucket: this.editingBucket}
+    return {executing: this.executing}
   }
 
   execute() {
     this.prepairExecutionUi()
     this.executing = true
+
+    this.emit('change')
   }
 
   prepairExecutionUi() {
@@ -35,6 +37,8 @@ class ExecutionStore extends EventEmitter {
     this.resetExecutionTracker()
     $('#RM-overlay').addClass('hidden')
     this.executing = false
+
+    this.emit('change')
   }
 
   resetExecutionTracker() {
@@ -49,11 +53,13 @@ class ExecutionStore extends EventEmitter {
     }, 301)
   }
 
-
   handleActions(action) {
     switch(action.type) {
       case "EXECUTE": {
         this.execute()
+        break
+      } case "STOP_EXECUTION": {
+        this.finish()
         break
       }
     }

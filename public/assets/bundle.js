@@ -13529,6 +13529,12 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
       type: 'SWITCH_BUCKET_EDITOR',
       id: id
     });
+  },
+
+  stopExecution() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'STOP_EXECUTION'
+    });
   }
 });
 
@@ -30790,7 +30796,7 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__RM_BucketSelector__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__RM_ExecuteButton__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__RM_ExecutePanel__ = __webpack_require__(138);
 
 
 
@@ -30841,7 +30847,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           { className: 'btn btn-primary', onClick: this.addIncrement.bind(this) },
           'Add Command'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__RM_ExecuteButton__["a" /* default */], null)
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__RM_ExecutePanel__["a" /* default */], null)
       )
     );
   }
@@ -31348,56 +31354,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 /***/ }),
 /* 125 */,
 /* 126 */,
-/* 127 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(136);
-
-
-
-
-
-class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents();
-  }
-
-  componentWillMount() {
-    __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents());
-    });
-  }
-
-  execute() {
-    // first remove all editors, then execute
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchEditor(0);
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
-  }
-
-  render() {
-    // renders a number of stones according to props
-
-    var contents = this.state.contents.join(', ');
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'button',
-      { className: 'execute-button', onClick: this.execute.bind(this) },
-      'Execute program(',
-      contents,
-      ')'
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
-
-
-/***/ }),
+/* 127 */,
 /* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -31416,12 +31373,14 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
   }
 
   getInfo() {
-    return { execution: this.execution, editingBucket: this.editingBucket };
+    return { executing: this.executing };
   }
 
   execute() {
     this.prepairExecutionUi();
     this.executing = true;
+
+    this.emit('change');
   }
 
   prepairExecutionUi() {
@@ -31441,6 +31400,8 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
     this.resetExecutionTracker();
     $('#RM-overlay').addClass('hidden');
     this.executing = false;
+
+    this.emit('change');
   }
 
   resetExecutionTracker() {
@@ -31460,6 +31421,10 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
       case "EXECUTE":
         {
           this.execute();
+          break;
+        }case "STOP_EXECUTION":
+        {
+          this.finish();
           break;
         }
     }
@@ -31940,6 +31905,121 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(bucketsSto
 
 /* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
+
+/***/ }),
+/* 138 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_ExecutionStore__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ExecutePanel_ExecuteButton__ = __webpack_require__(139);
+
+
+
+
+
+
+class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_ExecutionStore__["a" /* default */].getInfo();
+  }
+
+  componentWillMount() {
+    __WEBPACK_IMPORTED_MODULE_2__stores_ExecutionStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_ExecutionStore__["a" /* default */].getInfo());
+    });
+  }
+
+  stop() {
+    console.log('lololo');
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].stopExecution();
+  }
+
+  render() {
+    // renders a number of stones according to props
+
+    if (this.state.executing) {
+      var contents = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'execution-spinner' },
+          'Executing...'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.stop.bind(this) },
+          'Stop '
+        )
+      );
+    } else {
+      var contents = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__ExecutePanel_ExecuteButton__["a" /* default */], null);
+    }
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'execution-panel' },
+      contents
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExecutePanel;
+
+
+/***/ }),
+/* 139 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(136);
+
+
+
+
+
+class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents();
+  }
+
+  componentWillMount() {
+    __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents());
+    });
+  }
+
+  execute() {
+    // first remove all editors, then execute
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchEditor(0);
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
+  }
+
+  render() {
+    // renders a number of stones according to props
+
+    var contents = this.state.contents.join(', ');
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { className: 'execute-button', onClick: this.execute.bind(this) },
+      'Execute program(',
+      contents,
+      ')'
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
+
 
 /***/ })
 /******/ ]);

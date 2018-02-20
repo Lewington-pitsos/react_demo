@@ -1,7 +1,7 @@
 import React from 'react'
 
-import rmActions from '../../actions/rmActions'
-import bucketsStore from '../../stores/BucketsStore'
+import rmActions from '../../../actions/rmActions'
+import bucketsStore from '../../../stores/BucketsStore'
 
 export default class ExecuteButton extends React.Component {
   constructor() {
