@@ -38,7 +38,7 @@ export default class RM extends React.Component {
           <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
           <button className="btn btn-primary" onClick={this.removeBucket.bind(this)}>Remove Bucket</button>
           <button className="btn btn-primary" onClick={this.addIncrement.bind(this)}>Add Command</button>
-            <button className="btn btn-primary" onClick={this.execute.bind(this)}>Execute Progam</button>
+          <button className="btn btn-primary" onClick={this.execute.bind(this)}>Execute Progam</button>
         </ControlPanel>
       </div>
     )

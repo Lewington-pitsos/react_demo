@@ -11,11 +11,19 @@ class ExecutorStore extends EventEmitter {
       {stones: 1, justAdded: true}
     ]
 
+    this.editingBucket = 0
+
     Object.assign(this, executorAnimations);
   }
 
+  switchEditor(index) {
+    this.editingBucket = index
+
+    this.emit('change')
+  }
+
   getInfo() {
-    return {buckets: this.buckets}
+    return {buckets: this.buckets, editingBucket: this.editingBucket}
   }
 
   bucketNumber() {

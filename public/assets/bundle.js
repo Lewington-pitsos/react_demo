@@ -12245,11 +12245,19 @@ class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"]
     super();
     this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
 
+    this.editingBucket = 0;
+
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__["a" /* default */]);
   }
 
+  switchEditor(index) {
+    this.editingBucket = index;
+
+    this.emit('change');
+  }
+
   getInfo() {
-    return { buckets: this.buckets };
+    return { buckets: this.buckets, editingBucket: this.editingBucket };
   }
 
   bucketNumber() {
@@ -30997,11 +31005,11 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], {
-      stoneNumber: bucket.stones,
+    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], { stoneNumber: bucket.stones,
       id: index,
       key: index,
-      newBucket: bucket.justAdded }));
+      newBucket: bucket.justAdded,
+      editMode: index == this.state.editingBucket }));
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -31034,6 +31042,8 @@ class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(125);
+
 
 
 
@@ -31042,18 +31052,25 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     // renders a number of stones according to props
 
+    var editor = this.props.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__BucketEditor__["a" /* default */], null) : null;
+
     var animationClasses = this.props.newBucket ? 'animated fadeInUp' : '';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id },
+      null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'h2',
-        null,
-        this.props.stoneNumber,
-        'x'
+        'div',
+        { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h2',
+          null,
+          this.props.stoneNumber,
+          'x'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { size: 50 })
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { size: 50 })
+      editor
     );
   }
 }
@@ -31671,6 +31688,50 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
   }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
+
+/***/ }),
+/* 125 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  execute() {
+    console.log('lolololo');
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'bucket-editor d-flex justify-content-between flex-wrap' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary', onClick: this.execute.bind(this) },
+        'Increment'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary', onClick: this.execute.bind(this) },
+        'Decrement'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary', onClick: this.execute.bind(this) },
+        'Empty'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary', onClick: this.execute.bind(this) },
+        'Done'
+      )
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = BucketEditor;
+
 
 /***/ })
 /******/ ]);

@@ -19,13 +19,14 @@ export default class Executor extends React.Component {
   render() {
 
     const buckets = this
-                  .state
-                  .buckets
-                  .map((bucket, index) => <Bucket
-                                            stoneNumber={bucket.stones}
-                                            id={index}
-                                            key={index}
-                                            newBucket={bucket.justAdded}/> )
+      .state
+      .buckets
+      .map((bucket, index) =>
+        <Bucket stoneNumber={bucket.stones}
+          id={index}
+          key={index}
+          newBucket={bucket.justAdded}
+          editMode={index == this.state.editingBucket}/> )
 
     return(
       <div className="col-md-7 executor">
