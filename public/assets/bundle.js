@@ -11267,9 +11267,9 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }];
+    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
 
-    this.editingBucket = 0;
+    this.editingBucket = -1;
 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__["a" /* default */]);
   }
@@ -13583,9 +13583,9 @@ Stone.defaultProps = {
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 0, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](3, 1, 2), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](4, 2, 3), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](5, 0, 4), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](6, 1, 5), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](0, 2, 6)];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 1, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](1, 0, 2)];
     this.nextId = 3;
-    this.editingCommand = 2;
+    this.editingCommand = 0;
 
     this.stopped = false;
 

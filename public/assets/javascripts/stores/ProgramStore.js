@@ -15,16 +15,12 @@ class ProgramStore extends EventEmitter {
   constructor() {
     super()
     this.commands = [
-      new Decrement(2, 0, 1, 0),
-      new Increment(3, 1, 2),
-      new Increment(4, 2, 3),
-      new Increment(5, 0, 4),
-      new Increment(6, 1, 5),
-      new Increment(0, 2, 6),
+      new Decrement(2, 1, 1, 0),
+      new Increment(1, 0, 2)
 
     ]
     this.nextId = 3
-    this.editingCommand = 2
+    this.editingCommand = 0
 
     this.stopped = false
 

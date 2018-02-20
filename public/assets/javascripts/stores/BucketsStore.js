@@ -9,18 +9,10 @@ class BucketsStore extends EventEmitter {
     super()
     this.buckets = [
       {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true},
-      {stones: 0, justAdded: true}
+      {stones: 1, justAdded: true}
     ]
 
-    this.editingBucket = 0
+    this.editingBucket = -1
 
     Object.assign(this, bucketsAnimations);
   }
