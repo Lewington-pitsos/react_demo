@@ -1,17 +1,17 @@
 import React from 'react'
 
 import rmActions from '../../actions/rmActions'
-import executorStore from '../../stores/ExecutorStore'
+import bucketsStore from '../../stores/BucketsStore'
 
 export default class ExecuteButton extends React.Component {
   constructor() {
     super()
-    this.state = executorStore.getBucketContents()
+    this.state = bucketsStore.getBucketContents()
   }
 
   componentWillMount() {
-    executorStore.on('change', () => {
-      this.setState( executorStore.getBucketContents() )
+    bucketsStore.on('change', () => {
+      this.setState( bucketsStore.getBucketContents() )
     })
   }
 

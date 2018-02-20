@@ -1,18 +1,18 @@
 import React from 'react'
 
-import executorStore from '../../stores/ExecutorStore'
+import bucketsStore from '../../stores/BucketsStore'
 
 export default class BucketSelector extends React.Component {
   constructor() {
     super()
-    this.state = executorStore.bucketNumber()
+    this.state = bucketsStore.bucketNumber()
 
     this.generateOptions.bind(this)
   }
 
   componentWillMount() {
-    executorStore.on('change', () => {
-      this.setState( executorStore.bucketNumber() )
+    bucketsStore.on('change', () => {
+      this.setState( bucketsStore.bucketNumber() )
     })
   }
 

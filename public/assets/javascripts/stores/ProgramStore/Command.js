@@ -1,4 +1,4 @@
-import executorStore from '../ExecutorStore'
+import bucketsStore from '../BucketsStore'
 
 export default class Command {
   // The basis for Increment and Decrement: perform an action and return the next comand when asked
@@ -8,7 +8,7 @@ export default class Command {
   constructor(nextCommand, bucket, id) {
     this.nextCommand = nextCommand
     this.bucketId = bucket
-    this.store = executorStore
+    this.store = bucketsStore
     this.id = id
     // justAdded set to true by default so every new command is indeed registered as being just added
     this.justAdded = true

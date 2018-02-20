@@ -1,9 +1,9 @@
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
-import executorAnimations from './ExecutorStore/executorAnimations'
+import bucketsAnimations from './BucketsStore/bucketsAnimations'
 
-class ExecutorStore extends EventEmitter {
+class BucketsStore extends EventEmitter {
   constructor() {
     super()
     this.buckets = [
@@ -21,7 +21,7 @@ class ExecutorStore extends EventEmitter {
 
     this.editingBucket = 0
 
-    Object.assign(this, executorAnimations);
+    Object.assign(this, bucketsAnimations);
   }
 
   switchEditor(index) {
@@ -151,7 +151,7 @@ class ExecutorStore extends EventEmitter {
   }
 }
 
-const executorStore = new ExecutorStore;
+const bucketsStore = new BucketsStore;
 
-dispatcher.register(executorStore.handleActions.bind(executorStore))
-export default executorStore;
+dispatcher.register(bucketsStore.handleActions.bind(bucketsStore))
+export default bucketsStore;

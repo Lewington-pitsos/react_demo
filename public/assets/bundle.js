@@ -12227,173 +12227,12 @@ var createTransitionManager = function createTransitionManager() {
 /* harmony default export */ __webpack_exports__["a"] = (createTransitionManager);
 
 /***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__ = __webpack_require__(115);
- // 'events is like, part of nodejs'
-
-
-
-
-class ExecutorStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
-  constructor() {
-    super();
-    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }];
-
-    this.editingBucket = 0;
-
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__ExecutorStore_executorAnimations__["a" /* default */]);
-  }
-
-  switchEditor(index) {
-    this.editingBucket = index;
-
-    this.emit('change');
-  }
-
-  getBucketContents() {
-    return { contents: this.bucketContents() };
-  }
-
-  bucketContents() {
-    // iterate backwards through buckets and as soon as we find a bucket with > 0 stones in it, add it and all the other bucket's stone counts to the empty contents array
-    var contents = [];
-    var addAllTheRest = false;
-
-    for (var i = this.buckets.length - 1; i >= 0; i--) {
-      if (addAllTheRest) {
-        contents.push(this.buckets[i].stones);
-      } else if (this.buckets[i].stones) {
-        contents.push(this.buckets[i].stones);
-        addAllTheRest = true;
-      }
-    }
-
-    // return a reversed version of contents
-    return contents.reverse();
-  }
-
-  getInfo() {
-    return { buckets: this.buckets, editingBucket: this.editingBucket };
-  }
-
-  bucketNumber() {
-    return { number: this.buckets.length };
-  }
-
-  getBucket(index) {
-    return this.buckets[index];
-  }
-
-  handleActions(action) {
-    switch (action.type) {
-      case "ADD_BUCKET":
-        {
-          this.addBucket();
-          break;
-        }case "REMOVE_BUCKET":
-        {
-          this.removeBucket();
-          break;
-        }case "INCREMENT_BUCKET":
-        {
-          this.incrementBucket(action.id);
-          break;
-        }case "DECREMENT_BUCKET":
-        {
-          this.decrementBucket(action.id);
-          break;
-        }case "SWITCH_BUCKET_EDITOR":
-        {
-          this.switchEditor(action.id);
-          break;
-        }case "AUTO_INCREMENT_BUCKET":
-        {
-          this.addStoneTo(action.id);
-          break;
-        }case "AUTO_DECREMENT_BUCKET":
-        {
-          this.takeStoneFrom(action.id);
-          break;
-        }case "EMPTY_BUCKET":
-        {
-          this.empty(action.id);
-          break;
-        }
-    }
-  }
-
-  addBucket() {
-    // We record that all previously added buckets have been added already
-    this.buckets.forEach(bucket => bucket.justAdded = false);
-
-    // then we add a new bucket to the list of buckets
-    this.buckets.push({ stones: 0, justAdded: true });
-
-    this.emit('change');
-  }
-
-  removeBucket() {
-    this.buckets.splice(-1, 1);
-
-    this.emit('change');
-  }
-
-  decrementBucket(id) {
-    this.moveUgg(id);
-    setTimeout(this.animateOutStone.bind(this), 600, id);
-  }
-
-  incrementBucket(id) {
-    this.moveUgg(id);
-    setTimeout(this.animateInStone.bind(this), 600, id);
-  }
-
-  animateInStone(id) {
-    this.uggAddStone();
-    setTimeout(this.addStoneTo.bind(this), 500, id);
-  }
-
-  animateOutStone(id) {
-    this.uggTakeStone();
-    setTimeout(this.takeStoneFrom.bind(this), 500, id);
-  }
-
-  takeStoneFrom(id) {
-    // no decrementing to negative integers
-    if (this.buckets[id].stones > 0) {
-      this.buckets[id].stones -= 1;
-    }
-    this.emit('change');
-  }
-
-  addStoneTo(id) {
-    this.buckets[id].stones += 1;
-    this.emit('change');
-  }
-
-  empty(id) {
-    this.buckets[id].stones = 0;
-    this.emit('change');
-  }
-}
-
-const executorStore = new ExecutorStore();
-
-__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(executorStore.handleActions.bind(executorStore));
-/* harmony default export */ __webpack_exports__["a"] = (executorStore);
-
-/***/ }),
+/* 27 */,
 /* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ExecutorStore__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BucketsStore__ = __webpack_require__(136);
 
 
 class Command {
@@ -12404,7 +12243,7 @@ class Command {
   constructor(nextCommand, bucket, id) {
     this.nextCommand = nextCommand;
     this.bucketId = bucket;
-    this.store = __WEBPACK_IMPORTED_MODULE_0__ExecutorStore__["a" /* default */];
+    this.store = __WEBPACK_IMPORTED_MODULE_0__BucketsStore__["a" /* default */];
     this.id = id;
     // justAdded set to true by default so every new command is indeed registered as being just added
     this.justAdded = true;
@@ -13380,41 +13219,7 @@ ControlPanel.defaultProps = {
 };
 
 /***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-
-
-
-class Stone extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  render() {
-
-    var size = {
-      height: this.props.size,
-      width: this.props.size
-    };
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'stone', style: size });
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Stone;
-
-
-Stone.propTypes = {
-  size: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired
-};
-
-Stone.defaultProps = {
-  // sets default prop values
-  size: 30
-};
-
-/***/ }),
+/* 44 */,
 /* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13427,7 +13232,10 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__ExecutionStore__);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -13575,7 +13383,7 @@ __WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programSto
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_BucketsStore__ = __webpack_require__(136);
 
 
 
@@ -13583,14 +13391,14 @@ __WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programSto
 class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor() {
     super();
-    this.state = __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__["a" /* default */].bucketNumber();
+    this.state = __WEBPACK_IMPORTED_MODULE_1__stores_BucketsStore__["a" /* default */].bucketNumber();
 
     this.generateOptions.bind(this);
   }
 
   componentWillMount() {
-    __WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_1__stores_ExecutorStore__["a" /* default */].bucketNumber());
+    __WEBPACK_IMPORTED_MODULE_1__stores_BucketsStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_1__stores_BucketsStore__["a" /* default */].bucketNumber());
     });
   }
 
@@ -30988,7 +30796,7 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RM_Executor__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RM_Buckets__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RM_Program__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(47);
@@ -31028,7 +30836,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         'div',
         { className: 'row justify-content-around register-machine m-0' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__RM_Program__["a" /* default */], null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__RM_Executor__["a" /* default */], null),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__RM_Buckets__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay hidden', id: 'RM-overlay' })
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -31038,11 +30846,6 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           'button',
           { className: 'btn btn-primary', onClick: this.addBucket.bind(this) },
           'Add Bucket'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary', onClick: this.removeBucket.bind(this) },
-          'Remove Bucket'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
@@ -31058,221 +30861,10 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 112 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Executor_Ugg__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutorStore__ = __webpack_require__(27);
-
-
-
-
-
-
-class Executor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_ExecutorStore__["a" /* default */].getInfo();
-  }
-
-  componentWillMount() {
-    // triggered on each innitial render of this component
-    __WEBPACK_IMPORTED_MODULE_3__stores_ExecutorStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_ExecutorStore__["a" /* default */].getInfo());
-    });
-  }
-
-  render() {
-
-    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Executor_Bucket__["a" /* default */], { stoneNumber: bucket.stones,
-      id: index,
-      key: index,
-      newBucket: bucket.justAdded,
-      editMode: index == this.state.editingBucket }));
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'col-md-7 executor' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'row justify-content-around' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'col-7 buckets d-flex flex-column' },
-          buckets
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'col-4 ugg-holder' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Executor_Ugg__["a" /* default */], null)
-        )
-      )
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Executor;
-
-
-/***/ }),
-/* 113 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(47);
-
-
-
-
-
-
-class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  switchBucketEditor() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(this.props.id);
-  }
-
-  noBucketEditor() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
-  }
-
-  render() {
-    // renders a number of stones according to props
-
-    var editor = this.props.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__BucketEditor__["a" /* default */], { exit: this.noBucketEditor.bind(this), index: this.props.id }) : null;
-
-    var animationClasses = this.props.newBucket ? 'animated fadeInUp' : '';
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      null,
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id,
-          onClick: this.switchBucketEditor.bind(this) },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'h2',
-          null,
-          this.props.stoneNumber,
-          'x'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { size: 50 })
-      ),
-      editor
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Bucket;
-
-
-/***/ }),
-/* 114 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(44);
-
-
-
-class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-
-  render() {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'ugg row p-0 position-relative' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'col-6 pt-2' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'h4',
-          null,
-          'Ugg'
-        )
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'col-6 d-flex uggs-sack align-items-center' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'p',
-          null,
-          'Ugg\'s Sack'
-        )
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'overlay d-flex align-items-center justify-content-end' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'uggs-stone position-relative' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], null)
-        )
-      )
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Ugg;
-
-
-/***/ }),
-/* 115 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
-  moveUgg(bucketId) {
-    // scrolls ugg to the middle of the bucket whose ide is passed in
-    var bucketSelector = '#bucket-' + bucketId;
-    var bucketHeight = $(bucketSelector).outerHeight(true);
-    var currentBucketMiddle = bucketHeight * bucketId + 10;
-    $('.ugg').animate({
-      top: currentBucketMiddle
-    }, 900);
-    $('.executor').animate({
-      scrollTop: currentBucketMiddle
-    }, 900);
-  },
-
-  uggAddStone() {
-    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
-    // immidiately retusn the stone to it's innitla position
-    var $stone = $('.uggs-stone');
-    $stone.animate({
-      right: this.stoneDistance()
-    }, 500, function () {
-      $stone.css('right', 0);
-    });
-  },
-
-  uggTakeStone() {
-    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
-    // animates the stone from the icon back to the sack
-    var $stone = $('.uggs-stone');
-    $stone.css('right', this.stoneDistance());
-    $stone.animate({
-      right: 0
-    }, 500);
-  },
-
-  stoneDistance() {
-    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
-    var uggWidth = $('.ugg').width();
-    var bucketDistance = $('#bucket-1').width() / 2 + 5;
-    return uggWidth + bucketDistance;
-  }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
-
-/***/ }),
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
 /* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -31784,7 +31376,213 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
 
 /***/ }),
-/* 125 */
+/* 125 */,
+/* 126 */,
+/* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(136);
+
+
+
+
+
+class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents();
+  }
+
+  componentWillMount() {
+    __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents());
+    });
+  }
+
+  execute() {
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
+  }
+
+  render() {
+    // renders a number of stones according to props
+
+    var contents = this.state.contents.join(', ');
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { className: 'execute-button', onClick: this.execute.bind(this) },
+      'Execute program(',
+      contents,
+      ')'
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
+
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 129 */,
+/* 130 */,
+/* 131 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+
+
+
+class Stone extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+
+    var size = {
+      height: this.props.size,
+      width: this.props.size
+    };
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'stone', style: size });
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Stone;
+
+
+Stone.propTypes = {
+  size: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number.isRequired
+};
+
+Stone.defaultProps = {
+  // sets default prop values
+  size: 30
+};
+
+/***/ }),
+/* 132 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BucketsStore__ = __webpack_require__(136);
+
+
+
+
+
+
+class Buckets extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_BucketsStore__["a" /* default */].getInfo();
+  }
+
+  componentWillMount() {
+    // triggered on each innitial render of this component
+    __WEBPACK_IMPORTED_MODULE_3__stores_BucketsStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_BucketsStore__["a" /* default */].getInfo());
+    });
+  }
+
+  render() {
+
+    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__["a" /* default */], { stoneNumber: bucket.stones,
+      id: index,
+      key: index,
+      newBucket: bucket.justAdded,
+      editMode: index == this.state.editingBucket }));
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'col-md-7 bucket' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'row justify-content-around' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'col-7 buckets d-flex flex-column' },
+          buckets
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'col-4 ugg-holder' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__["a" /* default */], null)
+        )
+      )
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Buckets;
+
+
+/***/ }),
+/* 133 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(47);
+
+
+
+
+
+
+class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  switchBucketEditor() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(this.props.id);
+  }
+
+  noBucketEditor() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
+  }
+
+  render() {
+    // renders a number of stones according to props
+
+    var editor = this.props.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__BucketEditor__["a" /* default */], { exit: this.noBucketEditor.bind(this), index: this.props.id }) : null;
+
+    var animationClasses = this.props.newBucket ? 'animated fadeInUp' : '';
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'bucket d-flex justify-content-center align-items-center ' + animationClasses, id: 'bucket-' + this.props.id,
+          onClick: this.switchBucketEditor.bind(this) },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h2',
+          null,
+          this.props.stoneNumber,
+          'x'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], { size: 50 })
+      ),
+      editor
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Bucket;
+
+
+/***/ }),
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31838,52 +31636,267 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 
 
 /***/ }),
-/* 126 */,
-/* 127 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(131);
 
 
 
-
-
-class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__["a" /* default */].getBucketContents();
-  }
-
-  componentWillMount() {
-    __WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_ExecutorStore__["a" /* default */].getBucketContents());
-    });
-  }
-
-  execute() {
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
-  }
+class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
-    // renders a number of stones according to props
-
-    var contents = this.state.contents.join(', ');
-
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'button',
-      { className: 'execute-button', onClick: this.execute.bind(this) },
-      'Execute program(',
-      contents,
-      ')'
+      'div',
+      { className: 'ugg row p-0 position-relative' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col-6 pt-2' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h4',
+          null,
+          'Ugg'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col-6 d-flex uggs-sack align-items-center' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          null,
+          'Ugg\'s Sack'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'overlay d-flex align-items-center justify-content-end' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'uggs-stone position-relative' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Stone__["a" /* default */], null)
+        )
+      )
     );
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Ugg;
 
+
+/***/ }),
+/* 136 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__ = __webpack_require__(137);
+ // 'events is like, part of nodejs'
+
+
+
+
+class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+  constructor() {
+    super();
+    this.buckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }];
+
+    this.editingBucket = 0;
+
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__["a" /* default */]);
+  }
+
+  switchEditor(index) {
+    this.editingBucket = index;
+
+    this.emit('change');
+  }
+
+  getBucketContents() {
+    return { contents: this.bucketContents() };
+  }
+
+  bucketContents() {
+    // iterate backwards through buckets and as soon as we find a bucket with > 0 stones in it, add it and all the other bucket's stone counts to the empty contents array
+    var contents = [];
+    var addAllTheRest = false;
+
+    for (var i = this.buckets.length - 1; i >= 0; i--) {
+      if (addAllTheRest) {
+        contents.push(this.buckets[i].stones);
+      } else if (this.buckets[i].stones) {
+        contents.push(this.buckets[i].stones);
+        addAllTheRest = true;
+      }
+    }
+
+    // return a reversed version of contents
+    return contents.reverse();
+  }
+
+  getInfo() {
+    return { buckets: this.buckets, editingBucket: this.editingBucket };
+  }
+
+  bucketNumber() {
+    return { number: this.buckets.length };
+  }
+
+  getBucket(index) {
+    return this.buckets[index];
+  }
+
+  handleActions(action) {
+    switch (action.type) {
+      case "ADD_BUCKET":
+        {
+          this.addBucket();
+          break;
+        }case "REMOVE_BUCKET":
+        {
+          this.removeBucket();
+          break;
+        }case "INCREMENT_BUCKET":
+        {
+          this.incrementBucket(action.id);
+          break;
+        }case "DECREMENT_BUCKET":
+        {
+          this.decrementBucket(action.id);
+          break;
+        }case "SWITCH_BUCKET_EDITOR":
+        {
+          this.switchEditor(action.id);
+          break;
+        }case "AUTO_INCREMENT_BUCKET":
+        {
+          this.addStoneTo(action.id);
+          break;
+        }case "AUTO_DECREMENT_BUCKET":
+        {
+          this.takeStoneFrom(action.id);
+          break;
+        }case "EMPTY_BUCKET":
+        {
+          this.empty(action.id);
+          break;
+        }
+    }
+  }
+
+  addBucket() {
+    // We record that all previously added buckets have been added already
+    this.buckets.forEach(bucket => bucket.justAdded = false);
+
+    // then we add a new bucket to the list of buckets
+    this.buckets.push({ stones: 0, justAdded: true });
+
+    this.emit('change');
+  }
+
+  removeBucket() {
+    this.buckets.splice(-1, 1);
+
+    this.emit('change');
+  }
+
+  decrementBucket(id) {
+    this.moveUgg(id);
+    setTimeout(this.animateOutStone.bind(this), 600, id);
+  }
+
+  incrementBucket(id) {
+    this.moveUgg(id);
+    setTimeout(this.animateInStone.bind(this), 600, id);
+  }
+
+  animateInStone(id) {
+    this.uggAddStone();
+    setTimeout(this.addStoneTo.bind(this), 500, id);
+  }
+
+  animateOutStone(id) {
+    this.uggTakeStone();
+    setTimeout(this.takeStoneFrom.bind(this), 500, id);
+  }
+
+  takeStoneFrom(id) {
+    // no decrementing to negative integers
+    if (this.buckets[id].stones > 0) {
+      this.buckets[id].stones -= 1;
+    }
+    this.emit('change');
+  }
+
+  addStoneTo(id) {
+    this.buckets[id].stones += 1;
+    this.emit('change');
+  }
+
+  empty(id) {
+    this.buckets[id].stones = 0;
+    this.emit('change');
+  }
+}
+
+const bucketsStore = new BucketsStore();
+
+__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(bucketsStore.handleActions.bind(bucketsStore));
+/* harmony default export */ __webpack_exports__["a"] = (bucketsStore);
+
+/***/ }),
+/* 137 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
+  moveUgg(bucketId) {
+    // scrolls ugg to the middle of the bucket whose ide is passed in
+    var bucketSelector = '#bucket-' + bucketId;
+    var bucketHeight = $(bucketSelector).outerHeight(true);
+    var currentBucketMiddle = bucketHeight * bucketId + 10;
+    $('.ugg').animate({
+      top: currentBucketMiddle
+    }, 900);
+    $('.executor').animate({
+      scrollTop: currentBucketMiddle
+    }, 900);
+  },
+
+  uggAddStone() {
+    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
+    // immidiately retusn the stone to it's innitla position
+    var $stone = $('.uggs-stone');
+    $stone.animate({
+      right: this.stoneDistance()
+    }, 500, function () {
+      $stone.css('right', 0);
+    });
+  },
+
+  uggTakeStone() {
+    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
+    // animates the stone from the icon back to the sack
+    var $stone = $('.uggs-stone');
+    $stone.css('right', this.stoneDistance());
+    $stone.animate({
+      right: 0
+    }, 500);
+  },
+
+  stoneDistance() {
+    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
+    var uggWidth = $('.ugg').width();
+    var bucketDistance = $('#bucket-1').width() / 2 + 5;
+    return uggWidth + bucketDistance;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
 
 /***/ })
 /******/ ]);

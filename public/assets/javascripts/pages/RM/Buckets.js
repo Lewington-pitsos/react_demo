@@ -1,18 +1,18 @@
 import React from 'react'
 
-import Bucket from './Executor/Bucket'
-import Ugg from './Executor/Ugg'
-import executorStore from '../../stores/ExecutorStore'
+import Bucket from './Buckets/Bucket'
+import Ugg from './Buckets/Ugg'
+import bucketsStore from '../../stores/BucketsStore'
 
-export default class Executor extends React.Component {
+export default class Buckets extends React.Component {
   constructor() {
     super()
-    this.state = executorStore.getInfo()
+    this.state = bucketsStore.getInfo()
   }
 
   componentWillMount() { // triggered on each innitial render of this component
-    executorStore.on('change', () => {
-      this.setState( executorStore.getInfo() )
+    bucketsStore.on('change', () => {
+      this.setState( bucketsStore.getInfo() )
     })
   }
 
@@ -29,7 +29,7 @@ export default class Executor extends React.Component {
           editMode={index == this.state.editingBucket}/> )
 
     return(
-      <div className="col-md-7 executor">
+      <div className="col-md-7 bucket">
         <div className="row justify-content-around">
           <div className="col-7 buckets d-flex flex-column">
             {buckets}
