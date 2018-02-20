@@ -51,6 +51,15 @@ class ExecutorStore extends EventEmitter {
       } case "SWITCH_BUCKET_EDITOR": {
         this.switchEditor(action.id)
         break
+      } case "AUTO_INCREMENT_BUCKET": {
+        this.addStoneTo(action.id)
+        break
+      } case "AUTO_DECREMENT_BUCKET": {
+        this.takeStoneFrom(action.id)
+        break
+      } case "EMPTY_BUCKET": {
+        this.empty(action.id)
+        break
       }
     }
   }
@@ -83,14 +92,14 @@ class ExecutorStore extends EventEmitter {
     setTimeout(this.animateInStone.bind(this), 600, id)
   }
 
-  addStoneTo(id) {
-    this.buckets[id].stones += 1
-    this.emit('change');
-  }
-
   animateInStone(id) {
     this.uggAddStone()
     setTimeout(this.addStoneTo.bind(this), 500, id)
+  }
+
+  animateOutStone(id) {
+    this.uggTakeStone()
+    setTimeout(this.takeStoneFrom.bind(this), 500, id)
   }
 
   takeStoneFrom(id) {
@@ -98,9 +107,14 @@ class ExecutorStore extends EventEmitter {
     this.emit('change');
   }
 
-  animateOutStone(id) {
-    this.uggTakeStone()
-    setTimeout(this.takeStoneFrom.bind(this), 500, id)
+  addStoneTo(id) {
+    this.buckets[id].stones += 1
+    this.emit('change');
+  }
+
+  empty(id) {
+    this.buckets[id].stones = 0
+    this.emit('change')
   }
 }
 

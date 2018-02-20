@@ -16,7 +16,9 @@ export default class Bucket extends React.Component {
   render() {
     // renders a number of stones according to props
 
-    var editor = this.props.editMode ? <BucketEditor /> : null
+    var editor = this.props.editMode ?
+      <BucketEditor exit={this.noBucketEditor.bind(this)} index={this.props.id}/> :
+      null
 
     var animationClasses = this.props.newBucket ? 'animated fadeInUp' : ''
 

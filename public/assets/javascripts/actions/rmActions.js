@@ -13,9 +13,30 @@ export default {
     )
   },
 
-  incremenetBucket(id) {
+  incrementBucket(id) {
     dispatcher.dispatch({
       type: 'INCREMENT_BUCKET',
+      id: id
+    })
+  },
+
+  autoIncrement(id) {
+    dispatcher.dispatch({
+      type: 'AUTO_INCREMENT_BUCKET',
+      id: id
+    })
+  },
+
+  autoDecrement(id) {
+    dispatcher.dispatch({
+      type: 'AUTO_DECREMENT_BUCKET',
+      id: id
+    })
+  },
+
+  emptyBucket(id) {
+    dispatcher.dispatch({
+      type: 'EMPTY_BUCKET',
       id: id
     })
   },
