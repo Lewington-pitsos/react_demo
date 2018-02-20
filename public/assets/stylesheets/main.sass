@@ -168,7 +168,7 @@ nav
 // PROGRAM
 
 .command
-  padding: 1rem
+  padding: 15px
   &:hover
     cursor: pointer
     background: $body-color
@@ -176,10 +176,25 @@ nav
 
 .command-id
   font-size: 1.2rem
-  padding-right: 1rem
+  text-align: center
+
+.command-info
+  height: 70px
+  margin-bottom: 0
 
 .command-edit
   background: $body-color
   color: $body-bg
   label
     margin-right: 10px
+
+.command-list
+  position: relative
+
+#command-execution-tracker
+  border: 1px solid $body-color
+  position: absolute
+  height: 100px
+  top: 0
+  right: 0
+  left: 0

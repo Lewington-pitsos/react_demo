@@ -23,7 +23,7 @@ export default class CommandInfo extends React.Component {
     }
 
     return(
-      <p>{command.constructor.name} bucket {command.bucketId + 1} and {nextCommand}.</p>
+      <p className="command-info">{command.constructor.name} bucket {command.bucketId + 1} and {nextCommand}.</p>
     )
   }
 }

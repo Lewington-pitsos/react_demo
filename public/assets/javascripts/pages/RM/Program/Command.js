@@ -41,7 +41,7 @@ export default class Command extends React.Component {
     return(
       <div className={classList} id={'command-' + command.id} onClick={this.switchEditor.bind(this)}>
         <div className="row p-0">
-          <div className="col-1 p-0">
+          <div className="col-1 p-0 d-flex justify-content-center">
             <span className="command-id">{command.id}.</span>
           </div>
           <div className="col-11 p-0">
