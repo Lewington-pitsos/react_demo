@@ -2,6 +2,7 @@ import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
 import bucketsAnimations from './BucketsStore/bucketsAnimations'
+import bucketsInteractions from './BucketsStore/bucketsInteractions'
 import flashActions from '../actions/flashActions'
 
 class BucketsStore extends EventEmitter {
@@ -15,6 +16,7 @@ class BucketsStore extends EventEmitter {
     this.editingBucket = -1
 
     Object.assign(this, bucketsAnimations);
+    Object.assign(this, bucketsInteractions);
   }
 
   switchEditor(index) {
@@ -94,11 +96,9 @@ class BucketsStore extends EventEmitter {
     // we have to set a timeout to avoid simaltanious dispatches
     var returnVal = this.buckets[0].stones
     setTimeout(function() {
-      flashActions.flash('The program has terminated successfully with a return value of: ' + returnVal)
+      flashActions.flash('The program has terminated successfully with a return value of ' + returnVal)
     }, 0)
   }
-
-
 
   addBucket() {
     // We record that all previously added buckets have been added already
@@ -115,44 +115,6 @@ class BucketsStore extends EventEmitter {
   removeBucket() {
     this.buckets.splice(-1,1)
 
-    this.emit('change')
-  }
-
-  decrementBucket(id) {
-    this.moveUgg(id)
-    setTimeout(this.animateOutStone.bind(this), 600, id)
-  }
-
-  incrementBucket(id) {
-    this.moveUgg(id)
-    setTimeout(this.animateInStone.bind(this), 600, id)
-  }
-
-  animateInStone(id) {
-    this.uggAddStone()
-    setTimeout(this.addStoneTo.bind(this), 500, id)
-  }
-
-  animateOutStone(id) {
-    this.uggTakeStone()
-    setTimeout(this.takeStoneFrom.bind(this), 500, id)
-  }
-
-  takeStoneFrom(id) {
-    // no decrementing to negative integers
-    if (this.buckets[id].stones > 0) {
-      this.buckets[id].stones -= 1
-    }
-    this.emit('change');
-  }
-
-  addStoneTo(id) {
-    this.buckets[id].stones += 1
-    this.emit('change');
-  }
-
-  empty(id) {
-    this.buckets[id].stones = 0
     this.emit('change')
   }
 }

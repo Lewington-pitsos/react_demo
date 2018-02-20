@@ -11257,8 +11257,10 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__ = __webpack_require__(131);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -11272,6 +11274,7 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.editingBucket = -1;
 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__["a" /* default */]);
   }
 
   switchEditor(index) {
@@ -11360,7 +11363,7 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     // we have to set a timeout to avoid simaltanious dispatches
     var returnVal = this.buckets[0].stones;
     setTimeout(function () {
-      __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__["a" /* default */].flash('The program has terminated successfully with a return value of: ' + returnVal);
+      __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__["a" /* default */].flash('The program has terminated successfully with a return value of ' + returnVal);
     }, 0);
   }
 
@@ -11377,44 +11380,6 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   removeBucket() {
     this.buckets.splice(-1, 1);
 
-    this.emit('change');
-  }
-
-  decrementBucket(id) {
-    this.moveUgg(id);
-    setTimeout(this.animateOutStone.bind(this), 600, id);
-  }
-
-  incrementBucket(id) {
-    this.moveUgg(id);
-    setTimeout(this.animateInStone.bind(this), 600, id);
-  }
-
-  animateInStone(id) {
-    this.uggAddStone();
-    setTimeout(this.addStoneTo.bind(this), 500, id);
-  }
-
-  animateOutStone(id) {
-    this.uggTakeStone();
-    setTimeout(this.takeStoneFrom.bind(this), 500, id);
-  }
-
-  takeStoneFrom(id) {
-    // no decrementing to negative integers
-    if (this.buckets[id].stones > 0) {
-      this.buckets[id].stones -= 1;
-    }
-    this.emit('change');
-  }
-
-  addStoneTo(id) {
-    this.buckets[id].stones += 1;
-    this.emit('change');
-  }
-
-  empty(id) {
-    this.buckets[id].stones = 0;
     this.emit('change');
   }
 }
@@ -31465,7 +31430,7 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     // scrolls ugg to the middle of the bucket whose ide is passed in
     var bucketSelector = '#bucket-' + bucketId;
     var bucketHeight = $(bucketSelector).outerHeight(true);
-    var currentBucketMiddle = bucketHeight * bucketId + 10;
+    var currentBucketMiddle = bucketHeight * bucketId + 25;
     $('.ugg').animate({
       top: currentBucketMiddle
     }, 900);
@@ -32285,6 +32250,51 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flashStore
     }
 
     return true;
+  }
+});
+
+/***/ }),
+/* 133 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  decrementBucket(id) {
+    this.moveUgg(id);
+    setTimeout(this.animateOutStone.bind(this), 900, id);
+  },
+
+  incrementBucket(id) {
+    this.moveUgg(id);
+    setTimeout(this.animateInStone.bind(this), 600, id);
+  },
+
+  animateInStone(id) {
+    this.uggAddStone();
+    setTimeout(this.addStoneTo.bind(this), 500, id);
+  },
+
+  animateOutStone(id) {
+    this.uggTakeStone();
+    setTimeout(this.takeStoneFrom.bind(this), 200, id);
+  },
+
+  takeStoneFrom(id) {
+    // no decrementing to negative integers
+    if (this.buckets[id].stones > 0) {
+      this.buckets[id].stones -= 1;
+    }
+    this.emit('change');
+  },
+
+  addStoneTo(id) {
+    this.buckets[id].stones += 1;
+    this.emit('change');
+  },
+
+  empty(id) {
+    this.buckets[id].stones = 0;
+    this.emit('change');
   }
 });
 
