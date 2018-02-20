@@ -10,24 +10,5 @@ export default {
     $('.commands').animate({
       scrollTop: currentCommandTop
     }, 400)
-  },
-
-  showExecutionTracker() {
-    // makes the command-execution-tracker visible, then fades it in
-    var $tracker = $('#command-execution-tracker')
-    $tracker.removeClass('hidden')
-    $tracker.fadeTo(300, 1)
-  },
-
-  resetExecutionTracker() {
-    // fades the CET out, makes it invisible and then resets it's position to the very top again
-    var $tracker = $('#command-execution-tracker')
-    $tracker.fadeTo(300, 0)
-    setTimeout(function() {
-      $tracker.addClass('hidden')
-      $tracker.css({
-        top: 0
-      })
-    }, 301)
   }
 }

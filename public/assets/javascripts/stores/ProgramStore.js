@@ -70,21 +70,12 @@ class ProgramStore extends EventEmitter {
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.prepairExecutionUi()
     var commandId = this.commands[0].id
     this.runNextCommand(commandId, 1600)
   }
 
-  prepairExecutionUi() {
-    // sets up the UI for execution
-    this.switchEditor(0)
-    this.showExecutionTracker()
-    $('#RM-overlay').removeClass('hidden')
-  }
-
   endExecution() {
-    this.resetExecutionTracker()
-    $('#RM-overlay').addClass('hidden')
+    executionStore.finish()
   }
 
   runNextCommand(id, animationDuration) {

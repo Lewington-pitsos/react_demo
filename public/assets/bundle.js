@@ -13224,7 +13224,7 @@ ControlPanel.defaultProps = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(117);
@@ -13233,7 +13233,6 @@ ControlPanel.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__ExecutionStore__);
  // 'events is like, part of nodejs'
 
 
@@ -13303,21 +13302,12 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
   execute() {
     // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.prepairExecutionUi();
     var commandId = this.commands[0].id;
     this.runNextCommand(commandId, 1600);
   }
 
-  prepairExecutionUi() {
-    // sets up the UI for execution
-    this.switchEditor(0);
-    this.showExecutionTracker();
-    $('#RM-overlay').removeClass('hidden');
-  }
-
   endExecution() {
-    this.resetExecutionTracker();
-    $('#RM-overlay').addClass('hidden');
+    __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__["a" /* default */].finish();
   }
 
   runNextCommand(id, animationDuration) {
@@ -13374,7 +13364,6 @@ const programStore = new ProgramStore();
 
 __WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
 /* harmony default export */ __webpack_exports__["a"] = (programStore);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
 
 /***/ }),
 /* 46 */
@@ -31312,25 +31301,6 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
     $('.commands').animate({
       scrollTop: currentCommandTop
     }, 400);
-  },
-
-  showExecutionTracker() {
-    // makes the command-execution-tracker visible, then fades it in
-    var $tracker = $('#command-execution-tracker');
-    $tracker.removeClass('hidden');
-    $tracker.fadeTo(300, 1);
-  },
-
-  resetExecutionTracker() {
-    // fades the CET out, makes it invisible and then resets it's position to the very top again
-    var $tracker = $('#command-execution-tracker');
-    $tracker.fadeTo(300, 0);
-    setTimeout(function () {
-      $tracker.addClass('hidden');
-      $tracker.css({
-        top: 0
-      });
-    }, 301);
   }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
@@ -31404,6 +31374,9 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
   }
 
   execute() {
+    // first remove all editors, then execute
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchEditor(0);
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
     __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
   }
 
@@ -31426,9 +31399,79 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 
 /***/ }),
 /* 128 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
+ // 'events is like, part of nodejs'
 
 
+
+class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+  constructor() {
+    super();
+    this.executing = false;
+  }
+
+  getInfo() {
+    return { execution: this.execution, editingBucket: this.editingBucket };
+  }
+
+  execute() {
+    this.prepairExecutionUi();
+    this.executing = true;
+  }
+
+  prepairExecutionUi() {
+    // sets up the UI for execution
+    this.showExecutionTracker();
+    $('#RM-overlay').removeClass('hidden');
+  }
+
+  showExecutionTracker() {
+    // makes the command-execution-tracker visible, then fades it in
+    var $tracker = $('#command-execution-tracker');
+    $tracker.removeClass('hidden');
+    $tracker.fadeTo(300, 1);
+  }
+
+  finish() {
+    this.resetExecutionTracker();
+    $('#RM-overlay').addClass('hidden');
+    this.executing = false;
+  }
+
+  resetExecutionTracker() {
+    // fades the CET out, makes it invisible and then resets it's position to the very top again
+    var $tracker = $('#command-execution-tracker');
+    $tracker.fadeTo(300, 0);
+    setTimeout(function () {
+      $tracker.addClass('hidden');
+      $tracker.css({
+        top: 0
+      });
+    }, 301);
+  }
+
+  handleActions(action) {
+    switch (action.type) {
+      case "EXECUTE":
+        {
+          this.execute();
+          break;
+        }
+    }
+  }
+
+}
+
+const executionStore = new ExecutionStore();
+
+__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(executionStore.handleActions.bind(executionStore));
+/* harmony default export */ __webpack_exports__["a"] = (executionStore);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
 
 /***/ }),
 /* 129 */,

@@ -16,6 +16,9 @@ export default class ExecuteButton extends React.Component {
   }
 
   execute() {
+    // first remove all editors, then execute
+    rmActions.switchEditor(0)
+    rmActions.switchBucketEditor(-1)
     rmActions.execute()
   }
 
