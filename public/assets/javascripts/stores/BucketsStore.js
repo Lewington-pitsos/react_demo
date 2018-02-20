@@ -2,6 +2,7 @@ import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
 import bucketsAnimations from './BucketsStore/bucketsAnimations'
+import flashActions from '../actions/flashActions'
 
 class BucketsStore extends EventEmitter {
   constructor() {
@@ -90,9 +91,22 @@ class BucketsStore extends EventEmitter {
       } case "EMPTY_BUCKET": {
         this.empty(action.id)
         break
+      } case "STOP_EXECUTION": {
+        this.flashReturnValue()
+        break
       }
     }
   }
+
+  flashReturnValue() {
+    // we have to set a timeout to avoid simaltanious dispatches
+    var returnVal = this.buckets[0].stones
+    setTimeout(function() {
+      flashActions.flash('The program has terminated successfully with a return value of: ' + returnVal)
+    }, 0)
+  }
+
+
 
   addBucket() {
     // We record that all previously added buckets have been added already

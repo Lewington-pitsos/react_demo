@@ -5,6 +5,7 @@ import dispatcher from '../dispatcher'
 
 class FlashStore extends EventEmitter {
   constructor() {
+    // recede tracks whether the flash is coming or going
     super()
     this.message = null
     this.recede = false
@@ -15,10 +16,12 @@ class FlashStore extends EventEmitter {
   }
 
   flash(message) {
+    // we update the message and record that the flash is supposed to be fading in. After some time we fade it back out.
+
+    // the first time it renders, flash is given the hidden class. Everytime we get a new message we un-hide it
+    $('#flash').removeClass('hidden')
     this.recede = false
     this.message = message
-    const $flash = $('#flash')
-    $flash.removeClass('hidden')
 
     this.emit('change')
     setTimeout(this.unFlash.bind(this), 4000)

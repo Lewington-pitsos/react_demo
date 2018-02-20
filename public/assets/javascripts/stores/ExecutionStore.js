@@ -8,7 +8,6 @@ class ExecutionStore extends EventEmitter {
     this.executing = false
   }
 
-
   getInfo() {
     return {executing: this.executing}
   }

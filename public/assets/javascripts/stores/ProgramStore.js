@@ -7,6 +7,7 @@ import dispatcher from '../dispatcher'
 import executionAnimations from './ProgramStore/executionAnimations'
 import programHelpers from './ProgramStore/programHelpers'
 import executionStore from  './ExecutionStore'
+import rmActions from '../actions/rmActions'
 
 class ProgramStore extends EventEmitter {
   constructor() {
@@ -95,8 +96,8 @@ class ProgramStore extends EventEmitter {
         // finally we recur with the new id after a animationDuration milliseconds
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
-        // in which case we let the executor store know that execution is finished
-        executionStore.finish()
+        // in which case trigger an execution stopping action
+        rmActions.stopExecution()
       }
     }
   }

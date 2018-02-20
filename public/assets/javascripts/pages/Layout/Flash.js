@@ -26,7 +26,7 @@ export default class Layout extends React.Component {
 
     return(
       <div id="flash" className={'animated ' + animation}>
-        <h3>{this.state.message}</h3>
+        <h5>{this.state.message}</h5>
       </div>
     )
   }

@@ -11251,7 +11251,9 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__ = __webpack_require__(131);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -11340,8 +11342,20 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.empty(action.id);
           break;
+        }case "STOP_EXECUTION":
+        {
+          this.flashReturnValue();
+          break;
         }
     }
+  }
+
+  flashReturnValue() {
+    // we have to set a timeout to avoid simaltanious dispatches
+    var returnVal = this.buckets[0].stones;
+    setTimeout(function () {
+      __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__["a" /* default */].flash('The program has terminated successfully with a return value of: ' + returnVal);
+    }, 0);
   }
 
   addBucket() {
@@ -13544,7 +13558,9 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -13639,8 +13655,8 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         // finally we recur with the new id after a animationDuration milliseconds
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
       } else {
-        // in which case we let the executor store know that execution is finished
-        __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__["a" /* default */].finish();
+        // in which case trigger an execution stopping action
+        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].stopExecution();
       }
     }
   }
@@ -32061,7 +32077,7 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       'div',
       { id: 'flash', className: 'animated ' + animation },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'h3',
+        'h5',
         null,
         this.state.message
       )
@@ -32087,6 +32103,7 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 class FlashStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
+    // recede tracks whether the flash is coming or going
     super();
     this.message = null;
     this.recede = false;
@@ -32097,10 +32114,12 @@ class FlashStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   }
 
   flash(message) {
+    // we update the message and record that the flash is supposed to be fading in. After some time we fade it back out.
+
+    // the first time it renders, flash is given the hidden class. Everytime we get a new message we un-hide it
+    $('#flash').removeClass('hidden');
     this.recede = false;
     this.message = message;
-    const $flash = $('#flash');
-    $flash.removeClass('hidden');
 
     this.emit('change');
     setTimeout(this.unFlash.bind(this), 4000);
