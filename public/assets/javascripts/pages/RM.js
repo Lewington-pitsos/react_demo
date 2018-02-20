@@ -18,10 +18,15 @@ export default class RM extends React.Component {
 
   render() {
 
-    const content = this.state.tutorial ?
-      <Tutorial /> :
-      <RegisterMachine />
+    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown'
 
-    return(content)
+
+    return(
+      <div className="RM position-relative">
+        <RegisterMachine />
+        <Tutorial fade={tutorialFade}/>
+      </div>
+
+    )
   }
 }

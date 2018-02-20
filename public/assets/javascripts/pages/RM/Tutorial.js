@@ -10,7 +10,7 @@ export default class Tutorial extends React.Component {
 
   render() {
     return(
-      <div className="tutorial container-fluid">
+      <div className={'tutorial container-fluid animated ' + this.props.fade}>
         <div className="row justify-content-center">
           <div className="col-md-8 p-3">
             <h2>Welcome to my <a className="dark" href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a> simulator</h2>
