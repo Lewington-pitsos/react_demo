@@ -14,12 +14,25 @@ class ExecutionStore extends EventEmitter {
   }
 
   exitTutorial() {
+    setTimeout(function() {
+      $('.tutorial').addClass('hidden')
+    }, 801)
+
     this.tutorial = false
 
     this.emit('change')
   }
 
+  setTutorialHeight() {
+    var navHeight = 60
+    var tutorialHeight = $(window).height() - navHeight
+
+    $('.tutorial').height(tutorialHeight)
+  }
+
   enterTutorial() {
+    this.setTutorialHeight()
+    $('.tutorial').removeClass('hidden')
     this.tutorial = true
 
     this.emit('change')

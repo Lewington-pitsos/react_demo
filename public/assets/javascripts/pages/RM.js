@@ -16,9 +16,13 @@ export default class RM extends React.Component {
     })
   }
 
+  componentDidMount() {
+    executionStore.setTutorialHeight()
+  }
+
   render() {
 
-    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown'
+    const tutorialFade = this.state.tutorial ? 'fadeInUp' : 'fadeOutDown to-hide'
 
 
     return(

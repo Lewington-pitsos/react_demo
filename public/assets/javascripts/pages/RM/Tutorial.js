@@ -12,18 +12,18 @@ export default class Tutorial extends React.Component {
     return(
       <div className={'tutorial container-fluid animated ' + this.props.fade}>
         <div className="row justify-content-center">
-          <div className="col-md-8 p-3">
-            <h2>Welcome to my <a className="dark" href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a> simulator</h2>
+          <div className="col-md-10 p-3 tutorial-content">
+            <h2 className="text-center">Welcome to my <a className="dark" href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a> simulator</h2>
 
-            <p>tldr: It's a lot like a Turing machine, but more intuitive.</p>
+            <p className="text-center font-italic pb-3">tldr: It's a lot like a <a className="dark" href="https://en.wikipedia.org/wiki/Turing_machine">Turing Machine</a>, but more intuitive.</p>
             <h4>The Rules:</h4>
             <ol>
-              <li>you have infinite buckets with infinite volume and infinite stones to put in them</li>
-              <li>you have a caveman named Ugg who is very strong and will do whatever you tell him to.</li>
+              <li>You have infinite buckets with infinite volume and infinite stones to put in them.</li>
+              <li>You have a caveman named Ugg who is very strong and will do whatever you tell him to.</li>
               <li>Ugg is also very stupid. He only understands commands of two different formats:
                 <ol>
-                  <li>Put a rock in a given bucket and move on to some command</li>
-                  <li>take a rock out of a bucket and move on to some command OR, if the bucket was empty, move on to some command (perhaps a different one)</li>
+                  <li>Put a rock in a given bucket and move on to some other command.</li>
+                  <li>Take a rock out of a bucket and move on to some other command OR, if the bucket was empty, move on to a different command from the first one.</li>
                 </ol>
               </li>
               <li>

@@ -193,7 +193,7 @@ nav
   margin-left: 1rem
 
 .tutorial
-  line-height: 2rem
+  overflow-y: scroll
   background: $body-color
   color: $body-bg
   position: absolute
@@ -201,6 +201,15 @@ nav
   left: 0
   right: 0
   z-index: 99
+  .tutorial-content
+    max-width: 650px
+    h4
+      padding-bottom: 1.5rem
+    p
+      text-align: justify
+      line-height: 2rem
+    li
+      padding-bottom: 0.8rem
 
 // BUCKETS
 
