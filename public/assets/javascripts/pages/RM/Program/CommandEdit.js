@@ -60,7 +60,7 @@ export default class CommandEdit extends React.Component {
       <form onSubmit={this.handleSubmit.bind(this)} >
         <div className="form-group">
           <label htmlFor="command-type">Commnad Type</label>
-          <select name="type" className="form-control" defaultValue={this.state.increment} onChange={this.changeType.bind(this)} id="command-type">
+          <select name="type" className="custom-select" defaultValue={this.state.increment} onChange={this.changeType.bind(this)} id="command-type">
             <option value={true}>Increment</option>
             <option value={false}>Decrement</option>
           </select>
@@ -74,9 +74,9 @@ export default class CommandEdit extends React.Component {
           <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)} id="default-next-command"/>
         </div>
         {alternateNext}
-        <input type="submit" className="btn btn-primary" value="submit" />
         <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
         <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
+        <input type="submit" className="btn btn-primary" value="submit" />
       </form>
     )
   }
