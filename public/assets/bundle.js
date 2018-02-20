@@ -13440,28 +13440,32 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   execute() {
-    // gets the id of the first command and feeds it to the recursive runCommand function
+    // gets the id of the first command and feeds it to the recursive runNextCommand function
     this.showExecutionTracker();
     var commandId = this.commands[0].id;
-    this.runCommand(commandId, 1600);
+    this.runNextCommand(commandId, 1600);
   }
 
-  runCommand(id, animationDuration) {
+  runNextCommand(id, animationDuration) {
     // animationDuration: the time it takes for ugg to move and add or take
     // if id is falsy (i.e. 0) we exit and reset the execution tracker
     if (id) {
 
-      // otherwise we find the command that matches id, run it, and find it's speciefied next command
-      var currentCommand = this.findCommand(id);
-      this.moveExecutionTracker(id);
-      currentCommand.run();
-      var newId = currentCommand.next();
-
+      // otherwise we execute the current command and find its id
+      var newId = this.executeCommand(id);
       // finally we recur with the new id after a animationDuration milliseconds
-      setTimeout(this.runCommand.bind(this), animationDuration, newId, animationDuration);
+      setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
     } else {
       this.resetExecutionTracker();
     }
+  }
+
+  executeCommand(id) {
+    // moves the execution tracker over the current command runs it and returns the next command
+    this.moveExecutionTracker(id);
+    var currentCommand = this.findCommand(id);
+    currentCommand.run();
+    return currentCommand.next();
   }
 
   updateCommand(specs) {
