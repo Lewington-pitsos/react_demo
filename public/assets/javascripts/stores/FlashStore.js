@@ -16,6 +16,13 @@ class FlashStore extends EventEmitter {
   }
 
   flash(message) {
+    // we throttle flashes by preventing flashes unless this.recede is true (i.e. the previous message has started receding) or the previous message is null (i.e. this is the first message)
+    if (this.recede || !this.message) {
+      this.displayMessage(message)
+    }
+  }
+
+  displayMessage(message) {
     // we update the message and record that the flash is supposed to be fading in. After some time we fade it back out.
 
     // the first time it renders, flash is given the hidden class. Everytime we get a new message we un-hide it
