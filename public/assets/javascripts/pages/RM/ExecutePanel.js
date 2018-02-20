@@ -28,19 +28,19 @@ export default class ExecutePanel extends React.Component {
 
     if (this.state.executing) {
       var contents =
-      <div className="d-flex justify-content-around flex-wrap">
+      <div className="d-flex justify-content-end flex-wrap">
         <div className="execution-spinner button-looking">
           <p>Executing</p>
           <div class="loader"></div>
         </div>
-        <button className="btn btn-primary" onClick={this.stop.bind(this)}>Stop </button>
+        <button className="btn btn-primary stop" onClick={this.stop.bind(this)}>Halt</button>
       </div>
     } else {
       var contents = <ExecuteButton />
     }
 
     return(
-      <div className="execution-panel">
+      <div className="execution-panel d-flex justify-content-end flex-wrap">
         {contents}
       </div>
     )
