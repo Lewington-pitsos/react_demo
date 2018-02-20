@@ -6,6 +6,11 @@ class ExecutionStore extends EventEmitter {
   constructor() {
     super()
     this.executing = false
+    this.tutorial = true
+  }
+
+  getTutorial() {
+    return {tutorial: this.tutorial}
   }
 
   getInfo() {

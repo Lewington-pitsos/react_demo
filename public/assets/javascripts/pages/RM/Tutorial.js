@@ -1,10 +1,14 @@
 import React from 'react'
 
 export default class Tutorial extends React.Component {
+
+  exit() {
+
+  }
+
   render() {
     return(
-      <div className="overlay opaque-light">
-        <div className="container tutorial">
+      <div className="container tutorial">
         <h2>Welcome to my <a href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a> simulator</h2>
 
         <p>tldr: It's a lot like a Turing machine, but more intuitive.</p>
@@ -34,7 +38,8 @@ export default class Tutorial extends React.Component {
         <p>
           Otherwise, go ahead and knock yourself out.
         </p>
-        </div>
+
+        <button className="btn btn-primary" onClick={this.exit.bind(this)}>OK, got it</button>
       </div>
     )
   }
