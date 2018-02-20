@@ -3,7 +3,7 @@
 @import "spinner"
 
 $body-color-dark: #ccc
-
+$body-bg-light: #5b0037
 // GENERAL
 
 .btn-primary
@@ -16,6 +16,18 @@ $body-color-dark: #ccc
     border: none
     background: $body-color-dark
     color: $body-bg
+    cursor: pointer
+
+.btn-primary.dark
+  background: $body-bg
+  color: $body-color
+  border: none
+  padding: 1rem
+  margin-bottom: 1rem
+  &:hover
+    border: none
+    background: $body-bg-light
+    color: $body-color
     cursor: pointer
 
 h1
@@ -39,6 +51,15 @@ a
     text-decoration: none
   &:focus
     color: $body-color-dark
+    text-decoration: none
+
+a.dark
+  color: $body-bg
+  &:hover
+    color: $body-bg-light
+    text-decoration: none
+  &:focus
+    color: $body-bg-light
     text-decoration: none
 
 .interface
@@ -72,10 +93,6 @@ a
     z-index: -1
   &.dark
     background: rgba(15, 0, 9, 0.3)
-  &.opaque-light
-    background: $body-color
-    color: $body-bg
-    z-index: 11
 
 .position-relative
   position: relative
@@ -177,6 +194,8 @@ nav
 
 .tutorial
   line-height: 2rem
+  background: $body-color
+  color: $body-bg
 
 // BUCKETS
 
