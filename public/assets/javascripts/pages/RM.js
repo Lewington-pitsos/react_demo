@@ -38,7 +38,7 @@ export default class RM extends React.Component {
 
   render() {
 
-    const hidden = this.state.executing ? '' : 'hidden'
+    const animation = this.state.executing ? 'fadeIn' : 'fadeOut'
 
     return(
       <div id="RMs-page">
@@ -53,7 +53,7 @@ export default class RM extends React.Component {
               <button className="btn btn-primary" onClick={this.addBucket.bind(this)}>Add Bucket</button>
               <button className="btn btn-primary" onClick={this.removeBucket.bind(this)}>Add Bucket</button>
               <button className="btn btn-primary" onClick={this.addIncrement.bind(this)}>Add Command</button>
-              <div className={'overlay dark ' + hidden}>
+              <div className={'overlay dark animated ' + animation}>
               </div>
             </div>
             <div className="col-md-6 p-0 execute">

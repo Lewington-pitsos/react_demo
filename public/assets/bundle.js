@@ -31171,7 +31171,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const hidden = this.state.executing ? '' : 'hidden';
+    const animation = this.state.executing ? 'fadeIn' : 'fadeOut';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -31204,7 +31204,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             { className: 'btn btn-primary', onClick: this.addIncrement.bind(this) },
             'Add Command'
           ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay dark ' + hidden })
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay dark animated ' + animation })
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
