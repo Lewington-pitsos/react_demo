@@ -23,9 +23,9 @@ export default class Board extends React.Component {
       .state
       .cells
       .map((cell) => <Cell id={cell.id}
-                          key={cell.id}
-                          size={this.state.cellSize}
-                          backSide={cell.backSide}/>)
+        key={cell.id}
+        size={this.state.cellSize}
+        backSide={cell.backSide}/>)
 
     // if a fixed width exists in state, we want to fix the board do that width
     var boardStyle = null
@@ -37,9 +37,15 @@ export default class Board extends React.Component {
         }
     }
 
+    const isHidden = this.state.playing ?
+      '' :
+      'hidden'
+
     return(
-      <div className="d-flex board flex-wrap" id="board" style={boardStyle}>
+      <div className="d-flex board flex-wrap position-relative" id="board" style={boardStyle}>
        {cells}
+       <div className={'overlay ' + isHidden}>
+       </div>
       </div>
     )
   }

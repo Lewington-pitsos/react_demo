@@ -30735,10 +30735,13 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       };
     }
 
+    const isHidden = this.state.playing ? '' : 'hidden';
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'd-flex board flex-wrap', id: 'board', style: boardStyle },
-      cells
+      { className: 'd-flex board flex-wrap position-relative', id: 'board', style: boardStyle },
+      cells,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay ' + isHidden })
     );
   }
 }
@@ -30864,7 +30867,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
       cellSize: this.cellSize,
       number: this.number,
       cells: this.cells,
-      fixedWidth: this.boardWidth
+      fixedWidth: this.boardWidth,
+      playing: this.playing
     };
   }
 

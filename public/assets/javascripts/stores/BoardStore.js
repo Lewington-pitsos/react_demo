@@ -44,7 +44,8 @@ class BoardStore extends EventEmitter {
       cellSize: this.cellSize,
       number: this.number,
       cells: this.cells,
-      fixedWidth: this.boardWidth
+      fixedWidth: this.boardWidth,
+      playing: this.playing
     }
   }
 
