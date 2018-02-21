@@ -31141,7 +31141,9 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
   playRound() {
     // first goes through each cell and calculates its nexte state, then goes through them all again and updates the state and displays it through a casecade flip
     this.everyCell(this.calculateNextState.bind(this));
-    this.cascadeFlip(this.assignNextState.bind(this));
+    this.everyCell(this.assignNextState.bind(this));
+
+    this.emit('change');
   },
 
   startPlaying() {
