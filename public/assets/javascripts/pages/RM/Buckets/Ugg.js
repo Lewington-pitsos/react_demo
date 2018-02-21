@@ -28,7 +28,7 @@ export default class Ugg extends React.Component {
           <div className="col-6 d-flex uggs-sack align-items-center">
             <p>Ugg's Sack</p>
           </div>
-          <div className="overlay d-flex align-items-center justify-content-end">
+          <div className="overlay d-flex align-items-center justify-content-end stone-overlay">
             <div className="uggs-stone position-relative">
               <Stone />
             </div>
