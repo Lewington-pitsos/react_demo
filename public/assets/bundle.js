@@ -32181,7 +32181,7 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         'span',
         null,
         ' ',
-        this.renderCommandId(command.nextCommand),
+        this.renderCommandId(command.defaultNext),
         '. ',
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
         ' Otherwise ',

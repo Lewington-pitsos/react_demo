@@ -17,7 +17,7 @@ export default class CommandInfo extends React.Component {
 
     // works out if the command is increment or decrement and displays renders a display accordingly
     if (command.constructor.name == "Decrement") {
-      var nextCommand = <span> {this.renderCommandId(command.nextCommand)}. <br/> Otherwise {this.renderCommandId(command.alternateNext)}</span>
+      var nextCommand = <span> {this.renderCommandId(command.defaultNext)}. <br/> Otherwise {this.renderCommandId(command.alternateNext)}</span>
     } else {
       var nextCommand = this.renderCommandId(command.nextCommand)
     }
