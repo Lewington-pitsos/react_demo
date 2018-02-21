@@ -114,7 +114,7 @@ class BoardStore extends EventEmitter {
 
   resizeCells() {
     // Hackily reudces cell size as more cells are added
-    this.cellSize = (this.cellSize <= 100 ? 100 : this.cellSize - 50)
+    this.cellSize = (this.cellSize <= 100 ? 100 : this.cellSize - 10)
   }
 
   flipCell(id) {
@@ -133,14 +133,17 @@ class BoardStore extends EventEmitter {
     this.stopRandFlip()
     // fixes the width of the board component/element to it's current width
     // also uses that width and the current cell size to craete a fixed matrix of cells that reflects the current on-screen cell layout
-    var cellsPerRow = Math.floor(boardWidth / this.cellSize)
-    this.boardWidth = cellsPerRow * this.cellSize
-    this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
+    this.fixBoardUi(boardWidth)
     this.everyCell(this.assignSiblings.bind(this))
-    console.log(this.cells)
 
     // this is only here so the board width gets fixed on the DOM
     this.emit('change')
+  }
+
+  fixBoardUi(boardWidth) {
+    var cellsPerRow = Math.floor(boardWidth / this.cellSize)
+    this.boardWidth = cellsPerRow * this.cellSize
+    this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
   }
 }
 

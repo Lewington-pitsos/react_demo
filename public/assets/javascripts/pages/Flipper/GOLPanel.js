@@ -41,7 +41,7 @@ export default class Board extends React.Component {
 
     return(
       <ControlPanel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.props.GOLActive}>
-        <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Full flip</button>
+        <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Invert</button>
         <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Single Round</button>
         <button className="btn btn-primary play-round" onClick={this.startGOL.bind(this)}>{GOLPlayMessage}</button>
         <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>
