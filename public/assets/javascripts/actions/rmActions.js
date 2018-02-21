@@ -65,8 +65,8 @@ export default {
       type: 'ADD_COMMAND',
       commandProps: {
         increment: true,
-        nextCommand: 1,
-        bucket: 1
+        nextCommand: 0,
+        bucket: 0
       }
     })
   },

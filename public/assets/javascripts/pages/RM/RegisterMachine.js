@@ -28,9 +28,9 @@ export default class RegisterMachine extends React.Component {
     rmActions.removeBucket()
   }
 
-  addDecrement() {
-    rmActions.addDecrement()
-  }
+  // addDecrement() {
+  //   rmActions.addDecrement()
+  // }
 
   addIncrement() {
     rmActions.addIncrement()

@@ -491,8 +491,8 @@ module.exports = invariant;
       type: 'ADD_COMMAND',
       commandProps: {
         increment: true,
-        nextCommand: 1,
-        bucket: 1
+        nextCommand: 0,
+        bucket: 0
       }
     });
   },
@@ -31518,9 +31518,9 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
     __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].removeBucket();
   }
 
-  addDecrement() {
-    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addDecrement();
-  }
+  // addDecrement() {
+  //   rmActions.addDecrement()
+  // }
 
   addIncrement() {
     __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addIncrement();
