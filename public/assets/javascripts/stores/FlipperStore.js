@@ -5,11 +5,11 @@ import dispatcher from '../dispatcher'
 class FlipperStore extends EventEmitter {
   constructor() {
     super()
-    this.GOLState = false
+    this.GOLMode = false
   }
 
   getInfo() {
-    return {GOLState: this.GOLState}
+    return {GOLMode: this.GOLMode}
   }
 
   handleActions(action) {
@@ -25,13 +25,13 @@ class FlipperStore extends EventEmitter {
   }
 
   exitGol() {
-    this.GOLState = false
+    this.GOLMode = false
 
     this.emit('change')
   }
 
   layoutGOL() {
-    this.GOLState = true
+    this.GOLMode = true
 
     this.emit('change')
   }

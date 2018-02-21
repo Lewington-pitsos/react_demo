@@ -12,7 +12,10 @@ class BoardStore extends EventEmitter {
     this.cellSize = 200
     this.number = 12
     this.boardWidth = false
+
     this.playing = false
+    this.autoFlipper = false
+    this.secondAutoFlipper = false
 
     // cells are stored as an array of PositionedCell objects
     this.cells = [
@@ -47,6 +50,10 @@ class BoardStore extends EventEmitter {
 
   isPlaying() {
     return { playing: this.playing }
+  }
+
+  isFlipping() {
+    return { flipping: this.autoFlipper }
   }
 
   handleActions(action) {

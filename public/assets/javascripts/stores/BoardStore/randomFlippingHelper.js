@@ -2,13 +2,18 @@ export default {
   toggleRandFlipping() {
     // starts two staggered intervals which keep choosing random numbers of random cells and flipping them
     // if the intervals are already running, it stops them both
+    // either way emit a change event to update flipping-related components
     if (this.autoFlipper) {
       clearInterval(this.autoFlipper)
       clearInterval(this.secondAutoFlipper)
+      this.secondAutoFlipper = false
+      this.autoFlipper = false
     } else {
       this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800)
       this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100)
     }
+
+    this.emit('change')
   },
 
   flipSomeCells() {

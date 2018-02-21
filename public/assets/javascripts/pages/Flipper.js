@@ -5,6 +5,7 @@ import ControlPanel from './shared/ControlPanel'
 import cellActions from '../actions/cellActions'
 import flipperStore from '../stores/FlipperStore'
 import GOLPanel from './Flipper/GOLPanel'
+import RandFlipper from './Flipper/RandFlipper'
 
 
 export default class Flipper extends React.Component {
@@ -27,10 +28,6 @@ export default class Flipper extends React.Component {
     cellActions.addCell()
   }
 
-  randFlipping() {
-    cellActions.randFlipping()
-  }
-
   fixBoard() {
     // the current width of the baord is recorded so that we can fix the grid cells the same way that they are displayed
     cellActions.fixBoard($('#board').width())
@@ -40,19 +37,19 @@ export default class Flipper extends React.Component {
 
     return(
       <div>
-        <ControlPanel classes="GOL animated" side="top" fadeIn="fadeInDown" fadeOut="fadeOutUp" GOLActive={this.state.GOLState}>
+        <ControlPanel classes="GOL animated" side="top" fadeIn="fadeInDown" fadeOut="fadeOutUp" GOLActive={this.state.GOLMode}>
           <h2>Game of Life Simulator</h2>
         </ControlPanel>
         <h1>Flipper Page</h1>
         <div className="d-flex align-items-center flex-column GOL_wrapper">
           <Board />
         </div>
-        <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLState}>
+        <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLMode}>
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Add Cell</button>
-          <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>Start Random Flipping</button>
+          <RandFlipper />
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Game of Life</button>
         </ControlPanel>
-        <GOLPanel GOLActive={this.state.GOLState}/>
+        <GOLPanel GOLActive={this.state.GOLMode}/>
       </div>
     )
   }

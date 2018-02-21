@@ -30604,6 +30604,8 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__ = __webpack_require__(137);
+
 
 
 
@@ -30633,10 +30635,6 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].addCell();
   }
 
-  randFlipping() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].randFlipping();
-  }
-
   fixBoard() {
     // the current width of the baord is recorded so that we can fix the grid cells the same way that they are displayed
     __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].fixBoard($('#board').width());
@@ -30649,7 +30647,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
-        { classes: 'GOL animated', side: 'top', fadeIn: 'fadeInDown', fadeOut: 'fadeOutUp', GOLActive: this.state.GOLState },
+        { classes: 'GOL animated', side: 'top', fadeIn: 'fadeInDown', fadeOut: 'fadeOutUp', GOLActive: this.state.GOLMode },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h2',
           null,
@@ -30668,24 +30666,20 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
-        { classes: 'animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: !this.state.GOLState },
+        { classes: 'animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: !this.state.GOLMode },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
           { className: 'btn btn-primary', onClick: this.addCell.bind(this) },
           'Add Cell'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary rand-flipping', onClick: this.randFlipping.bind(this) },
-          'Start Random Flipping'
-        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
           { className: 'btn btn-primary fix-board', onClick: this.fixBoard.bind(this) },
           'Game of Life'
         )
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__["a" /* default */], { GOLActive: this.state.GOLState })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__["a" /* default */], { GOLActive: this.state.GOLMode })
     );
   }
 }
@@ -30851,7 +30845,10 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.cellSize = 200;
     this.number = 12;
     this.boardWidth = false;
+
     this.playing = false;
+    this.autoFlipper = false;
+    this.secondAutoFlipper = false;
 
     // cells are stored as an array of PositionedCell objects
     this.cells = [{ id: 88828, backSide: false }, { id: 75766, backSide: false }, { id: 54676, backSide: false }, { id: 78678, backSide: false }, { id: 53456, backSide: false }, { id: 11231, backSide: false }, { id: 45677, backSide: false }, { id: 76576, backSide: false }, { id: 35656, backSide: false }, { id: 56456, backSide: false }, { id: 96456, backSide: false }, { id: 88528, backSide: false }].map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
@@ -30873,6 +30870,10 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
 
   isPlaying() {
     return { playing: this.playing };
+  }
+
+  isFlipping() {
+    return { flipping: this.autoFlipper };
   }
 
   handleActions(action) {
@@ -30983,13 +30984,18 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
   toggleRandFlipping() {
     // starts two staggered intervals which keep choosing random numbers of random cells and flipping them
     // if the intervals are already running, it stops them both
+    // either way emit a change event to update flipping-related components
     if (this.autoFlipper) {
       clearInterval(this.autoFlipper);
       clearInterval(this.secondAutoFlipper);
+      this.secondAutoFlipper = false;
+      this.autoFlipper = false;
     } else {
       this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800);
       this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100);
     }
+
+    this.emit('change');
   },
 
   flipSomeCells() {
@@ -31217,11 +31223,11 @@ class SiblingsTracker {
 class FlipperStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.GOLState = false;
+    this.GOLMode = false;
   }
 
   getInfo() {
-    return { GOLState: this.GOLState };
+    return { GOLMode: this.GOLMode };
   }
 
   handleActions(action) {
@@ -31239,13 +31245,13 @@ class FlipperStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   exitGol() {
-    this.GOLState = false;
+    this.GOLMode = false;
 
     this.emit('change');
   }
 
   layoutGOL() {
-    this.GOLState = true;
+    this.GOLMode = true;
 
     this.emit('change');
   }
@@ -32667,6 +32673,52 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         { className: 'btn btn-primary exit', onClick: this.exit.bind(this) },
         'Exit GOL'
       )
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Board;
+
+
+/***/ }),
+/* 137 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_cellActions__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__ = __webpack_require__(109);
+
+
+
+
+
+class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__["a" /* default */].isFlipping();
+  }
+
+  componentWillMount() {
+    // triggered just before the innitial render of the whole component
+    __WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__["a" /* default */].isFlipping());
+    });
+  }
+
+  randFlipping() {
+    __WEBPACK_IMPORTED_MODULE_1__actions_cellActions__["a" /* default */].randFlipping();
+  }
+
+  render() {
+
+    const startOrStop = this.state.flipping ? 'Stop' : 'Start';
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { className: 'btn btn-primary rand-flipping', onClick: this.randFlipping.bind(this) },
+      startOrStop,
+      ' Random Flipping'
     );
   }
 }

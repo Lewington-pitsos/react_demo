@@ -1,0 +1,32 @@
+import React from 'react'
+
+import cellActions from '../../actions/cellActions'
+import boardStore from '../../stores/BoardStore'
+
+export default class Board extends React.Component {
+  constructor() {
+    super()
+    this.state = boardStore.isFlipping()
+  }
+
+  componentWillMount() { // triggered just before the innitial render of the whole component
+    boardStore.on('change', () => {
+      this.setState( boardStore.isFlipping() )
+    })
+  }
+
+  randFlipping() {
+    cellActions.randFlipping()
+  }
+
+  render() {
+
+    const startOrStop = this.state.flipping ?
+      'Stop' :
+      'Start'
+
+    return(
+      <button className="btn btn-primary rand-flipping" onClick={this.randFlipping.bind(this)}>{startOrStop} Random Flipping</button>
+    )
+  }
+}
