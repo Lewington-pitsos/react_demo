@@ -31290,9 +31290,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       $('.tutorial').addClass('hidden');
     } else {
       this.setupTutorialPanel();
-      setTimeout(function () {
-        $('#RMs-page').addClass('hidden');
-      }, 801);
+      $('#RMs-page').addClass('hidden');
     }
   }
 

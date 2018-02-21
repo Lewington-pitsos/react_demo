@@ -25,9 +25,7 @@ export default class RM extends React.Component {
       $('.tutorial').addClass('hidden')
     } else {
       this.setupTutorialPanel()
-      setTimeout(function() {
-        $('#RMs-page').addClass('hidden')
-      }, 801)
+      $('#RMs-page').addClass('hidden')
     }
   }
 
