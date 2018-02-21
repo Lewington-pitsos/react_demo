@@ -4,6 +4,7 @@ import dispatcher from '../dispatcher'
 import randomFLippingHelper from './BoardStore/randomFlippingHelper'
 import matrixHelper from './BoardStore/matrixHelper'
 import PositionedCell from './BoardStore/PositionedCell'
+import GOLHelper from './BoardStore/GOLHelper'
 
 class BoardStore extends EventEmitter {
   constructor() {
@@ -38,6 +39,7 @@ class BoardStore extends EventEmitter {
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, randomFLippingHelper);
     Object.assign(this, matrixHelper)
+    Object.assign(this, GOLHelper)
   }
 
   cellSpecs() {

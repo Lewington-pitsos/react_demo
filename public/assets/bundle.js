@@ -30833,9 +30833,10 @@ Cell.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__ = __webpack_require__(138);
  // 'events is like, part of nodejs'
+
 
 
 
@@ -30861,7 +30862,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["default"]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__["a" /* default */]);
   }
 
   cellSpecs() {
@@ -31043,9 +31045,119 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
 
 /***/ }),
 /* 111 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed: SyntaxError: Unexpected token, expected , (114:2)\n\n\u001b[0m \u001b[90m 112 | \u001b[39m  }\n \u001b[90m 113 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 114 | \u001b[39m  startPlaying() {\n \u001b[90m     | \u001b[39m  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 115 | \u001b[39m    \u001b[90m// instantly plays one round, and then plays one every interval\u001b[39m\n \u001b[90m 116 | \u001b[39m    \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mplayRound()\n \u001b[90m 117 | \u001b[39m    \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mplaying \u001b[33m=\u001b[39m setInterval(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mplayRound\u001b[33m.\u001b[39mbind(\u001b[36mthis\u001b[39m)\u001b[33m,\u001b[39m \u001b[35m1300\u001b[39m)\u001b[0m\n");
+"use strict";
+// all functions relating to the cells in their matrixified form
+/* harmony default export */ __webpack_exports__["a"] = ({
+
+  // SETUP
+
+  matrixify(array, rowLength) {
+    // iterate throgh the array and add each element to row
+    // if the current array index is equal to the rowLength,
+    //  => push the row to matrix
+    //  => reset row to an empty array
+    //  => add the innitial row length to the current rowLength tracker
+    // finally, push the final row to matrix if it contains anything
+    var innitialRowLength = rowLength;
+    var matrix = [];
+    var row = [];
+
+    for (var i = 0; i < array.length; i++) {
+      if (i == rowLength) {
+        matrix.push(row);
+        row = [];
+        rowLength += innitialRowLength;
+      }
+      row.push(array[i]);
+    }
+
+    if (row.length) {
+      matrix.push(row);
+    }
+
+    return matrix;
+  },
+
+  assignSiblings(cell, y, x) {
+    // iterates through every cell in the matrix and adds all it's siblings to it's siblingsTracker object
+    cell.addSiblings(this.getCoordinateSiblings(x, y));
+  },
+
+  getCoordinateSiblings(x, y) {
+    // very simple: just pushes all the values at neighbouring coordinates to an array and returns it (minus any falsey values)
+    var siblingsArray = [];
+    if (y > 0) {
+      siblingsArray.push(this.cellMatrix[y - 1][x - 1]);
+      siblingsArray.push(this.cellMatrix[y - 1][x]);
+      siblingsArray.push(this.cellMatrix[y - 1][x + 1]);
+    }
+
+    siblingsArray.push(this.cellMatrix[y][x - 1]);
+    siblingsArray.push(this.cellMatrix[y][x + 1]);
+
+    if (y < this.cellMatrix.length - 1) {
+      siblingsArray.push(this.cellMatrix[y + 1][x - 1]);
+      siblingsArray.push(this.cellMatrix[y + 1][x]);
+      siblingsArray.push(this.cellMatrix[y + 1][x + 1]);
+    }
+
+    return siblingsArray.filter(cell => cell);
+  },
+
+  // ITERATOR FUNCTIONS
+
+  everyCell(func) {
+    // takes a function and calls it on every cell, plus that cell's coordinates
+    for (var i = 0; i < this.cellMatrix.length; i++) {
+      for (var j = 0; j < this.cellMatrix[i].length; j++) {
+        func(this.cellMatrix[i][j], i, j);
+      }
+    }
+  },
+
+  cascadeFlip(func) {
+    // takes a function as an argument and For each row in the matrix,
+    //  => it waits successivly longer and then applies the function to every cell in that row
+    //  => triggers a change event
+    for (var i = 0; i < this.cellMatrix.length; i++) {
+      setTimeout(this.flipRow.bind(this), i * 100, this.cellMatrix[i], func);
+    }
+  },
+
+  flipRow(row, func) {
+    // calls the passed in function on every cell in the current row, then emits a change event
+    for (var j = 0; j < row.length; j++) {
+      func(row[j]);
+    }
+
+    this.emit('change');
+  },
+
+  // DOM CHANGING FUNCTIONS
+
+
+  // SIMPLE CELL OPERATIONS
+
+  calculateNextState(cell) {
+    // finds the next state of the passed in cell and whether this is the same as its current one
+    // sets noChanges to false as soon as it gets a single change
+    const changed = cell.findNextSide();
+    if (changed) {
+      this.noChanges = false;
+    }
+  },
+
+  assignNextState(cell) {
+    cell.updateSide();
+  },
+
+  reverse(cell) {
+    cell.backSide = !cell.backSide;
+  }
+
+});
 
 /***/ }),
 /* 112 */
@@ -32628,6 +32740,52 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Board;
 
+
+/***/ }),
+/* 138 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__ = __webpack_require__(19);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  playRound() {
+    // first assumes that no state will change and goes through each cell and calculates its next state,
+    // if any state did change, goes through each cell again and updates the state, emmittign a change
+    // otherwise, stops the GOL and flashes a message
+    this.noChanges = true;
+    this.everyCell(this.calculateNextState.bind(this));
+    if (this.noChanges) {
+      this.gameOver();
+    } else {
+      this.everyCell(this.assignNextState.bind(this));
+      this.emit('change');
+    }
+  },
+
+  gameOver() {
+    // ceases the curent game and flashes a game over message
+    this.stopPlaying();
+    setTimeout(function () {
+      __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__["a" /* default */].flash('Game over...');
+    }, 0);
+  },
+
+  startPlaying() {
+    // instantly plays one round, and then plays one every interval
+    this.playRound();
+    this.playing = setInterval(this.playRound.bind(this), 1300);
+    this.emit('change');
+  },
+
+  stopPlaying() {
+    // clears the interval, sets the playing value to false and emits a change
+    clearInterval(this.playing);
+    this.playing = false;
+    this.emit('change');
+  }
+});
 
 /***/ })
 /******/ ]);
