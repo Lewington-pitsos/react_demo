@@ -15,6 +15,7 @@ export default class Decrement extends Command {
       this.store.decrementBucket(this.bucketId)
       this.nextCommand = this.defaultNext
     } else {
+      this.store.failToDecrement(this.bucketId)
       this.nextCommand = this.alternateNext
     }
   }

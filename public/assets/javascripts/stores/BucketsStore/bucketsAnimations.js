@@ -38,6 +38,13 @@ const executorAnimations =  {
     var uggWidth = $('.ugg').width()
     var bucketDistance = ($('#bucket-1').width() / 2) + 5
     return uggWidth + bucketDistance
+  },
+
+  uggWaver() {
+    $('.ugg').addClass('bounce')
+    setTimeout(function() {
+      $('.ugg').removeClass('bounce')
+    }, 1300)
   }
 }
 

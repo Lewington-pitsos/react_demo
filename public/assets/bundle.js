@@ -31778,7 +31778,7 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'ugg row p-0 position-relative', onClick: this.grunt.bind(this) },
+      { className: 'ugg row p-0 position-relative animated', onClick: this.grunt.bind(this) },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'col-6 pt-2' },
@@ -31857,6 +31857,13 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var uggWidth = $('.ugg').width();
     var bucketDistance = $('#bucket-1').width() / 2 + 5;
     return uggWidth + bucketDistance;
+  },
+
+  uggWaver() {
+    $('.ugg').addClass('bounce');
+    setTimeout(function () {
+      $('.ugg').removeClass('bounce');
+    }, 1300);
   }
 };
 
@@ -31869,6 +31876,11 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
+  failToDecrement(id) {
+    this.moveUgg(id);
+    setTimeout(this.uggWaver.bind(this), 900);
+  },
+
   decrementBucket(id) {
     this.moveUgg(id);
     setTimeout(this.animateOutStone.bind(this), 900, id);
@@ -32004,6 +32016,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
       this.store.decrementBucket(this.bucketId);
       this.nextCommand = this.defaultNext;
     } else {
+      this.store.failToDecrement(this.bucketId);
       this.nextCommand = this.alternateNext;
     }
   }

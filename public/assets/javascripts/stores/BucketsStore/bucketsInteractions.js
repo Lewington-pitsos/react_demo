@@ -1,4 +1,9 @@
 export default {
+  failToDecrement(id) {
+    this.moveUgg(id)
+    setTimeout(this.uggWaver.bind(this), 900)
+  },
+
   decrementBucket(id) {
     this.moveUgg(id)
     setTimeout(this.animateOutStone.bind(this), 900, id)

@@ -21,7 +21,7 @@ export default class Ugg extends React.Component {
 
   render() {
     return(
-        <div className="ugg row p-0 position-relative" onClick={this.grunt.bind(this)}>
+        <div className="ugg row p-0 position-relative animated" onClick={this.grunt.bind(this)}>
           <div className="col-6 pt-2">
             <h4>Ugg</h4>
           </div>
