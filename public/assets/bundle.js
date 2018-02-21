@@ -11200,6 +11200,7 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     setTimeout(function () {
       __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__["a" /* default */].flash('The program has terminated successfully with a return value of ' + returnVal);
     }, 0);
+    this.uggDance();
   }
 
   addBucket() {
@@ -32538,7 +32539,7 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
       top: currentBucketMiddle
     }, 900);
     $('.buckets-holder').animate({
-      scrollTop: currentBucketMiddle
+      scrollTop: currentBucketMiddle - bucketHeight
     }, 900);
   },
 

@@ -98,6 +98,7 @@ class BucketsStore extends EventEmitter {
     setTimeout(function() {
       flashActions.flash('The program has terminated successfully with a return value of ' + returnVal)
     }, 0)
+    this.uggDance()
   }
 
   addBucket() {

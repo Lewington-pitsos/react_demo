@@ -8,7 +8,7 @@ const executorAnimations =  {
       top: currentBucketMiddle
     }, 900)
     $('.buckets-holder').animate({
-      scrollTop: currentBucketMiddle
+      scrollTop: currentBucketMiddle - bucketHeight
     }, 900)
   },
 
