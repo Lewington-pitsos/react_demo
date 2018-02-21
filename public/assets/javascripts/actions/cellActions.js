@@ -39,6 +39,12 @@ export default {
     })
   },
 
+  startGOL() {
+    dispatcher.dispatch({
+      type: 'START_GOL'
+    })
+  },
+
   exit() {
     dispatcher.dispatch({
       type: 'EXIT_GOL'

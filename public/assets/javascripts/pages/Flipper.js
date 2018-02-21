@@ -47,6 +47,10 @@ export default class Flipper extends React.Component {
     cellActions.exit()
   }
 
+  startGOL() {
+    cellActions.startGOL()
+  }
+
   render() {
 
     console.log(this.state);
@@ -67,7 +71,8 @@ export default class Flipper extends React.Component {
         </ControlPanel>
         <ControlPanel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.state.GOLState}>
           <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Full flip</button>
-          <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Round</button>
+          <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Single Round</button>
+          <button className="btn btn-primary play-round" onClick={this.startGOL.bind(this)}>Start Game of Life</button>
           <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>
         </ControlPanel>
       </div>

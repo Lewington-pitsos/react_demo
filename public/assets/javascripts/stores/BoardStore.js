@@ -12,6 +12,7 @@ class BoardStore extends EventEmitter {
     this.cellSize = 200
     this.number = 12
     this.boardWidth = false
+    this.playing = false
 
     // cells are stored as an array of PositionedCell objects
     this.cells = [
@@ -31,7 +32,6 @@ class BoardStore extends EventEmitter {
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, randomFLippingHelper);
-
     Object.assign(this, matrixHelper)
   }
 
@@ -68,8 +68,15 @@ class BoardStore extends EventEmitter {
       } case 'EXIT_GOL': {
         this.exitGol()
         break
+      } case 'START_GOL': {
+        this.startGOL()
+        break
       }
     }
+  }
+
+  startGOL() {
+    console.log('gol started');
   }
 
   exitGol() {

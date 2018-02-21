@@ -13580,6 +13580,12 @@ var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
     });
   },
 
+  startGOL() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'START_GOL'
+    });
+  },
+
   exit() {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'EXIT_GOL'
@@ -30646,6 +30652,10 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].exit();
   }
 
+  startGOL() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].startGOL();
+  }
+
   render() {
 
     console.log(this.state);
@@ -30702,7 +30712,12 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
           { className: 'btn btn-primary play-round', onClick: this.playRound.bind(this) },
-          'Play Round'
+          'Play Single Round'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary play-round', onClick: this.startGOL.bind(this) },
+          'Start Game of Life'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
@@ -30875,13 +30890,13 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.cellSize = 200;
     this.number = 12;
     this.boardWidth = false;
+    this.playing = false;
 
     // cells are stored as an array of PositionedCell objects
     this.cells = [{ id: 88828, backSide: false }, { id: 75766, backSide: false }, { id: 54676, backSide: false }, { id: 78678, backSide: false }, { id: 53456, backSide: false }, { id: 11231, backSide: false }, { id: 45677, backSide: false }, { id: 76576, backSide: false }, { id: 35656, backSide: false }, { id: 56456, backSide: false }, { id: 96456, backSide: false }, { id: 88528, backSide: false }].map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
-
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["a" /* default */]);
   }
 
@@ -30925,8 +30940,16 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
         {
           this.exitGol();
           break;
+        }case 'START_GOL':
+        {
+          this.startGOL();
+          break;
         }
     }
+  }
+
+  startGOL() {
+    console.log('gol started');
   }
 
   exitGol() {
