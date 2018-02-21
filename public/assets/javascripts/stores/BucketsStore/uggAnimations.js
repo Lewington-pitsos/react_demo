@@ -41,6 +41,15 @@ const executorAnimations =  {
   },
 
   uggWaver() {
+    // to indicate failure to decrement an empty bucket
+    $('.ugg').addClass('bounce')
+    setTimeout(function() {
+      $('.ugg').removeClass('bounce')
+    }, 1300)
+  },
+
+  uggDance() {
+    // bounces ugg up and down to indicate happiness at having finished the program
     $('.ugg').addClass('bounce')
     setTimeout(function() {
       $('.ugg').removeClass('bounce')

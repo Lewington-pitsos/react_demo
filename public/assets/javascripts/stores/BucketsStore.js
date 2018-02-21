@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
-import bucketsAnimations from './BucketsStore/bucketsAnimations'
+import uggAnimations from './BucketsStore/uggAnimations'
 import bucketsInteractions from './BucketsStore/bucketsInteractions'
 import flashActions from '../actions/flashActions'
 
@@ -15,7 +15,7 @@ class BucketsStore extends EventEmitter {
 
     this.editingBucket = -1
 
-    Object.assign(this, bucketsAnimations);
+    Object.assign(this, uggAnimations);
     Object.assign(this, bucketsInteractions);
   }
 

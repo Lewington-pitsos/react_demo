@@ -11091,7 +11091,7 @@ var createPath = function createPath(location) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_uggAnimations__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__ = __webpack_require__(19);
  // 'events is like, part of nodejs'
@@ -11108,7 +11108,7 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
     this.editingBucket = -1;
 
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BucketsStore_bucketsAnimations__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BucketsStore_uggAnimations__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__["a" /* default */]);
   }
 
@@ -31813,64 +31813,7 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 122 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
-  moveUgg(bucketId) {
-    // scrolls ugg to the middle of the bucket whose ide is passed in
-    var bucketSelector = '#bucket-' + bucketId;
-    var bucketHeight = $(bucketSelector).outerHeight(true);
-    var currentBucketMiddle = bucketHeight * bucketId + 25;
-    $('.ugg').animate({
-      top: currentBucketMiddle
-    }, 900);
-    $('.buckets-holder').animate({
-      scrollTop: currentBucketMiddle
-    }, 900);
-  },
-
-  uggAddStone() {
-    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
-    // immidiately retusn the stone to it's innitla position
-    var $stone = $('.uggs-stone');
-    $stone.animate({
-      right: this.stoneDistance()
-    }, 500, function () {
-      $stone.css('right', 0);
-    });
-  },
-
-  uggTakeStone() {
-    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
-    // animates the stone from the icon back to the sack
-    var $stone = $('.uggs-stone');
-    $stone.css('right', this.stoneDistance());
-    $stone.animate({
-      right: 0
-    }, 500);
-  },
-
-  stoneDistance() {
-    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
-    var uggWidth = $('.ugg').width();
-    var bucketDistance = $('#bucket-1').width() / 2 + 5;
-    return uggWidth + bucketDistance;
-  },
-
-  uggWaver() {
-    $('.ugg').addClass('bounce');
-    setTimeout(function () {
-      $('.ugg').removeClass('bounce');
-    }, 1300);
-  }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
-
-/***/ }),
+/* 122 */,
 /* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -32570,6 +32513,73 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
 
+
+/***/ }),
+/* 136 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
+  moveUgg(bucketId) {
+    // scrolls ugg to the middle of the bucket whose ide is passed in
+    var bucketSelector = '#bucket-' + bucketId;
+    var bucketHeight = $(bucketSelector).outerHeight(true);
+    var currentBucketMiddle = bucketHeight * bucketId + 25;
+    $('.ugg').animate({
+      top: currentBucketMiddle
+    }, 900);
+    $('.buckets-holder').animate({
+      scrollTop: currentBucketMiddle
+    }, 900);
+  },
+
+  uggAddStone() {
+    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
+    // immidiately retusn the stone to it's innitla position
+    var $stone = $('.uggs-stone');
+    $stone.animate({
+      right: this.stoneDistance()
+    }, 500, function () {
+      $stone.css('right', 0);
+    });
+  },
+
+  uggTakeStone() {
+    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
+    // animates the stone from the icon back to the sack
+    var $stone = $('.uggs-stone');
+    $stone.css('right', this.stoneDistance());
+    $stone.animate({
+      right: 0
+    }, 500);
+  },
+
+  stoneDistance() {
+    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
+    var uggWidth = $('.ugg').width();
+    var bucketDistance = $('#bucket-1').width() / 2 + 5;
+    return uggWidth + bucketDistance;
+  },
+
+  uggWaver() {
+    // to indicate failure to decrement an empty bucket
+    $('.ugg').addClass('bounce');
+    setTimeout(function () {
+      $('.ugg').removeClass('bounce');
+    }, 1300);
+  },
+
+  uggDance() {
+    // bounces ugg up and down to indicate happiness at having finished the program
+    $('.ugg').addClass('bounce');
+    setTimeout(function () {
+      $('.ugg').removeClass('bounce');
+    }, 1300);
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
 
 /***/ })
 /******/ ]);
