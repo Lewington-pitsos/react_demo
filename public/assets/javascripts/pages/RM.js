@@ -18,6 +18,9 @@ export default class RM extends React.Component {
 
   componentDidMount() {
     executionStore.setTutorialHeight()
+    if (!this.state.tutorial) {
+      $('.tutorial').addClass('hidden')
+    }
   }
 
   render() {
