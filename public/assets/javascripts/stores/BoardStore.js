@@ -45,6 +45,10 @@ class BoardStore extends EventEmitter {
     }
   }
 
+  isPlaying() {
+    return { playing: this.playing }
+  }
+
   handleActions(action) {
     switch(action.type) {
       case "ADD_CELL": {
@@ -84,6 +88,7 @@ class BoardStore extends EventEmitter {
       this.playing = false
     }
 
+    this.emit('change')
   }
 
   exitGol() {

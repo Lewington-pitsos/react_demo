@@ -424,140 +424,6 @@ module.exports = invariant;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(5);
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  addBucket() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'ADD_BUCKET' });
-  },
-
-  removeBucket() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'REMOVE_BUCKET' });
-  },
-
-  incrementBucket(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'INCREMENT_BUCKET',
-      id: id
-    });
-  },
-
-  autoIncrement(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'AUTO_INCREMENT_BUCKET',
-      id: id
-    });
-  },
-
-  autoDecrement(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'AUTO_DECREMENT_BUCKET',
-      id: id
-    });
-  },
-
-  emptyBucket(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'EMPTY_BUCKET',
-      id: id
-    });
-  },
-
-  decrementBucket(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'DECREMENT_BUCKET',
-      id: id
-    });
-  },
-
-  addDecrement() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'ADD_COMMAND',
-      commandProps: {
-        increment: false,
-        nextCommand: 1,
-        bucket: 1,
-        alternateNext: 1
-      }
-    });
-  },
-
-  addIncrement() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'ADD_COMMAND',
-      commandProps: {
-        increment: true,
-        nextCommand: 0,
-        bucket: 0
-      }
-    });
-  },
-
-  execute() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'EXECUTE'
-    });
-  },
-
-  updateCommand(specs) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'UPDATE_COMMAND',
-      specs: specs
-    });
-  },
-
-  deleteCommand(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'DELETE_COMMAND',
-      id: id
-    });
-  },
-
-  switchEditor(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'SWITCH_EDITOR',
-      id: id
-    });
-  },
-
-  switchBucketEditor(id) {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'SWITCH_BUCKET_EDITOR',
-      id: id
-    });
-  },
-
-  finishExecution() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'FINISH_EXECUTION'
-    });
-  },
-
-  haltExecution() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'HALT_EXECUTION'
-    });
-  },
-
-  exitTutorial() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'EXIT_TUTORIAL'
-    });
-  },
-
-  enterTutorial() {
-    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'ENTER_TUTORIAL'
-    });
-  }
-});
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10480,6 +10346,140 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 });
 
 /***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dispatcher__ = __webpack_require__(5);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  addBucket() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'ADD_BUCKET' });
+  },
+
+  removeBucket() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({ type: 'REMOVE_BUCKET' });
+  },
+
+  incrementBucket(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'INCREMENT_BUCKET',
+      id: id
+    });
+  },
+
+  autoIncrement(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'AUTO_INCREMENT_BUCKET',
+      id: id
+    });
+  },
+
+  autoDecrement(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'AUTO_DECREMENT_BUCKET',
+      id: id
+    });
+  },
+
+  emptyBucket(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'EMPTY_BUCKET',
+      id: id
+    });
+  },
+
+  decrementBucket(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'DECREMENT_BUCKET',
+      id: id
+    });
+  },
+
+  addDecrement() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'ADD_COMMAND',
+      commandProps: {
+        increment: false,
+        nextCommand: 1,
+        bucket: 1,
+        alternateNext: 1
+      }
+    });
+  },
+
+  addIncrement() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'ADD_COMMAND',
+      commandProps: {
+        increment: true,
+        nextCommand: 0,
+        bucket: 0
+      }
+    });
+  },
+
+  execute() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'EXECUTE'
+    });
+  },
+
+  updateCommand(specs) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'UPDATE_COMMAND',
+      specs: specs
+    });
+  },
+
+  deleteCommand(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'DELETE_COMMAND',
+      id: id
+    });
+  },
+
+  switchEditor(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'SWITCH_EDITOR',
+      id: id
+    });
+  },
+
+  switchBucketEditor(id) {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'SWITCH_BUCKET_EDITOR',
+      id: id
+    });
+  },
+
+  finishExecution() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'FINISH_EXECUTION'
+    });
+  },
+
+  haltExecution() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'HALT_EXECUTION'
+    });
+  },
+
+  exitTutorial() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'EXIT_TUTORIAL'
+    });
+  },
+
+  enterTutorial() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'ENTER_TUTORIAL'
+    });
+  }
+});
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11091,7 +11091,7 @@ var createPath = function createPath(location) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_uggAnimations__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_uggAnimations__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__ = __webpack_require__(19);
  // 'events is like, part of nodejs'
@@ -11514,7 +11514,7 @@ const executionStore = new ExecutionStore();
 
 __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(executionStore.handleActions.bind(executionStore));
 /* harmony default export */ __webpack_exports__["a"] = (executionStore);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 19 */
@@ -13679,7 +13679,7 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(127);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(129);
  // 'events is like, part of nodejs'
@@ -17765,7 +17765,7 @@ if (typeof jQuery === 'undefined') {
     return Popover;
   }(jQuery);
 }();
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(59)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(59)))
 
 /***/ }),
 /* 59 */
@@ -30218,7 +30218,7 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Layout;
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 102 */
@@ -30286,7 +30286,7 @@ const flashStore = new FlashStore();
 
 __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flashStore.handleActions.bind(flashStore));
 /* harmony default export */ __webpack_exports__["a"] = (flashStore);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 103 */
@@ -30603,6 +30603,8 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(136);
+
 
 
 
@@ -30640,25 +30642,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].fixBoard($('#board').width());
   }
 
-  cascadeFlip() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].cascadeFlip();
-  }
-
-  playRound() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].playRound();
-  }
-
-  exit() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].exit();
-  }
-
-  startGOL() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].startGOL();
-  }
-
   render() {
-
-    console.log(this.state);
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -30701,36 +30685,13 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           'Game of Life'
         )
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
-        { classes: 'GOL animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: this.state.GOLState },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary cascade-flip', onClick: this.cascadeFlip.bind(this) },
-          'Full flip'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary play-round', onClick: this.playRound.bind(this) },
-          'Play Single Round'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary play-round', onClick: this.startGOL.bind(this) },
-          'Start Game of Life'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn btn-primary exit', onClick: this.exit.bind(this) },
-          'Exit GOL'
-        )
-      )
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__["a" /* default */], { GOLActive: this.state.GOLState })
     );
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Flipper;
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 107 */
@@ -30910,6 +30871,10 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     };
   }
 
+  isPlaying() {
+    return { playing: this.playing };
+  }
+
   handleActions(action) {
     switch (action.type) {
       case "ADD_CELL":
@@ -30956,6 +30921,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
       clearInterval(this.playing);
       this.playing = false;
     }
+
+    this.emit('change');
   }
 
   exitGol() {
@@ -31147,6 +31114,8 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
   },
 
   startPlaying() {
+    // instantly plays one round, and then plays one every interval
+    this.playRound();
     this.playing = setInterval(this.playRound.bind(this), 1300);
   },
 
@@ -31384,7 +31353,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = RM;
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 116 */
@@ -31393,7 +31362,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 
 
 
@@ -31517,7 +31486,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BucketSelector__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ExecutePanel__ = __webpack_require__(134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__stores_ExecutionStore__ = __webpack_require__(18);
@@ -31687,7 +31656,7 @@ class Buckets extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
 
 
 
@@ -31749,7 +31718,7 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 
 
 
@@ -31856,7 +31825,73 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 122 */,
+/* 122 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
+  moveUgg(bucketId) {
+    // scrolls ugg to the middle of the bucket whose ide is passed in
+    var bucketSelector = '#bucket-' + bucketId;
+    var bucketHeight = $(bucketSelector).outerHeight(true);
+    var currentBucketMiddle = bucketHeight * bucketId + 25;
+    $('.ugg').animate({
+      top: currentBucketMiddle
+    }, 900);
+    $('.buckets-holder').animate({
+      scrollTop: currentBucketMiddle - bucketHeight
+    }, 900);
+  },
+
+  uggAddStone() {
+    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
+    // immidiately retusn the stone to it's innitla position
+    var $stone = $('.uggs-stone');
+    $stone.animate({
+      right: this.stoneDistance()
+    }, 500, function () {
+      $stone.css('right', 0);
+    });
+  },
+
+  uggTakeStone() {
+    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
+    // animates the stone from the icon back to the sack
+    var $stone = $('.uggs-stone');
+    $stone.css('right', this.stoneDistance());
+    $stone.animate({
+      right: 0
+    }, 500);
+  },
+
+  stoneDistance() {
+    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
+    var uggWidth = $('.ugg').width();
+    var bucketDistance = $('#bucket-1').width() / 2 + 5;
+    return uggWidth + bucketDistance;
+  },
+
+  uggWaver() {
+    // to indicate failure to decrement an empty bucket
+    $('.ugg').addClass('bounce');
+    setTimeout(function () {
+      $('.ugg').removeClass('bounce');
+    }, 1300);
+  },
+
+  uggDance() {
+    // bounces ugg up and down to indicate happiness at having finished the program
+    $('.ugg').addClass('bounce');
+    setTimeout(function () {
+      $('.ugg').removeClass('bounce');
+    }, 1300);
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
+
+/***/ }),
 /* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -32031,7 +32066,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
     }, 400);
   }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 128 */
@@ -32071,7 +32106,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
     return this.nextId++;
   }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 129 */
@@ -32116,7 +32151,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandInfo__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandEdit__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
 
 
 
@@ -32249,7 +32284,7 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BucketSelector__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandSelector__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
 
 
 
@@ -32442,7 +32477,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(135);
@@ -32514,7 +32549,7 @@ class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(14);
 
 
@@ -32562,67 +32597,81 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {const executorAnimations = {
-  moveUgg(bucketId) {
-    // scrolls ugg to the middle of the bucket whose ide is passed in
-    var bucketSelector = '#bucket-' + bucketId;
-    var bucketHeight = $(bucketSelector).outerHeight(true);
-    var currentBucketMiddle = bucketHeight * bucketId + 25;
-    $('.ugg').animate({
-      top: currentBucketMiddle
-    }, 900);
-    $('.buckets-holder').animate({
-      scrollTop: currentBucketMiddle - bucketHeight
-    }, 900);
-  },
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_ControlPanel__ = __webpack_require__(46);
 
-  uggAddStone() {
-    // animates the stone from ugg's sack to the stone icon in the adjacent bucket
-    // immidiately retusn the stone to it's innitla position
-    var $stone = $('.uggs-stone');
-    $stone.animate({
-      right: this.stoneDistance()
-    }, 500, function () {
-      $stone.css('right', 0);
-    });
-  },
 
-  uggTakeStone() {
-    // teleports the stone from ugg's sack into behind the stone icon in the adjacent bucket
-    // animates the stone from the icon back to the sack
-    var $stone = $('.uggs-stone');
-    $stone.css('right', this.stoneDistance());
-    $stone.animate({
-      right: 0
-    }, 500);
-  },
 
-  stoneDistance() {
-    // returns the distance the stone will have to travel from ugg's sack to the stone icon in the bucket
-    var uggWidth = $('.ugg').width();
-    var bucketDistance = $('#bucket-1').width() / 2 + 5;
-    return uggWidth + bucketDistance;
-  },
 
-  uggWaver() {
-    // to indicate failure to decrement an empty bucket
-    $('.ugg').addClass('bounce');
-    setTimeout(function () {
-      $('.ugg').removeClass('bounce');
-    }, 1300);
-  },
 
-  uggDance() {
-    // bounces ugg up and down to indicate happiness at having finished the program
-    $('.ugg').addClass('bounce');
-    setTimeout(function () {
-      $('.ugg').removeClass('bounce');
-    }, 1300);
+
+
+class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].isPlaying();
   }
-};
 
-/* harmony default export */ __webpack_exports__["a"] = (executorAnimations);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+  componentWillMount() {
+    // triggered just before the innitial render of the whole component
+    __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__["a" /* default */].isPlaying());
+    });
+  }
+
+  cascadeFlip() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].cascadeFlip();
+  }
+
+  playRound() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].playRound();
+  }
+
+  exit() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].exit();
+  }
+
+  startGOL() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].startGOL();
+  }
+
+  render() {
+
+    const GOLPlayMessage = this.state.playing ? 'Stop Game of life' : 'Start Game of life';
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_4__shared_ControlPanel__["a" /* default */],
+      { classes: 'GOL animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: this.props.GOLActive },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary cascade-flip', onClick: this.cascadeFlip.bind(this) },
+        'Full flip'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary play-round', onClick: this.playRound.bind(this) },
+        'Play Single Round'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary play-round', onClick: this.startGOL.bind(this) },
+        GOLPlayMessage
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary exit', onClick: this.exit.bind(this) },
+        'Exit GOL'
+      )
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Board;
+
 
 /***/ })
 /******/ ]);

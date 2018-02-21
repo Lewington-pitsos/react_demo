@@ -95,6 +95,8 @@ export default {
   },
 
   startPlaying() {
+    // instantly plays one round, and then plays one every interval
+    this.playRound()
     this.playing = setInterval(this.playRound.bind(this), 1300)
   },
 
