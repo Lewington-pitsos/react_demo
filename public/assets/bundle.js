@@ -30853,6 +30853,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.autoFlipper = false;
     this.secondAutoFlipper = false;
 
+    // trackes whether changes were made during the last GOL round
+    this.noChanges = true;
     // cells are stored as an array of PositionedCell objects
     this.cells = [{ id: 88828, backSide: false }, { id: 75766, backSide: false }, { id: 54676, backSide: false }, { id: 78678, backSide: false }, { id: 53456, backSide: false }, { id: 11231, backSide: false }, { id: 45677, backSide: false }, { id: 76576, backSide: false }, { id: 35656, backSide: false }, { id: 56456, backSide: false }, { id: 96456, backSide: false }, { id: 88528, backSide: false }].map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
 
@@ -30923,10 +30925,13 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     if (!this.playing) {
       this.startPlaying();
     } else {
-      clearInterval(this.playing);
-      this.playing = false;
+      this.stopGOL();
     }
+  }
 
+  stopGOL() {
+    clearInterval(this.playing);
+    this.playing = false;
     this.emit('change');
   }
 
@@ -31043,6 +31048,9 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__ = __webpack_require__(19);
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
 
   // SETUP
@@ -31132,23 +31140,38 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
   // DOM CHANGING FUNCTIONS
 
   playRound() {
-    // first goes through each cell and calculates its nexte state, then goes through them all again and updates the state and displays it through a casecade flip
+    // first goes through each cell and calculates its nexte state,
+    // if any state changed, goes through them all again and updates the state and displays it through a casecade flip
+    // otherwise, toggles the GOL off again and flashes a message
+    this.noChanges = true;
     this.everyCell(this.calculateNextState.bind(this));
-    this.everyCell(this.assignNextState.bind(this));
-
-    this.emit('change');
+    if (this.noChanges) {
+      this.stopGOL();
+      setTimeout(function () {
+        __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__["a" /* default */].flash('Game over...');
+      }, 0);
+    } else {
+      this.everyCell(this.assignNextState.bind(this));
+      this.emit('change');
+    }
   },
 
   startPlaying() {
     // instantly plays one round, and then plays one every interval
     this.playRound();
     this.playing = setInterval(this.playRound.bind(this), 1300);
+    this.emit('change');
   },
 
   // SIMPLE CELL OPERATIONS
 
   calculateNextState(cell) {
-    cell.findNextSide();
+    // finds the next state of the passed in cell and whether this is the same as its current one
+    // sets noChanges to false as soon as it gets a single change
+    const changed = cell.findNextSide();
+    if (changed) {
+      this.noChanges = false;
+    }
   },
 
   assignNextState(cell) {
@@ -31184,17 +31207,17 @@ class PositionedCell {
   }
 
   updateSide() {
-    console.log(this.futureBackSide);
     this.backSide = this.futureBackSide;
   }
 
   findNextSide() {
     var livingSiblings = this.siblings.livingCount();
-    console.log(livingSiblings);
 
     // this next line contains the rules of the game
     // currently we're set to GOL
     this.futureBackSide = this.stateFromSiblings(livingSiblings);
+    // returns whether or not the next state is different from the current state
+    return this.futureBackSide != this.backSide;
   }
 
   stateFromSiblings(siblings) {

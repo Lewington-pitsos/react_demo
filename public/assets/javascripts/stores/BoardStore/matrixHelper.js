@@ -1,3 +1,5 @@
+import flashActions from '../../actions/flashActions'
+
 export default {
 
   // SETUP
@@ -87,23 +89,39 @@ export default {
   // DOM CHANGING FUNCTIONS
 
   playRound() {
-    // first goes through each cell and calculates its nexte state, then goes through them all again and updates the state and displays it through a casecade flip
+    // first goes through each cell and calculates its nexte state,
+    // if any state changed, goes through them all again and updates the state and displays it through a casecade flip
+    // otherwise, toggles the GOL off again and flashes a message
+    this.noChanges = true
     this.everyCell(this.calculateNextState.bind(this))
-    this.everyCell(this.assignNextState.bind(this))
+    if (this.noChanges) {
+      this.stopGOL()
+      setTimeout(function() {
+        flashActions.flash('Game over...')
+      }, 0)
+    } else {
+      this.everyCell(this.assignNextState.bind(this))
+      this.emit('change')
+    }
 
-    this.emit('change')
   },
 
   startPlaying() {
     // instantly plays one round, and then plays one every interval
     this.playRound()
     this.playing = setInterval(this.playRound.bind(this), 1300)
+    this.emit('change')
   },
 
   // SIMPLE CELL OPERATIONS
 
   calculateNextState(cell) {
-    cell.findNextSide()
+    // finds the next state of the passed in cell and whether this is the same as its current one
+    // sets noChanges to false as soon as it gets a single change
+    const changed = cell.findNextSide()
+    if (changed) {
+      this.noChanges = false
+    }
   },
 
   assignNextState(cell){

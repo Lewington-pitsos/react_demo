@@ -17,6 +17,8 @@ class BoardStore extends EventEmitter {
     this.autoFlipper = false
     this.secondAutoFlipper = false
 
+    // trackes whether changes were made during the last GOL round
+    this.noChanges = true
     // cells are stored as an array of PositionedCell objects
     this.cells = [
       { id: 88828, backSide: false },
@@ -92,10 +94,13 @@ class BoardStore extends EventEmitter {
     if (!this.playing) {
       this.startPlaying()
     } else {
-      clearInterval(this.playing)
-      this.playing = false
+      this.stopGOL()
     }
+  }
 
+  stopGOL() {
+    clearInterval(this.playing)
+    this.playing = false
     this.emit('change')
   }
 

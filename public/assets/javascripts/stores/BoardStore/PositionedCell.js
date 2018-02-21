@@ -15,17 +15,17 @@ export default class PositionedCell {
   }
 
   updateSide() {
-    console.log(this.futureBackSide);
     this.backSide = this.futureBackSide
   }
 
   findNextSide() {
     var livingSiblings = this.siblings.livingCount()
-    console.log(livingSiblings);
 
     // this next line contains the rules of the game
     // currently we're set to GOL
     this.futureBackSide = this.stateFromSiblings(livingSiblings)
+    // returns whether or not the next state is different from the current state
+    return this.futureBackSide != this.backSide
   }
 
   stateFromSiblings(siblings) {
