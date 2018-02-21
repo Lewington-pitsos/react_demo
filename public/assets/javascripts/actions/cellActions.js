@@ -39,9 +39,9 @@ export default {
     })
   },
 
-  startGOL() {
+  toggleGOL() {
     dispatcher.dispatch({
-      type: 'START_GOL'
+      type: 'TOGGLE_GOL'
     })
   },
 

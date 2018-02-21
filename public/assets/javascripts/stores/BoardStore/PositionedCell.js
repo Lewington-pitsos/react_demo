@@ -19,12 +19,10 @@ export default class PositionedCell {
   }
 
   findNextSide() {
+    // finds the next state of this cell, based on it's current siblings
+    // returns whether or not the next state is different from the current state, we track this so we can check whether the board has stopped changing and we can end the game
     var livingSiblings = this.siblings.livingCount()
-
-    // this next line contains the rules of the game
-    // currently we're set to GOL
     this.futureBackSide = this.stateFromSiblings(livingSiblings)
-    // returns whether or not the next state is different from the current state
     return this.futureBackSide != this.backSide
   }
 

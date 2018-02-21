@@ -13580,9 +13580,9 @@ var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
     });
   },
 
-  startGOL() {
+  toggleGOL() {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'START_GOL'
+      type: 'TOGGLE_GOL'
     });
   },
 
@@ -30833,6 +30833,7 @@ Cell.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__ = __webpack_require__(112);
  // 'events is like, part of nodejs'
 
@@ -30860,7 +30861,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["default"]);
   }
 
   cellSpecs() {
@@ -30912,33 +30913,21 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
         {
           this.exitGol();
           break;
-        }case 'START_GOL':
+        }case 'TOGGLE_GOL':
         {
-          this.startGOL();
+          this.toggleGOL();
           break;
         }
     }
   }
 
-  startGOL() {
+  toggleGOL() {
     // starts the game of life if there isn't one running currently, otherwise, stops the current one
     if (!this.playing) {
       this.startPlaying();
     } else {
-      this.stopGOL();
+      this.stopPlaying();
     }
-  }
-
-  stopGOL() {
-    clearInterval(this.playing);
-    this.playing = false;
-    this.emit('change');
-  }
-
-  exitGol() {
-    this.boardWidth = false;
-
-    this.emit('change');
   }
 
   addCell() {
@@ -30968,8 +30957,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   fixBoard(boardWidth) {
     // firstly we stop any random flipping that might be going on
     this.stopRandFlip();
-    // fixes the width of the board component/element to it's current width
-    // also uses that width and the current cell size to craete a fixed matrix of cells that reflects the current on-screen cell layout
+    // fixes the width of the board component/element to it's current width and creates a matrix from the cell objects
     this.fixBoardUi(boardWidth);
     this.everyCell(this.assignSiblings.bind(this));
 
@@ -30978,10 +30966,20 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   }
 
   fixBoardUi(boardWidth) {
+    // calculates the maximum number of cells per row
+    // fixes the board width using this number and the cell width
+    // creates a matrix based on the cell number which reflects what the user sees on screen
     var cellsPerRow = Math.floor(boardWidth / this.cellSize);
     this.boardWidth = cellsPerRow * this.cellSize;
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow);
   }
+
+  exitGol() {
+    // the opposute of fixBoard, returns us to non-GOL flipping
+    this.boardWidth = false;
+    this.emit('change');
+  }
+
 }
 
 const boardStore = new BoardStore();
@@ -31045,144 +31043,9 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
 
 /***/ }),
 /* 111 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__ = __webpack_require__(19);
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-
-  // SETUP
-
-  matrixify(array, rowLength) {
-    // iterate throgh the array and add each element to row
-    // if the current array index is equal to the rowLength,
-    //  => push the row to matrix
-    //  => reset row to an empty array
-    //  => add the innitial row length to the current rowLength tracker
-    // finally, push the final row to matrix if it contains anything
-    var innitialRowLength = rowLength;
-    var matrix = [];
-    var row = [];
-
-    for (var i = 0; i < array.length; i++) {
-      if (i == rowLength) {
-        matrix.push(row);
-        row = [];
-        rowLength += innitialRowLength;
-      }
-      row.push(array[i]);
-    }
-
-    if (row.length) {
-      matrix.push(row);
-    }
-
-    return matrix;
-  },
-
-  assignSiblings(cell, y, x) {
-    // iterates through every cell in the matrix and adds all it's siblings to it's siblingsTracker object
-    cell.addSiblings(this.getCoordinateSiblings(x, y));
-  },
-
-  getCoordinateSiblings(x, y) {
-    // very simple: just pushes all the values at neighbouring coordinates to an array and returns it (minus any falsey values)
-    var siblingsArray = [];
-    if (y > 0) {
-      siblingsArray.push(this.cellMatrix[y - 1][x - 1]);
-      siblingsArray.push(this.cellMatrix[y - 1][x]);
-      siblingsArray.push(this.cellMatrix[y - 1][x + 1]);
-    }
-
-    siblingsArray.push(this.cellMatrix[y][x - 1]);
-    siblingsArray.push(this.cellMatrix[y][x + 1]);
-
-    if (y < this.cellMatrix.length - 1) {
-      siblingsArray.push(this.cellMatrix[y + 1][x - 1]);
-      siblingsArray.push(this.cellMatrix[y + 1][x]);
-      siblingsArray.push(this.cellMatrix[y + 1][x + 1]);
-    }
-
-    return siblingsArray.filter(cell => cell);
-  },
-
-  // ITERATOR FUNCTIONS
-
-  everyCell(func) {
-    // takes a function and calls it on every cell, plus that cell's coordinates
-    for (var i = 0; i < this.cellMatrix.length; i++) {
-      for (var j = 0; j < this.cellMatrix[i].length; j++) {
-        func(this.cellMatrix[i][j], i, j);
-      }
-    }
-  },
-
-  cascadeFlip(func) {
-    // takes a function as an argument and For each row in the matrix,
-    //  => it waits successivly longer and then applies the function to every cell in that row
-    //  => triggers a change event
-    for (var i = 0; i < this.cellMatrix.length; i++) {
-      setTimeout(this.flipRow.bind(this), i * 100, this.cellMatrix[i], func);
-    }
-  },
-
-  flipRow(row, func) {
-    // calls the passed in function on every cell in the current row, then emits a change event
-    for (var j = 0; j < row.length; j++) {
-      func(row[j]);
-    }
-
-    this.emit('change');
-  },
-
-  // DOM CHANGING FUNCTIONS
-
-  playRound() {
-    // first goes through each cell and calculates its nexte state,
-    // if any state changed, goes through them all again and updates the state and displays it through a casecade flip
-    // otherwise, toggles the GOL off again and flashes a message
-    this.noChanges = true;
-    this.everyCell(this.calculateNextState.bind(this));
-    if (this.noChanges) {
-      this.stopGOL();
-      setTimeout(function () {
-        __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__["a" /* default */].flash('Game over...');
-      }, 0);
-    } else {
-      this.everyCell(this.assignNextState.bind(this));
-      this.emit('change');
-    }
-  },
-
-  startPlaying() {
-    // instantly plays one round, and then plays one every interval
-    this.playRound();
-    this.playing = setInterval(this.playRound.bind(this), 1300);
-    this.emit('change');
-  },
-
-  // SIMPLE CELL OPERATIONS
-
-  calculateNextState(cell) {
-    // finds the next state of the passed in cell and whether this is the same as its current one
-    // sets noChanges to false as soon as it gets a single change
-    const changed = cell.findNextSide();
-    if (changed) {
-      this.noChanges = false;
-    }
-  },
-
-  assignNextState(cell) {
-    cell.updateSide();
-  },
-
-  reverse(cell) {
-    cell.backSide = !cell.backSide;
-  }
-
-});
+throw new Error("Module build failed: SyntaxError: Unexpected token, expected , (114:2)\n\n\u001b[0m \u001b[90m 112 | \u001b[39m  }\n \u001b[90m 113 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 114 | \u001b[39m  startPlaying() {\n \u001b[90m     | \u001b[39m  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 115 | \u001b[39m    \u001b[90m// instantly plays one round, and then plays one every interval\u001b[39m\n \u001b[90m 116 | \u001b[39m    \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mplayRound()\n \u001b[90m 117 | \u001b[39m    \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mplaying \u001b[33m=\u001b[39m setInterval(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mplayRound\u001b[33m.\u001b[39mbind(\u001b[36mthis\u001b[39m)\u001b[33m,\u001b[39m \u001b[35m1300\u001b[39m)\u001b[0m\n");
 
 /***/ }),
 /* 112 */
@@ -31211,12 +31074,10 @@ class PositionedCell {
   }
 
   findNextSide() {
+    // finds the next state of this cell, based on it's current siblings
+    // returns whether or not the next state is different from the current state, we track this so we can check whether the board has stopped changing and we can end the game
     var livingSiblings = this.siblings.livingCount();
-
-    // this next line contains the rules of the game
-    // currently we're set to GOL
     this.futureBackSide = this.stateFromSiblings(livingSiblings);
-    // returns whether or not the next state is different from the current state
     return this.futureBackSide != this.backSide;
   }
 
@@ -32685,8 +32546,8 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].exit();
   }
 
-  startGOL() {
-    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].startGOL();
+  toggleGOL() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].toggleGOL();
   }
 
   render() {
@@ -32708,7 +32569,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { className: 'btn btn-primary play-round', onClick: this.startGOL.bind(this) },
+        { className: 'btn btn-primary play-round', onClick: this.toggleGOL.bind(this) },
         GOLPlayMessage
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

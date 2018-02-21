@@ -82,32 +82,20 @@ class BoardStore extends EventEmitter {
       } case 'EXIT_GOL': {
         this.exitGol()
         break
-      } case 'START_GOL': {
-        this.startGOL()
+      } case 'TOGGLE_GOL': {
+        this.toggleGOL()
         break
       }
     }
   }
 
-  startGOL() {
+  toggleGOL() {
     // starts the game of life if there isn't one running currently, otherwise, stops the current one
     if (!this.playing) {
       this.startPlaying()
     } else {
-      this.stopGOL()
+      this.stopPlaying()
     }
-  }
-
-  stopGOL() {
-    clearInterval(this.playing)
-    this.playing = false
-    this.emit('change')
-  }
-
-  exitGol() {
-    this.boardWidth = false
-
-    this.emit('change')
   }
 
   addCell() {
@@ -137,8 +125,7 @@ class BoardStore extends EventEmitter {
   fixBoard(boardWidth) {
     // firstly we stop any random flipping that might be going on
     this.stopRandFlip()
-    // fixes the width of the board component/element to it's current width
-    // also uses that width and the current cell size to craete a fixed matrix of cells that reflects the current on-screen cell layout
+    // fixes the width of the board component/element to it's current width and creates a matrix from the cell objects
     this.fixBoardUi(boardWidth)
     this.everyCell(this.assignSiblings.bind(this))
 
@@ -147,10 +134,20 @@ class BoardStore extends EventEmitter {
   }
 
   fixBoardUi(boardWidth) {
+    // calculates the maximum number of cells per row
+    // fixes the board width using this number and the cell width
+    // creates a matrix based on the cell number which reflects what the user sees on screen
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
     this.boardWidth = cellsPerRow * this.cellSize
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
   }
+
+  exitGol() {
+    // the opposute of fixBoard, returns us to non-GOL flipping
+    this.boardWidth = false
+    this.emit('change')
+  }
+
 }
 
 const boardStore = new BoardStore;
