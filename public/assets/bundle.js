@@ -31288,14 +31288,23 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     if (!this.state.tutorial) {
       $('.tutorial').addClass('hidden');
     } else {
-      this.setTutorialHeight();
+      this.setupTutorialPanel();
       setTimeout(function () {
         $('#RMs-page').addClass('hidden');
       }, 801);
     }
   }
 
+  setupTutorialPanel() {
+    // sets the tutorial panel's height and then scrolls to the top of it
+    this.setTutorialHeight();
+    $('.tutorial').css({
+      scrollTop: 0
+    });
+  }
+
   setTutorialHeight() {
+    // sets the height of the tutorial panel such that it takes up exactly the whole window, minus the navbar
     var navHeight = 60;
     var tutorialHeight = $(window).height() - navHeight;
 
@@ -31315,7 +31324,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     // sets the height of the tutorial panel, un-hides it and animates it up
     // hides the RM panel after the animation has finished
     this.tutorialAnimation = 'fadeInUp';
-    this.setTutorialHeight();
+    this.setupTutorialPanel();
     $('.tutorial').removeClass('hidden');
     setTimeout(function () {
       $('#RMs-page').addClass('hidden');
