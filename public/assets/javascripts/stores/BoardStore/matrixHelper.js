@@ -92,6 +92,9 @@ export default {
     this.cascadeFlip(this.assignNextState.bind(this))
   },
 
+  startPlaying() {
+    this.playing = setInterval(this.playRound.bind(this), 1300)
+  },
 
   // SIMPLE CELL OPERATIONS
 

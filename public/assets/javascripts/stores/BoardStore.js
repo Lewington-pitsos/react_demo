@@ -76,7 +76,14 @@ class BoardStore extends EventEmitter {
   }
 
   startGOL() {
-    console.log('gol started');
+    // starts the game of life if there isn't one running currently, otherwise, stops the current one
+    if (!this.playing) {
+      this.startPlaying()
+    } else {
+      clearInterval(this.playing)
+      this.playing = false
+    }
+
   }
 
   exitGol() {
