@@ -30957,6 +30957,8 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   }
 
   fixBoard(boardWidth) {
+    // firstly we stop any random flipping that might be going on
+    this.stopRandFlip();
     // fixes the width of the board component/element to it's current width
     // also uses that width and the current cell size to craete a fixed matrix of cells that reflects the current on-screen cell layout
     var cellsPerRow = Math.floor(boardWidth / this.cellSize);
@@ -30986,16 +30988,27 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
     // if the intervals are already running, it stops them both
     // either way emit a change event to update flipping-related components
     if (this.autoFlipper) {
-      clearInterval(this.autoFlipper);
-      clearInterval(this.secondAutoFlipper);
-      this.secondAutoFlipper = false;
-      this.autoFlipper = false;
+      this.stopRandFlip();
     } else {
-      this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800);
-      this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100);
+      this.startRandFlip();
     }
 
     this.emit('change');
+  },
+
+  startRandFlip() {
+    // flips some cells at random immidately, and then sets two staggared intervals for indefinite future flipping
+    this.flipSomeCells();
+    this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800);
+    this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100);
+  },
+
+  stopRandFlip() {
+    // clears both intervals and resets them to false
+    clearInterval(this.autoFlipper);
+    clearInterval(this.secondAutoFlipper);
+    this.secondAutoFlipper = false;
+    this.autoFlipper = false;
   },
 
   flipSomeCells() {

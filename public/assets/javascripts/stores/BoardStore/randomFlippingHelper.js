@@ -4,16 +4,27 @@ export default {
     // if the intervals are already running, it stops them both
     // either way emit a change event to update flipping-related components
     if (this.autoFlipper) {
-      clearInterval(this.autoFlipper)
-      clearInterval(this.secondAutoFlipper)
-      this.secondAutoFlipper = false
-      this.autoFlipper = false
+      this.stopRandFlip()
     } else {
-      this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800)
-      this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100)
+      this.startRandFlip()
     }
 
     this.emit('change')
+  },
+
+  startRandFlip() {
+    // flips some cells at random immidately, and then sets two staggared intervals for indefinite future flipping
+    this.flipSomeCells()
+    this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800)
+    this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100)
+  },
+
+  stopRandFlip() {
+    // clears both intervals and resets them to false
+    clearInterval(this.autoFlipper)
+    clearInterval(this.secondAutoFlipper)
+    this.secondAutoFlipper = false
+    this.autoFlipper = false
   },
 
   flipSomeCells() {
