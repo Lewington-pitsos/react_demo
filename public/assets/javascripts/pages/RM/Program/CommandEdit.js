@@ -49,12 +49,10 @@ export default class CommandEdit extends React.Component {
   render() {
     // renders a number of stones according to props
 
-    var alternateNext = this.state.increment ?
-      null :
-      <div className="form-group">
-        <label htmlFor="alternate-next-command">Alternate next command</label>
-        <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)} id="alternate-next-command"/>
-      </div>
+    const hideAlternativeNext = this.state.increment ?
+      'hidden' :
+      ''
+
 
     return(
       <form onSubmit={this.handleSubmit.bind(this)} className="animated fadeIn" >
@@ -65,15 +63,22 @@ export default class CommandEdit extends React.Component {
             <option value={false}>Decrement</option>
           </select>
         </div>
+
         <div className="form-group">
           <label htmlFor="command-bucket">Bucket to interact with</label>
           <BucketSelector current={this.state.bucket} update={this.changeBucket.bind(this)} id="command-bucket"/>
         </div>
+
         <div className="form-group">
           <label htmlFor="default-next-command">Default next command</label>
           <CommandSelector current={this.state.nextCommand} update={this.changeNext.bind(this)} id="default-next-command"/>
         </div>
-        {alternateNext}
+
+        <div className={'form-group ' + hideAlternativeNext}>
+          <label htmlFor="alternate-next-command">Alternate next command</label>
+          <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)} id="alternate-next-command"/>
+        </div>
+
         <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
         <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
         <input type="submit" className="btn btn-primary" value="Save" />

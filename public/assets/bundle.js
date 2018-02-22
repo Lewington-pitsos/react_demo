@@ -14045,8 +14045,6 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
   render() {
     // renders a selector with one option correspoinding to each bucket
 
-    console.log(this.state.number);
-
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
       { name: 'bucket', defaultValue: this.props.current, onChange: this.props.update, className: 'custom-select' },
@@ -32555,16 +32553,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   render() {
     // renders a number of stones according to props
 
-    var alternateNext = this.state.increment ? null : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'form-group' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'label',
-        { htmlFor: 'alternate-next-command' },
-        'Alternate next command'
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext || 0, update: this.changeAlternateNext.bind(this), id: 'alternate-next-command' })
-    );
+    const hideAlternativeNext = this.state.increment ? 'hidden' : '';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'form',
@@ -32612,7 +32601,16 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.nextCommand, update: this.changeNext.bind(this), id: 'default-next-command' })
       ),
-      alternateNext,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'form-group ' + hideAlternativeNext },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'label',
+          { htmlFor: 'alternate-next-command' },
+          'Alternate next command'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandSelector__["a" /* default */], { current: this.state.alternateNext || 0, update: this.changeAlternateNext.bind(this), id: 'alternate-next-command' })
+      ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
         { className: 'btn btn-primary cancel', onClick: this.props.cancelEdit },

@@ -32,8 +32,6 @@ export default class BucketSelector extends React.Component {
   render() {
     // renders a selector with one option correspoinding to each bucket
 
-    console.log(this.state.number);
-
     return(
       <select name="bucket" defaultValue={this.props.current} onChange={this.props.update} className="custom-select">
         {this.generateOptions()}
