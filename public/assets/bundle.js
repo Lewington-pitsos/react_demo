@@ -31548,11 +31548,14 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   tutorialMode() {
-    // sets the height of the tutorial panel, un-hides it and animates it up
+    // sets the height of the tutorial panel, un-hides it, scrolls it to the top and fades it in
     // hides the RM panel after the animation has finished
     this.tutorialAnimation = 'fadeIn';
     this.setupTutorialPanel();
     $('.tutorial').removeClass('hidden');
+    $('.tutorial').animate({
+      scrollTop: 0
+    }, 1);
     setTimeout(function () {
       $('#RMs-page').addClass('hidden');
     }, 800);
