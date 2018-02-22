@@ -3,7 +3,7 @@ import Command from './Command.js'
 export default class Decrement extends Command {
   constructor(next, index, id, alternateNext, bucket) {
     super(next, index, id)
-    this.defaultNext = next
+    this.actualNext = next
     this.alternateNext = alternateNext
     this.bucketObject= this.store.getBucket(index)
   }
@@ -13,10 +13,14 @@ export default class Decrement extends Command {
     // otherwise simply swicth the next command to the alternate command
     if (this.bucketObject.stones) {
       this.store.decrementBucket(this.bucketId)
-      this.nextCommand = this.defaultNext
+      this.actualNext = this.nextCommand
     } else {
       this.store.failToDecrement(this.bucketId)
-      this.nextCommand = this.alternateNext
+      this.actualNext = this.alternateNext
     }
+  }
+
+  next() {
+    return this.actualNext
   }
 }

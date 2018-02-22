@@ -12908,9 +12908,7 @@ ControlPanel.defaultProps = {
 
 
 class Command {
-  // The basis for Increment and Decrement: perform an action and return the next comand when asked
-  // both need access to rmActions
-  // both are created with an id specificying a command and an id specifying a bucket and an id for the command itself
+  // this is the basis for Increment and Decrmeent: both need a default next command, a bucket to interact with, access to the bucketsStore, an id and an indicator of whether the command is newly added
 
   constructor(nextCommand, bucket, id) {
     this.nextCommand = nextCommand;
@@ -12919,10 +12917,6 @@ class Command {
     this.id = id;
     // justAdded set to true by default so every new command is indeed registered as being just added
     this.justAdded = true;
-  }
-
-  next() {
-    return this.nextCommand;
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Command;
@@ -32227,6 +32221,10 @@ class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
   run() {
     this.store.incrementBucket(this.bucketId);
   }
+
+  next() {
+    return this.nextCommand;
+  }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Increment;
 
@@ -32242,7 +32240,7 @@ class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
   constructor(next, index, id, alternateNext, bucket) {
     super(next, index, id);
-    this.defaultNext = next;
+    this.actualNext = next;
     this.alternateNext = alternateNext;
     this.bucketObject = this.store.getBucket(index);
   }
@@ -32252,11 +32250,15 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
     // otherwise simply swicth the next command to the alternate command
     if (this.bucketObject.stones) {
       this.store.decrementBucket(this.bucketId);
-      this.nextCommand = this.defaultNext;
+      this.actualNext = this.nextCommand;
     } else {
       this.store.failToDecrement(this.bucketId);
-      this.nextCommand = this.alternateNext;
+      this.actualNext = this.alternateNext;
     }
+  }
+
+  next() {
+    return this.actualNext;
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Decrement;
@@ -32467,7 +32469,7 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         'span',
         null,
         ' ',
-        this.renderCommandId(command.defaultNext),
+        this.renderCommandId(command.nextCommand),
         '. ',
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
         ' Otherwise ',

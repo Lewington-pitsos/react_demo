@@ -8,4 +8,8 @@ export default class Increment extends Command {
   run() {
     this.store.incrementBucket(this.bucketId)
   }
+
+  next() {
+    return this.nextCommand
+  }
 }
