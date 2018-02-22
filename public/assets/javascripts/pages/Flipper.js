@@ -41,7 +41,7 @@ export default class Flipper extends React.Component {
           <h2>Game of Life Simulator</h2>
         </ControlPanel>
         <h1>Flipper Page</h1>
-        <div className="d-flex align-items-center flex-column GOL_wrapper">
+        <div className="d-flex align-items-center flex-column GOL_wrapper p-4">
           <Board />
         </div>
         <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLMode}>

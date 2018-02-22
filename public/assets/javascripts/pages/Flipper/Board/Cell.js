@@ -34,10 +34,10 @@ export default class Cell extends React.Component {
       <div style={dimensions} className={'vertical flip-container ' + side } id={'cell-' + this.props.id} >
         <div className='flipper' style={originTransform}>
           <div className='cell front' onClick={this.flipCell.bind(this)}>
-            FUCK
+            DEAD
           </div>
           <div className='cell back' onClick={this.flipCell.bind(this)}>
-            AIDS
+            ALIVE
           </div>
         </div>
       </div>
