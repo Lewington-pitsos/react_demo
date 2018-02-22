@@ -1,7 +1,6 @@
 import React from 'react'
 
 import rmActions from '../../actions/rmActions'
-import UggPreview from './Tutorial/UggPreview'
 
 export default class Tutorial extends React.Component {
 

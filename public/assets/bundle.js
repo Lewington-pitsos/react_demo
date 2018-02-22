@@ -30741,7 +30741,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           { className: "row justify-content-center" },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             "div",
-            { className: "col-md-6 text-center animated fadeIn" },
+            { className: "col-lg-6 col-md-8 text-center animated fadeIn" },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               "h3",
               null,
@@ -30830,7 +30830,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'h1',
         null,
-        'Flipper Page'
+        'Flipper'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -31010,13 +31010,29 @@ Cell.defaultProps = {
   toggleRandFlipping() {
     // starts two staggered intervals which keep choosing random numbers of random cells and flipping them
     // if the intervals are already running, it stops them both
+    // either way emit a change event to update flipping-related components
     if (this.autoFlipper) {
-      clearInterval(this.autoFlipper);
-      clearInterval(this.secondAutoFlipper);
+      this.stopRandFlip();
     } else {
-      this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800);
-      this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100);
+      this.startRandFlip();
     }
+
+    this.emit('change');
+  },
+
+  startRandFlip() {
+    // flips some cells at random immidately, and then sets two staggared intervals for indefinite future flipping
+    this.flipSomeCells();
+    this.autoFlipper = setInterval(this.flipSomeCells.bind(this), 2800);
+    this.secondAutoFlipper = setInterval(this.flipSomeCells.bind(this), 2100);
+  },
+
+  stopRandFlip() {
+    // clears both intervals and resets them to false
+    clearInterval(this.autoFlipper);
+    clearInterval(this.secondAutoFlipper);
+    this.secondAutoFlipper = false;
+    this.autoFlipper = false;
   },
 
   flipSomeCells() {
@@ -31562,8 +31578,6 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Tutorial_UggPreview__ = __webpack_require__(139);
-
 
 
 
@@ -32796,31 +32810,7 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 
 
 /***/ }),
-/* 139 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets_Ugg__ = __webpack_require__(124);
-
-
-
-
-class UggPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-
-  render() {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'tutorial-ugg-holder float-right' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Buckets_Ugg__["a" /* default */], null)
-    );
-  }
-}
-/* unused harmony export default */
-
-
-/***/ }),
+/* 139 */,
 /* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
