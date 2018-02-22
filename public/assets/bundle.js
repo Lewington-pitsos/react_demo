@@ -31788,22 +31788,22 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
           { className: 'col-md-6 p-0 edit d-flex state-panel flex-wrap position-relative' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
-            { className: 'btn btn-primary', onClick: this.addBucket.bind(this) },
+            { className: 'btn btn-primary', onClick: this.addBucket.bind(this), disabled: this.state.executing },
             'Add Bucket'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
-            { className: 'btn btn-primary', onClick: this.removeBucket.bind(this) },
+            { className: 'btn btn-primary', onClick: this.removeBucket.bind(this), disabled: this.state.executing },
             'Remove Bucket'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
-            { className: 'btn btn-primary', onClick: this.addIncrement.bind(this) },
+            { className: 'btn btn-primary', onClick: this.addIncrement.bind(this), disabled: this.state.executing },
             'Add Command'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
-            { className: 'btn btn-primary', onClick: this.enterTutorial.bind(this) },
+            { className: 'btn btn-primary', onClick: this.enterTutorial.bind(this), disabled: this.state.executing },
             'Tutorial'
           )
         ),
