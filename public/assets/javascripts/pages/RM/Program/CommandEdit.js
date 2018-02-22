@@ -53,7 +53,6 @@ export default class CommandEdit extends React.Component {
       'hidden' :
       ''
 
-
     return(
       <form onSubmit={this.handleSubmit.bind(this)} className="animated fadeIn" >
         <div className="form-group">

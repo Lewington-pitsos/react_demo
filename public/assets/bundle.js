@@ -32188,8 +32188,6 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     var commands = this.renderCommands();
 
-    console.log(commands);
-
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'col-md-5 commands' },
