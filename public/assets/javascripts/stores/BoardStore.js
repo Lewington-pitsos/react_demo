@@ -5,11 +5,13 @@ import randomFLippingHelper from './BoardStore/randomFlippingHelper'
 import matrixHelper from './BoardStore/matrixHelper'
 import PositionedCell from './BoardStore/PositionedCell'
 import GOLHelper from './BoardStore/GOLHelper'
+import flashActions from '../actions/flashActions'
 
 class BoardStore extends EventEmitter {
   constructor() {
     super()
-    maxCells = 84
+    this.maxCells = 100
+    this.maxedOut = false
     this.nextId = 99
     this.maxSize = 600
     this.cellSize = 200
@@ -108,17 +110,29 @@ class BoardStore extends EventEmitter {
   }
 
   addCell(number) {
-    // adds number new PositionedCell to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
-    this.number += number
-    this.pushCells(number)
-    this.emit('change')
+    // checks whether the board is already maxed out
+    // if not, adds number new PositionedCells to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
+    if (!this.maxedOut) {
+      this.number += number
+      this.pushCells(number)
+      this.emit('change')
+    } else {
+      setTimeout(function() {
+        flashActions.flash('Maximum cell count reached. Don\'t be greedy now...')
+      }, 0)
+    }
   }
 
   pushCells(number) {
-    // adds cells to the array equal to the passed in number, resizing the cell size each time
+    // checks if the maximum cell count has been reached and records if it has
+    // if not, cells to the array equal to the passed in number, resizing the cell size each time
     for (var i = 0; i < number; i++) {
-      this.cells.push(new PositionedCell(this.getNextId()))
-      this.resizeCells()
+      if (this.cells.length < this.maxCells) {
+        this.cells.push(new PositionedCell(this.getNextId()))
+        this.resizeCells()
+      } else {
+        this.maxedOut = true
+      }
     }
   }
 
