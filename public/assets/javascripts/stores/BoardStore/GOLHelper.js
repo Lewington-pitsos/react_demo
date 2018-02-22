@@ -21,19 +21,18 @@ export default {
     setTimeout(function() {
       flashActions.flash('Game over...')
     }, 0)
+    this.emit('change')
   },
 
   startPlaying() {
     // instantly plays one round, and then plays one every interval
     this.playRound()
     this.playing = setInterval(this.playRound.bind(this), 1300)
-    this.emit('change')
   },
 
   stopPlaying() {
     // clears the interval, sets the playing value to false and emits a change
     clearInterval(this.playing)
     this.playing = false
-    this.emit('change')
   },
 }

@@ -98,6 +98,7 @@ class BoardStore extends EventEmitter {
     } else {
       this.stopPlaying()
     }
+    this.emit('change')
   }
 
   addCell() {
@@ -147,6 +148,7 @@ class BoardStore extends EventEmitter {
   exitGol() {
     // the opposute of fixBoard, returns us to non-GOL flipping
     this.boardWidth = false
+    this.stopPlaying()
     this.emit('change')
   }
 
