@@ -9,4 +9,4 @@ app.use(express.static('public'))
 // NOTE: files served MUST have ABSOLOUTE paths (relative to this file, not the root directory defined above)
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'))
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(process.env.PORT || 3000, () => console.log('Example app listening on port 3000!'))
