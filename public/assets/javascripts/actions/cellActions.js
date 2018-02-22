@@ -1,9 +1,10 @@
 import dispatcher from '../dispatcher'
 
 export default {
-  addCell() {
+  addCell(number) {
     dispatcher.dispatch({
-      type: 'ADD_CELL'
+      type: 'ADD_CELL',
+      number: number
     })
   },
 

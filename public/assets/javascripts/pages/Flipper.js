@@ -25,7 +25,11 @@ export default class Flipper extends React.Component {
   }
 
   addCell() {
-    cellActions.addCell()
+    cellActions.addCell(1)
+  }
+
+  addFiveCells() {
+    cellActions.addCell(5)
   }
 
   fixBoard() {
@@ -46,6 +50,7 @@ export default class Flipper extends React.Component {
         </div>
         <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLMode}>
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Add Cell</button>
+          <button className="btn btn-primary" onClick={this.addFiveCells.bind(this)}>Add 5</button>
           <RandFlipper />
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Game of Life</button>
         </ControlPanel>

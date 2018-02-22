@@ -11428,9 +11428,10 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  addCell() {
+  addCell(number) {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
-      type: 'ADD_CELL'
+      type: 'ADD_CELL',
+      number: number
     });
   },
 
@@ -12716,9 +12717,11 @@ var createTransitionManager = function createTransitionManager() {
 class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
+    maxCells = 84;
+    this.nextId = 99;
     this.maxSize = 600;
     this.cellSize = 200;
-    this.number = 12;
+    this.number = 13;
     this.boardWidth = false;
 
     this.playing = false;
@@ -12728,7 +12731,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     // trackes whether changes were made during the last GOL round
     this.noChanges = true;
     // cells are stored as an array of PositionedCell objects
-    this.cells = [{ id: 88828, backSide: false }, { id: 75766, backSide: false }, { id: 54676, backSide: false }, { id: 78678, backSide: false }, { id: 53456, backSide: false }, { id: 11231, backSide: false }, { id: 45677, backSide: false }, { id: 76576, backSide: false }, { id: 35656, backSide: false }, { id: 56456, backSide: false }, { id: 96456, backSide: false }, { id: 88528, backSide: false }].map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
+    this.cells = [{ id: 1, backSide: false }, { id: 2, backSide: false }, { id: 3, backSide: false }, { id: 4, backSide: false }, { id: 5, backSide: false }, { id: 6, backSide: false }, { id: 7, backSide: false }, { id: 8, backSide: false }, { id: 9, backSide: false }, { id: 10, backSide: false }, { id: 11, backSide: false }, { id: 12, backSide: false }].map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
@@ -12759,7 +12762,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     switch (action.type) {
       case "ADD_CELL":
         {
-          this.addCell();
+          this.addCell(action.number);
           break;
         }case "FLIP_CELL":
         {
@@ -12794,7 +12797,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   }
 
   toggleGOL() {
-    // starts the game of life if there isn't one running currently, otherwise, stops the current one
+    // starts the game of life if there isn't one running currently, otherwise, stops the current one and triggers a change event
     if (!this.playing) {
       this.startPlaying();
     } else {
@@ -12803,17 +12806,28 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.emit('change');
   }
 
-  addCell() {
-    // adds a new PositionedCell to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
-    this.number += 1;
-    this.resizeCells();
-    this.cells.push(new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](Date.now()));
+  getNextId() {
+    return this.nextId++;
+  }
+
+  addCell(number) {
+    // adds number new PositionedCell to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
+    this.number += number;
+    this.pushCells(number);
     this.emit('change');
+  }
+
+  pushCells(number) {
+    // adds cells to the array equal to the passed in number, resizing the cell size each time
+    for (var i = 0; i < number; i++) {
+      this.cells.push(new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](this.getNextId()));
+      this.resizeCells();
+    }
   }
 
   resizeCells() {
     // Hackily reudces cell size as more cells are added
-    this.cellSize = this.cellSize <= 100 ? 100 : this.cellSize - 10;
+    this.cellSize = this.cellSize <= 80 ? 80 : this.cellSize - 5;
   }
 
   flipCell(id) {
@@ -12853,7 +12867,6 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.stopPlaying();
     this.emit('change');
   }
-
 }
 
 const boardStore = new BoardStore();
@@ -30800,7 +30813,11 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   addCell() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].addCell();
+    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].addCell(1);
+  }
+
+  addFiveCells() {
+    __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__["a" /* default */].addCell(5);
   }
 
   fixBoard() {
@@ -30839,6 +30856,11 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           'button',
           { className: 'btn btn-primary', onClick: this.addCell.bind(this) },
           'Add Cell'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.addFiveCells.bind(this) },
+          'Add 5'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -31250,7 +31272,7 @@ class SiblingsTracker {
   },
 
   gameOver() {
-    // ceases the curent game and flashes a game over message
+    // ceases the curent game, flashes a game over message and emits a change event
     this.stopPlaying();
     setTimeout(function () {
       __WEBPACK_IMPORTED_MODULE_0__actions_flashActions__["a" /* default */].flash('Game over...');
@@ -31261,11 +31283,11 @@ class SiblingsTracker {
   startPlaying() {
     // instantly plays one round, and then plays one every interval
     this.playRound();
-    this.playing = setInterval(this.playRound.bind(this), 1300);
+    this.playing = setInterval(this.playRound.bind(this), 1800);
   },
 
   stopPlaying() {
-    // clears the interval, sets the playing value to false and emits a change
+    // clears the interval, sets the playing value to false
     clearInterval(this.playing);
     this.playing = false;
   }

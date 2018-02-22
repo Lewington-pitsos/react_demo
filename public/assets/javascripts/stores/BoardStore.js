@@ -9,9 +9,11 @@ import GOLHelper from './BoardStore/GOLHelper'
 class BoardStore extends EventEmitter {
   constructor() {
     super()
+    maxCells = 84
+    this.nextId = 99
     this.maxSize = 600
     this.cellSize = 200
-    this.number = 12
+    this.number = 13
     this.boardWidth = false
 
     this.playing = false
@@ -22,18 +24,18 @@ class BoardStore extends EventEmitter {
     this.noChanges = true
     // cells are stored as an array of PositionedCell objects
     this.cells = [
-      { id: 88828, backSide: false },
-      { id: 75766, backSide: false },
-      { id: 54676, backSide: false },
-      { id: 78678, backSide: false },
-      { id: 53456, backSide: false },
-      { id: 11231, backSide: false },
-      { id: 45677, backSide: false },
-      { id: 76576, backSide: false },
-      { id: 35656, backSide: false },
-      { id: 56456, backSide: false },
-      { id: 96456, backSide: false },
-      { id: 88528, backSide: false }
+      { id: 1, backSide: false },
+      { id: 2, backSide: false },
+      { id: 3, backSide: false },
+      { id: 4, backSide: false },
+      { id: 5, backSide: false },
+      { id: 6, backSide: false },
+      { id: 7, backSide: false },
+      { id: 8, backSide: false },
+      { id: 9, backSide: false },
+      { id: 10, backSide: false },
+      { id: 11, backSide: false },
+      { id: 12, backSide: false }
     ].map(cell => new PositionedCell(cell.id, cell.backSide))
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
@@ -64,7 +66,7 @@ class BoardStore extends EventEmitter {
   handleActions(action) {
     switch(action.type) {
       case "ADD_CELL": {
-        this.addCell();
+        this.addCell(action.number);
         break
       } case "FLIP_CELL": {
         this.flipCell(action.cellId)
@@ -92,7 +94,7 @@ class BoardStore extends EventEmitter {
   }
 
   toggleGOL() {
-    // starts the game of life if there isn't one running currently, otherwise, stops the current one
+    // starts the game of life if there isn't one running currently, otherwise, stops the current one and triggers a change event
     if (!this.playing) {
       this.startPlaying()
     } else {
@@ -101,17 +103,28 @@ class BoardStore extends EventEmitter {
     this.emit('change')
   }
 
-  addCell() {
-    // adds a new PositionedCell to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
-    this.number += 1
-    this.resizeCells()
-    this.cells.push(new PositionedCell(Date.now()))
+  getNextId() {
+    return this.nextId++
+  }
+
+  addCell(number) {
+    // adds number new PositionedCell to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
+    this.number += number
+    this.pushCells(number)
     this.emit('change')
+  }
+
+  pushCells(number) {
+    // adds cells to the array equal to the passed in number, resizing the cell size each time
+    for (var i = 0; i < number; i++) {
+      this.cells.push(new PositionedCell(this.getNextId()))
+      this.resizeCells()
+    }
   }
 
   resizeCells() {
     // Hackily reudces cell size as more cells are added
-    this.cellSize = (this.cellSize <= 100 ? 100 : this.cellSize - 10)
+    this.cellSize = (this.cellSize <= 80 ? 80 : this.cellSize - 5)
   }
 
   flipCell(id) {
@@ -151,7 +164,6 @@ class BoardStore extends EventEmitter {
     this.stopPlaying()
     this.emit('change')
   }
-
 }
 
 const boardStore = new BoardStore;
