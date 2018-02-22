@@ -193,8 +193,17 @@ nav
   max-height: 70vh
   overflow-y: scroll
 
+.rm-panel
+  .btn,
+  .button-looking
+    margin-right: 0.5rem
+    margin-left: 0.5rem
+
 .state-panel
-  justify-content: space-around
+  justify-content: flex-start
+
+.execute-panel
+  justify-content: flex-end
 
 .stop
   margin-left: 1rem
@@ -305,7 +314,7 @@ nav
 @media (max-width: 767px)
   .buckets-holder
     margin-bottom: 18rem
-  .state-panel
-    justify-content: space-between
+  .execute-panel
+    justify-content: flex-start
   .tutorial
     overflow-y: hidden

@@ -28,7 +28,7 @@ export default class ExecutePanel extends React.Component {
 
     if (this.state.executing) {
       var contents =
-      <div className="d-flex justify-content-end flex-wrap">
+      <div className="d-flex execute-panel flex-wrap">
         <div className="execution-spinner button-looking">
           <p>Executing</p>
           <div className="loader"></div>
