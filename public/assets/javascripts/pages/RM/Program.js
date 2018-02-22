@@ -29,6 +29,8 @@ export default class Program extends React.Component {
 
     var commands = this.renderCommands()
 
+    console.log(commands);
+
     return(
       <div className="col-md-5 commands">
         <div className="command-list">

@@ -32188,6 +32188,8 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     var commands = this.renderCommands();
 
+    console.log(commands);
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'col-md-5 commands' },
@@ -32391,13 +32393,17 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(0);
   }
 
-  render() {
-    // renders out a command in either display or edit mode depending on state
+  renderMode(command) {
+    // renders the info or edit component depending on whether this command is being edited
+    if (this.props.editMode) {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, cancelEdit: this.noEditor.bind(this) });
+    } else {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
+    }
+  }
 
-    const command = this.props.command;
-
-    var display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
-
+  getClassList(command) {
+    // returns the command's class list, depending on whether the command is newly added and/or being edited
     var classList = 'command ';
 
     if (command.justAdded) {
@@ -32405,9 +32411,18 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     }
 
     if (this.props.editMode) {
-      classList += ' command-edit ';
-      display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command, cancelEdit: this.noEditor.bind(this) });
+      classList += 'command-edit ';
     }
+
+    return classList;
+  }
+
+  render() {
+    // renders out a command in either display or edit mode depending on state
+
+    const command = this.props.command;
+    const classList = this.getClassList(command);
+    const display = this.renderMode(command);
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
