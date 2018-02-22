@@ -31581,7 +31581,7 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Tutorial_UggPreview__ = __webpack_require__(139);
 
 
 
@@ -31626,76 +31626,67 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             ', but more intuitive.'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'h4',
-            null,
-            'The Rules:'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
-            { className: 'tutorial-ugg-holder float-right' },
+            { className: 'text-justify' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Tutorial_UggPreview__["a" /* default */], null),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'div',
-              { 'class': 'speech-bubble-holder' },
+              'h4',
+              null,
+              'The Rules:'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'ol',
+              null,
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'speech-bubble' },
-                '*grunt*'
-              )
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__["a" /* default */], null)
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'ol',
-            null,
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'li',
-              null,
-              'You have infinite buckets with infinite volume and infinite stones to put in them.'
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'li',
-              null,
-              'You have a caveman named Ugg who is very strong and will do whatever you tell him to.'
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'li',
-              null,
-              'Ugg is also very stupid. He only understands commands of two different formats:',
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'ol',
+                'li',
                 null,
+                'You have infinite buckets with infinite volume and infinite stones to put in them.'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'li',
+                null,
+                'You have a caveman named Ugg who is very strong and will do whatever you tell him to.'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'li',
+                null,
+                'Ugg is also very stupid. He only understands commands of two different formats:',
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'li',
+                  'ol',
                   null,
-                  'Put a rock in a given bucket and move on to some other command.'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'li',
-                  null,
-                  'Take a rock out of a bucket and move on to some other command OR, if the bucket was empty, move on to a different command from the first one.'
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    null,
+                    'Put a rock in a given bucket and move on to some other command.'
+                  ),
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    null,
+                    'Take a rock out of a bucket and move on to some other command OR, if the bucket was empty, move on to a different command from the first one.'
+                  )
                 )
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'li',
+                null,
+                'And he\'s deaf, so you have to write down all the commands on a sheet and number them before sending them off (we might call this sheet a \'program\').'
               )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'li',
+              'p',
               null,
-              'And he\'s deaf, so you have to write down all the commands on a sheet and number them before sending them off (we might call this sheet a \'program\').'
+              'The point of all of this is that this system is Turing complete, which is to say, given enough time, you can use it to compute anything. There are a bunch of ways you could define inputs and outputs for this system, but this one just uses the basic setup of considering the initial number of rocks in each bucket as a separate argument passed in or inputted to the program, and the number of rocks in the first bucket when the program terminates as it\'s output.'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'p',
+              null,
+              'For example, I\'ve already rigged up a program that gets Ugg to calculate simple two-integer addition. If you\'re still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'p',
+              null,
+              'Otherwise, go ahead and knock yourself out.'
             )
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'The point of all of this is that this system is Turing complete, which is to say, given enough time, you can use it to compute anything. There are a bunch of ways you could define inputs and outputs for this system, but this one just uses the basic setup of considering the initial number of rocks in each bucket as a separate argument passed in or inputted to the program, and the number of rocks in the first bucket when the program terminates as it\'s output.'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'For example, I\'ve already rigged up a program that gets Ugg to calculate simple two-integer addition. If you\'re still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'Otherwise, go ahead and knock yourself out.'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
@@ -32824,6 +32815,31 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
+
+
+/***/ }),
+/* 139 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets_Ugg__ = __webpack_require__(124);
+
+
+
+
+class UggPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'tutorial-ugg-holder float-right' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Buckets_Ugg__["a" /* default */], null)
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = UggPreview;
 
 
 /***/ })
