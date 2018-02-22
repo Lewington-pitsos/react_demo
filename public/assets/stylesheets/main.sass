@@ -1,6 +1,7 @@
 @import "custom"
 @import "~bootstrap/scss/bootstrap"
 @import "spinner"
+@import "speechBubble"
 
 $body-color-dark: #ccc
 $body-bg-light: #5b0037
@@ -198,6 +199,8 @@ nav
 .stop
   margin-left: 1rem
 
+// TUTORIAL
+
 .tutorial
   overflow-y: scroll
   background: $body-color
@@ -216,6 +219,10 @@ nav
       line-height: 2rem
     li
       padding-bottom: 0.8rem
+  .tutorial-ugg-holder
+    padding: 2rem
+    margin-left: 2rem
+    background: $body-bg
 
 // BUCKETS
 
@@ -244,6 +251,7 @@ nav
   border: 3px solid $body-color
   position: relative
   top: 10px
+  color: $body-color
   p
     padding: 0
   &:hover

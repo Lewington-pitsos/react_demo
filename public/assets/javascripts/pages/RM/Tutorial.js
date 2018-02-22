@@ -1,6 +1,7 @@
 import React from 'react'
 
 import rmActions from '../../actions/rmActions'
+import Ugg from './Buckets/Ugg'
 
 export default class Tutorial extends React.Component {
 
@@ -17,6 +18,14 @@ export default class Tutorial extends React.Component {
 
             <p className="text-center font-italic pb-3">tldr: It's a lot like a <a className="dark" href="https://en.wikipedia.org/wiki/Turing_machine">Turing Machine</a>, but more intuitive.</p>
             <h4>The Rules:</h4>
+            <div className="tutorial-ugg-holder float-right">
+              <div class="speech-bubble-holder">
+                <div className="speech-bubble">
+                  *grunt*
+                </div>
+              </div>
+              <Ugg />
+            </div>
             <ol>
               <li>You have infinite buckets with infinite volume and infinite stones to put in them.</li>
               <li>You have a caveman named Ugg who is very strong and will do whatever you tell him to.</li>

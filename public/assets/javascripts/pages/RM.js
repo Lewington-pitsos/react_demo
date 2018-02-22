@@ -47,7 +47,7 @@ export default class RM extends React.Component {
 
   RMMode() {
     // un-hides the RM page starts the tutorial animating out and hides tutorial after the animation has finished
-    this.tutorialAnimation = 'fadeOutDown'
+    this.tutorialAnimation = 'fadeOut'
     $('#RMs-page').removeClass('hidden')
     setTimeout(function() {
       $('.tutorial').addClass('hidden')
@@ -57,7 +57,7 @@ export default class RM extends React.Component {
   tutorialMode() {
     // sets the height of the tutorial panel, un-hides it and animates it up
     // hides the RM panel after the animation has finished
-    this.tutorialAnimation = 'fadeInUp'
+    this.tutorialAnimation = 'fadeIn'
     this.setupTutorialPanel()
     $('.tutorial').removeClass('hidden')
     setTimeout(function() {
