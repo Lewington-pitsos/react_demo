@@ -42,10 +42,10 @@ const executorAnimations =  {
 
   uggWaver() {
     // to indicate failure to decrement an empty bucket
-    $('.ugg').addClass('bounce')
+    $('.ugg').addClass('shake')
     setTimeout(function() {
-      $('.ugg').removeClass('bounce')
-    }, 1300)
+      $('.ugg').removeClass('shake')
+    }, 550)
   },
 
   uggDance() {

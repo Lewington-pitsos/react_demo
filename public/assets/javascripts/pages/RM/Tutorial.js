@@ -19,7 +19,6 @@ export default class Tutorial extends React.Component {
             <p className="text-center font-italic pb-3">tldr: It's a lot like a <a className="dark" href="https://en.wikipedia.org/wiki/Turing_machine">Turing Machine</a>, but more intuitive.</p>
 
             <div className="text-justify">
-              <UggPreview />
               <h4>The Rules:</h4>
               <ol>
                 <li>You have infinite buckets with infinite volume and infinite stones to put in them.</li>
