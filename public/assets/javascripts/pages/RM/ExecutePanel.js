@@ -24,24 +24,20 @@ export default class ExecutePanel extends React.Component {
 
 
   render() {
-    // renders a number of stones according to props
+    // hides the execution button or the execution elements depending on state
 
-    if (this.state.executing) {
-      var contents =
-      <div className="d-flex execute-panel flex-wrap">
-        <div className="execution-spinner button-looking">
+    const hide = this.state.executing ?
+      '' :
+      'hidden'
+
+    return(
+      <div className="execute-panel d-flex flex-wrap">
+        <div className={'execution-spinner button-looking ' + hide} >
           <p>Executing</p>
           <div className="loader"></div>
         </div>
-        <button className="btn btn-primary stop" onClick={this.stop.bind(this)}>Halt</button>
-      </div>
-    } else {
-      var contents = <ExecuteButton />
-    }
-
-    return(
-      <div className="execution-panel d-flex justify-content-end flex-wrap">
-        {contents}
+        <button className={'btn btn-primary stop ' + hide} onClick={this.stop.bind(this)}>Halt</button>
+        <ExecuteButton hidden={this.state.executing}/>
       </div>
     )
   }
