@@ -38,20 +38,26 @@ export default class RM extends React.Component {
   }
 
   setTutorialHeight() {
+    // IF we haven't reached the boosttrab md breakpoint yet
     // sets the height of the tutorial panel such that it takes up exactly the whole window, minus the navbar
-    var navHeight = 60
-    var tutorialHeight = $(window).height() - navHeight
+    if ($(window).width() > 767 ) {
+      var navHeight = 60
+      var tutorialHeight = $(window).height() - navHeight
 
-    $('.tutorial').height(tutorialHeight)
+      $('.tutorial').height(tutorialHeight)
+    }
   }
 
   RMMode() {
     // un-hides the RM page starts the tutorial animating out and hides tutorial after the animation has finished
+    $('html, body').animate({
+      scrollTop: 0
+    }, 400)
     this.tutorialAnimation = 'fadeOut'
     $('#RMs-page').removeClass('hidden')
     setTimeout(function() {
       $('.tutorial').addClass('hidden')
-    }, 801)
+    }, 800)
   }
 
   tutorialMode() {
@@ -62,7 +68,7 @@ export default class RM extends React.Component {
     $('.tutorial').removeClass('hidden')
     setTimeout(function() {
       $('#RMs-page').addClass('hidden')
-    }, 801)
+    }, 800)
   }
 
   render() {
