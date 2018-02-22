@@ -13,8 +13,8 @@ export default class Tutorial extends React.Component {
     return(
       <div className={'tutorial container-fluid animated ' + this.props.fade}>
         <div className="row justify-content-center">
-          <div className="col-md-10 p-3 tutorial-content">
-            <h2 className="text-center">Welcome to my <a className="dark" href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a> simulator</h2>
+          <div className="col-md-10 tutorial-content">
+            <h1 className="text-center pt-4"><a className="dark" href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a> simulator</h1>
 
             <p className="text-center font-italic pb-3">tldr: It's a lot like a <a className="dark" href="https://en.wikipedia.org/wiki/Turing_machine">Turing Machine</a>, but more intuitive.</p>
 
@@ -35,7 +35,7 @@ export default class Tutorial extends React.Component {
               </ol>
 
               <p>
-                The point of all of this is that this system is Turing complete, which is to say, given enough time, you can use it to compute anything. There are a bunch of ways you could define inputs and outputs for this system, but this one just uses the basic setup of considering the initial number of rocks in each bucket as a separate argument passed in or inputted to the program, and the number of rocks in the first bucket when the program terminates as it's output.
+                The point of all of this is that this system is Turing complete, which is to say that for every computable function that exists, you can write a program for Ugg that will cause him to compute that function. There are a bunch of ways you could define inputs and outputs for this system, but here we just use the basic setup of considering the initial number of rocks in each bucket as a separate argument passed in or inputted to the program, and the number of rocks in the first bucket when the program terminates as it's output.
               </p>
 
               <p>

@@ -6,24 +6,6 @@ class ExecutionStore extends EventEmitter {
   constructor() {
     super()
     this.executing = false
-    this.tutorial = true
-  }
-
-  getTutorial() {
-    return {tutorial: this.tutorial}
-  }
-
-  exitTutorial() {
-    this.tutorial = false
-
-    this.emit('change')
-  }
-
-  enterTutorial() {
-
-    this.tutorial = true
-
-    this.emit('change')
   }
 
   getInfo() {
@@ -81,16 +63,9 @@ class ExecutionStore extends EventEmitter {
       } case "FINISH_EXECUTION": {
         this.finish()
         break
-      } case "EXIT_TUTORIAL": {
-        this.exitTutorial()
-        break
-      } case "ENTER_TUTORIAL": {
-        this.enterTutorial()
-        break
       }
     }
   }
-
 }
 
 const executionStore = new ExecutionStore;

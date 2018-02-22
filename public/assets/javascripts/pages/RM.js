@@ -1,19 +1,19 @@
 import React from 'react'
 
-import executionStore from '../stores/ExecutionStore'
+import tutorialStore from '../stores/TutorialStore'
 import Tutorial from './RM/Tutorial'
 import RegisterMachine from './RM/RegisterMachine'
 
 export default class RM extends React.Component {
   constructor() {
     super()
-    this.state = executionStore.getTutorial()
+    this.state = tutorialStore.getTutorial()
     this.tutorialAnimation = 'fadeInUp'
   }
 
   componentWillMount() { // triggered just before a render occurs apparently
-    executionStore.on('change', () => {
-      this.setState( executionStore.getTutorial() )
+    tutorialStore.on('change', () => {
+      this.setState( tutorialStore.getTutorial() )
     })
   }
 
@@ -76,7 +76,6 @@ export default class RM extends React.Component {
 
   render() {
 
-    var tutorialFade
     if (this.state.tutorial) {
       this.tutorialMode()
     } else {
