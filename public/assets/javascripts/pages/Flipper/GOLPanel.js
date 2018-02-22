@@ -36,14 +36,14 @@ export default class Board extends React.Component {
   render() {
 
     const GOLPlayMessage = this.state.playing ?
-      'Stop Game of life' :
-      'Start Game of life'
+      'Stop' :
+      'Start'
 
     return(
       <ControlPanel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.props.GOLActive}>
-        <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)}>Invert</button>
-        <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)}>Play Single Round</button>
-        <button className="btn btn-primary play-round" onClick={this.toggleGOL.bind(this)}>{GOLPlayMessage}</button>
+        <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)} disabled={this.state.playing}>Invert</button>
+        <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)} disabled={this.state.playing}>Play Single Round</button>
+        <button className="btn btn-primary play-round" onClick={this.toggleGOL.bind(this)}>{GOLPlayMessage} Game of life</button>
         <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>
       </ControlPanel>
     )
