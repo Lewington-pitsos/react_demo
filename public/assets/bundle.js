@@ -32214,6 +32214,7 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  // prompts BucketSTore to increment a bucket. Always returns the same commaned though next()
   constructor(next, index, id) {
     super(next, index, id);
   }
@@ -32238,6 +32239,7 @@ class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 
 
 class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  // like Increment, except that it prompts BucketsStore to decrement instead, and the command it returns via next() depends on how the previous decrement went
   constructor(next, index, id, alternateNext, bucket) {
     super(next, index, id);
     this.actualNext = next;

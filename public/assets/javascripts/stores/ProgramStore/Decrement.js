@@ -1,6 +1,7 @@
 import Command from './Command.js'
 
 export default class Decrement extends Command {
+  // like Increment, except that it prompts BucketsStore to decrement instead, and the command it returns via next() depends on how the previous decrement went
   constructor(next, index, id, alternateNext, bucket) {
     super(next, index, id)
     this.actualNext = next
