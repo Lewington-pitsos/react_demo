@@ -31583,7 +31583,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         { className: 'row justify-content-center' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'col-md-10 tutorial-content' },
+          { className: 'col-md-10 tutorial-content pb-3' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h1',
             { className: 'text-center pt-4' },
@@ -32832,7 +32832,7 @@ class UggPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 
 
 
-class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+class TutorialStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
     this.tutorial = true;
@@ -32871,7 +32871,7 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
 
 }
 
-const tutorialStore = new ExecutionStore();
+const tutorialStore = new TutorialStore();
 
 __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(tutorialStore.handleActions.bind(tutorialStore));
 /* harmony default export */ __webpack_exports__["a"] = (tutorialStore);

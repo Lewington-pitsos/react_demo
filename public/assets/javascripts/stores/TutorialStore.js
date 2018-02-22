@@ -2,7 +2,7 @@ import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
 
-class ExecutionStore extends EventEmitter {
+class TutorialStore extends EventEmitter {
   constructor() {
     super()
     this.tutorial = true
@@ -39,7 +39,7 @@ class ExecutionStore extends EventEmitter {
 
 }
 
-const tutorialStore = new ExecutionStore;
+const tutorialStore = new TutorialStore;
 
 dispatcher.register(tutorialStore.handleActions.bind(tutorialStore))
 export default tutorialStore;
