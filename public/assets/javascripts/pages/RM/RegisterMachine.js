@@ -53,13 +53,13 @@ export default class RegisterMachine extends React.Component {
           </div>
         </div>
         <ControlPanel classes="animated row rm-panel" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
-            <div className="col-md-6 p-0 edit d-flex state-panel flex-wrap position-relative">
+            <div className="col-md-8 p-0 edit d-flex state-panel flex-wrap position-relative">
               <button className="btn btn-primary" onClick={this.addBucket.bind(this)} disabled={this.state.executing} >Add Bucket</button>
               <button className="btn btn-primary" onClick={this.removeBucket.bind(this)} disabled={this.state.executing} >Remove Bucket</button>
               <button className="btn btn-primary" onClick={this.addIncrement.bind(this)} disabled={this.state.executing} >Add Command</button>
               <button className="btn btn-primary" onClick={this.enterTutorial.bind(this)} disabled={this.state.executing} >Tutorial</button>
             </div>
-            <div className="col-md-6 p-0 execute">
+            <div className="col-md-4 p-0 execute">
               <ExecutePanel />
             </div>
         </ControlPanel>
