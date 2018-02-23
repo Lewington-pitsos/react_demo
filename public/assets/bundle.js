@@ -30730,7 +30730,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       "div",
-      { id: "home-page" },
+      { id: "home-page", className: "animated fadeIn" },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         "h1",
         null,
@@ -30744,7 +30744,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           { className: "row justify-content-center" },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             "div",
-            { className: "col-lg-6 col-md-8 text-center animated fadeIn" },
+            { className: "col-lg-6 col-md-8 text-center" },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               "h3",
               null,
@@ -30833,7 +30833,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      null,
+      { className: 'animated fadeIn' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
         { classes: 'GOL animated', side: 'top', fadeIn: 'fadeInDown', fadeOut: 'fadeOutUp', GOLActive: this.state.GOLMode },
@@ -31545,11 +31545,11 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     $('html, body').animate({
       scrollTop: 0
     }, 0);
-    this.tutorialAnimation = 'fadeOut';
+    this.tutorialAnimation = '';
     $('#RMs-page').removeClass('hidden');
     setTimeout(function () {
       $('.tutorial').addClass('hidden');
-    }, 800);
+    }, 1);
   }
 
   tutorialMode() {

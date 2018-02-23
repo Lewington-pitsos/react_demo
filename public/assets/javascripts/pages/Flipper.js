@@ -40,7 +40,7 @@ export default class Flipper extends React.Component {
   render() {
 
     return(
-      <div>
+      <div className="animated fadeIn">
         <ControlPanel classes="GOL animated" side="top" fadeIn="fadeInDown" fadeOut="fadeOutUp" GOLActive={this.state.GOLMode}>
           <h2>Game of Life Simulator</h2>
         </ControlPanel>
