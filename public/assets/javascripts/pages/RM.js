@@ -52,7 +52,7 @@ export default class RM extends React.Component {
     // un-hides the RM page starts the tutorial animating out and hides tutorial after the animation has finished
     $('html, body').animate({
       scrollTop: 0
-    }, 400)
+    }, 0)
     this.tutorialAnimation = 'fadeOut'
     $('#RMs-page').removeClass('hidden')
     setTimeout(function() {
