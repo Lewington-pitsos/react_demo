@@ -30753,7 +30753,19 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               "p",
               null,
-              "The Ninja Ipsum Bot allows you to add blocks of Lorum Ipsum text of any length to your website quickly and easily. When designing a website, you often need to fill areas of the site in with dummy text to see how it will look with real content. The most common way of filling in this information is via a repeated stream of Latin text known as Lorum Ipsum. Using an online generator can be risky as they can contain hidden words or phrases, advertisements or bad language. Using a personal generator allows to be sure the text you are using is safe. The Ninja Ipsum Bot allows you to add blocks of Lorum Ipsum text of any length to your website quickly and easily. When designing a website, you often need to fill areas of the site in with dummy text to see how it will look with real content. The most common way of filling in this information is via a repeated stream of Latin text known as Lorum Ipsum. Using an online generator can be risky as they can contain hidden words or phrases, advertisements or bad language. Using a personal generator allows to be sure the text you are using is safe."
+              "So because every employer and his dog seems to want you to know React.js inside-out these days I thought I'd try to make a middlingly difficult react app as a kind of learning exercise. I ended up using FLUX for the backend. To your right you'll find a dynamic array of flippable cells which can be rigged up to play  J. H. Conway's ",
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "a",
+                { href: "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life", target: "_blank" },
+                " Game of Life"
+              ),
+              " (should one be so inclined). That was a lot more straightforward. To your left you'll *rubs blearily at sleep-deprived eyes* find a basic Register Machine interface which is probably about as useful as a parachute in a marathon, but I felt like I needed to do something with all that logic I studied at University. If you want to ask me something you can email me at lewington@student.unimelb.edu.au. The code itself is sitting right ",
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "a",
+                { href: "https://github.com/Lewington-pitsos/react_demo", target: "_blank" },
+                "here"
+              ),
+              ". "
             )
           )
         )
@@ -31662,7 +31674,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             { className: 'text-center pt-4' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'a',
-              { href: 'http://www.wikiwand.com/en/Register_machine' },
+              { href: 'http://www.wikiwand.com/en/Register_machine', target: '_blank' },
               'Register Machine'
             ),
             ' simulator'
@@ -31673,7 +31685,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             'tldr: It\'s a lot like a ',
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'a',
-              { href: 'https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html' },
+              { href: 'https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html', target: '_blank' },
               'Turing Machine'
             ),
             ', but more intuitive.'

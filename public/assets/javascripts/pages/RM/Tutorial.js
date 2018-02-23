@@ -13,9 +13,9 @@ export default class Tutorial extends React.Component {
       <div className={'tutorial container-fluid animated ' + this.props.fade}>
         <div className="row justify-content-center">
           <div className="col-md-10 tutorial-content pb-3">
-            <h1 className="text-center pt-4"><a href="http://www.wikiwand.com/en/Register_machine">Register Machine</a> simulator</h1>
+            <h1 className="text-center pt-4"><a href="http://www.wikiwand.com/en/Register_machine" target="_blank">Register Machine</a> simulator</h1>
 
-            <p className="text-center font-italic pb-3">tldr: It's a lot like a <a href="https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html">Turing Machine</a>, but more intuitive.</p>
+            <p className="text-center font-italic pb-3">tldr: It's a lot like a <a href="https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html" target="_blank">Turing Machine</a>, but more intuitive.</p>
 
             <div className="text-justify">
               <h4>The Rules:</h4>
