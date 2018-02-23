@@ -17,7 +17,7 @@ export default class Tutorial extends React.Component {
 
             <p className="text-center font-italic pb-3">tldr: It's a lot like a <a href="https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html" target="_blank">Turing Machine</a>, but more intuitive.</p>
 
-            <div className="text-justify">
+            <div>
               <h4>The Rules:</h4>
               <ol>
                 <li>You have infinite buckets with infinite volume and infinite stones to put in them.</li>
