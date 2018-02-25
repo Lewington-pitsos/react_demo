@@ -1,3 +1,17 @@
+/*
+
+This component represents the list of all buckets.
+it has direct access to the BucketsStore, and updates its state on changes to that store.
+
+It renders an array of bucket components by:
+  - passing bucket info from each bucket in state as props
+  - displaying the buckets in a vertical stack, oldest to newest in the .buckets-holder column
+
+It also statically renders ugg in the .ugg-holder column
+
+*/
+
+
 import React from 'react'
 
 import Bucket from './Buckets/Bucket'
@@ -22,7 +36,8 @@ export default class Buckets extends React.Component {
       .state
       .buckets
       .map((bucket, index) =>
-        <Bucket stoneNumber={bucket.stones}
+        <Bucke
+          stoneNumber={bucket.stones}
           id={index}
           key={index}
           newBucket={bucket.justAdded}
@@ -30,14 +45,17 @@ export default class Buckets extends React.Component {
 
     return(
       <div className="col-md-7 buckets-holder">
+
         <div className="row justify-content-around">
           <div className="col-7 buckets d-flex flex-column">
             {buckets}
           </div>
+
           <div className="col-4 ugg-holder">
             <Ugg />
           </div>
         </div>
+
       </div>
     )
   }

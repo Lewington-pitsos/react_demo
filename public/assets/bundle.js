@@ -31943,6 +31943,19 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BucketsStore__ = __webpack_require__(15);
+/*
+
+This component represents the list of all buckets.
+it has direct access to the BucketsStore, and updates its state on changes to that store.
+
+It renders an array of bucket components by:
+  - passing bucket info from each bucket in state as props
+  - displaying the buckets in a vertical stack, oldest to newest in the .buckets-holder column
+
+It also statically renders ugg in the .ugg-holder column
+
+*/
+
 
 
 
@@ -31964,7 +31977,8 @@ class Buckets extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__["a" /* default */], { stoneNumber: bucket.stones,
+    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Bucke, {
+      stoneNumber: bucket.stones,
       id: index,
       key: index,
       newBucket: bucket.justAdded,
@@ -32064,7 +32078,7 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     );
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Bucket;
+/* unused harmony export default */
 
 
 /***/ }),
