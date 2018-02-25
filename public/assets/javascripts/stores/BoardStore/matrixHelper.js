@@ -1,4 +1,11 @@
-// all functions relating to the cells in their matrixified form
+/*
+
+I figured the best way to play the GOL would be to set the cells up into a matrix so that it's easy to work out who each cell's siblings are. This mixin contains methods for:
+  - creating the cell matrix,
+  - finding the siblings of each cell
+  - methods that update cells with regard to their matrixified relation to one another, i.e. cascade flipping
+
+*/
 export default {
 
   // SETUP
@@ -58,15 +65,6 @@ export default {
 
   // ITERATOR FUNCTIONS
 
-  everyCell(func) {
-    // takes a function and calls it on every cell, plus that cell's coordinates
-    for (var i = 0; i < this.cellMatrix.length; i++) {
-      for (var j = 0; j < this.cellMatrix[i].length; j++) {
-        func(this.cellMatrix[i][j], i, j)
-      }
-    }
-  },
-
   cascadeFlip(func) {
     // takes a function as an argument and For each row in the matrix,
     //  => it waits successivly longer and then applies the function to every cell in that row
@@ -83,28 +81,5 @@ export default {
     }
 
     this.emit('change')
-  },
-
-  // DOM CHANGING FUNCTIONS
-
-
-  // SIMPLE CELL OPERATIONS
-
-  calculateNextState(cell) {
-    // finds the next state of the passed in cell and whether this is the same as its current one
-    // sets noChanges to false as soon as it gets a single change
-    const changed = cell.findNextSide()
-    if (changed) {
-      this.noChanges = false
-    }
-  },
-
-  assignNextState(cell){
-    cell.updateSide()
-  },
-
-  reverse(cell) {
-    cell.backSide = !cell.backSide
   }
-
 }
