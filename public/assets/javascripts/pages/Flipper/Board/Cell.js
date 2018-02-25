@@ -1,3 +1,10 @@
+/*
+a vertically flippable cell
+relies on props to determine it's size and it's current facing
+dispatches flip events through callActions on clicks
+
+*/
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -11,7 +18,7 @@ export default class Cell extends React.Component {
   render() {
     // renders a (vertically) flippable cell using David Walsh's css flip https://davidwalsh.name/css-flip
 
-    // cell dimensions and size reflect what's going on in the store
+    // cell dimensions reflect the store
     var dimensions = {
       height: this.props.size + 'px',
       width: this.props.size + 'px'

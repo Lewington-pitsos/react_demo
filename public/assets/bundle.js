@@ -30969,6 +30969,13 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(19);
+/*
+a vertically flippable cell
+relies on props to determine it's size and it's current facing
+dispatches flip events through callActions on clicks
+
+*/
+
 
 
 
@@ -30982,7 +30989,7 @@ class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     // renders a (vertically) flippable cell using David Walsh's css flip https://davidwalsh.name/css-flip
 
-    // cell dimensions and size reflect what's going on in the store
+    // cell dimensions reflect the store
     var dimensions = {
       height: this.props.size + 'px',
       width: this.props.size + 'px'
