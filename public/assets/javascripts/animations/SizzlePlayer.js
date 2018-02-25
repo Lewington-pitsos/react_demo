@@ -4,7 +4,6 @@ export default class SizzlePlayer {
   // creates and plays randomized mojs "sizzle" shapeswirls based on the passed in default ShapeSwirl specs
   // a "sizzle" should start at the bottom of the page and slowly rise upwards, becoming smaller and smaller, untill it dissapears
   constructor(defaults) {
-    console.log('constructed');
     this.minWait = 700
     this.maxWait = 4000
     this.waitDeviation = 200

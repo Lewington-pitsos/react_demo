@@ -32910,8 +32910,9 @@ const sizzleDefaults = {
   y: { 200: -200 }, // the start and end x and y axies for the motion
   x: { 400: 400 },
   fill: '#908089',
+  swirlSize: 25,
   fillOpacity: 0.6,
-  strokeWidth: 4,
+  strokeWidth: 3,
   stroke: '#908089',
   strokeOpacity: 0.2,
   zIndex: -1 // super conveniant
@@ -32922,7 +32923,7 @@ const sizzlePlayer = new __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__["a" /* defa
 // shapes take on the specifications of passed in objects on instantiation
 new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.generate(sizzleDefaults)).play();
 
-sizzlePlayer.play(900);
+sizzlePlayer.play(2000);
 
 /***/ }),
 /* 141 */
@@ -44930,13 +44931,15 @@ sizzlePlayer.play(900);
 
     const background = document.getElementById('background');
 
-    const speed = background.offsetHeight * 50;
+    const speed = background.offsetHeight * 60;
 
     var xAxis = Math.random() * (background.offsetWidth / 2) * this.plusOrMinus();
     const newSpecs = {
       duration: this.randomize(speed, speed / 2),
       scale: { [defaults.scale * Math.random()]: 0 },
-      strokeWidth: { [defaults.strokeWidth * Math.random() + 1]: [defaults.strokeWidth * Math.random() + 4] },
+      swirlSize: { [defaults.swirlSize * Math.random()]: [defaults.swirlSize * Math.random()] },
+      direction: this.plusOrMinus(),
+      strokeWidth: { [defaults.strokeWidth * Math.random() + 2]: [defaults.strokeWidth * Math.random() + 4] },
       // somewhere between 1 and two, shrinks to 0
       y: { [background.offsetHeight / 2]: -this.randomize(background.offsetHeight / 2) },
       x: { [xAxis]: this.randomize(xAxis, 50) }
@@ -44972,7 +44975,6 @@ class SizzlePlayer {
   // creates and plays randomized mojs "sizzle" shapeswirls based on the passed in default ShapeSwirl specs
   // a "sizzle" should start at the bottom of the page and slowly rise upwards, becoming smaller and smaller, untill it dissapears
   constructor(defaults) {
-    console.log('constructed');
     this.minWait = 700;
     this.maxWait = 4000;
     this.waitDeviation = 200;
