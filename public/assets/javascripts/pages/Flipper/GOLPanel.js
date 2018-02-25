@@ -1,3 +1,10 @@
+/*
+
+A panel component that houses a bunch of buttons that fire off various events to cellActions when clicked.
+Has direcet access to the BoardStore so it can tell whather the GOL is playing and disable/display buttons accordingly
+
+*/
+
 import React from 'react'
 import PropTypes from 'prop-types';
 

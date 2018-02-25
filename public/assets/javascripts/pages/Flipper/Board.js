@@ -1,7 +1,7 @@
 /*
 
-A board that displays all the cells in CellStore
-Has direct access to Cellstore and updates state on Cellstore changes
+A board that displays all the cells in BoardStore
+Has direct access to BoardStore and updates state on Cellstore changes
 Has access to and renders out Cell components according to its state
 
 */

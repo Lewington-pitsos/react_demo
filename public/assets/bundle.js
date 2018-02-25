@@ -30911,8 +30911,8 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
 /*
 
-A board that displays all the cells in CellStore
-Has direct access to Cellstore and updates state on Cellstore changes
+A board that displays all the cells in BoardStore
+Has direct access to BoardStore and updates state on Cellstore changes
 Has access to and renders out Cell components according to its state
 
 */
@@ -31390,6 +31390,13 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_ControlPanel__ = __webpack_require__(32);
+/*
+
+A panel component that houses a bunch of buttons that fire off various events to cellActions when clicked.
+Has direcet access to the BoardStore so it can tell whather the GOL is playing and disable/display buttons accordingly
+
+*/
+
 
 
 
@@ -31469,6 +31476,16 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_cellActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__ = __webpack_require__(31);
+/*
+
+A component that renders a single button
+When clicked it toggles random flipping through cellActions
+It has access to the Cellstore so it can display correctly depending on whether randomflipping is already occuring or not
+
+Other than this button, seemed to make more sense to make this button it's own component 
+
+*/
+
 
 
 
