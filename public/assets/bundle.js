@@ -44921,15 +44921,18 @@ const timeline = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.Timeline({
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
   generate(defaults) {
-    // generates and returns a slightly randomized version of the passed in object
-
-    return {
+    // generates an object with randomized versions of some of defualt's keys
+    // copies default (don't want to mess with it)
+    // overwrites some of the copy's keys with the randomized keys
+    const newSpecs = {
       duration: this.randomize(defaults.duration),
-      y: { 200: this.randomize(defaults.y[200]) }, // the start and end x and y axies for the motion
-      x: { 400: this.randomize(defaults.x[400]) },
-      easing: defaults.easing,
-      zIndex: defaults.zIndex // super conveniant
+      y: { 200: this.randomize(defaults.y[200]) },
+      x: { 400: this.randomize(defaults.x[400]) }
     };
+
+    const copy = Object.assign({}, defaults);
+
+    return Object.assign(copy, newSpecs);
   },
 
   randomize(number, deviation = false) {
