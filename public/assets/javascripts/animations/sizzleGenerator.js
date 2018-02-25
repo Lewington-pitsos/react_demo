@@ -3,11 +3,15 @@ export default {
     // generates an object with randomized versions of some of defualt's keys
     // copies default (don't want to mess with it)
     // overwrites some of the copy's keys with the randomized keys
+
+    var xAxis = Math.random() * window.outerWidth * this.plusOrMinus()
     const newSpecs = {
       duration: this.randomize(defaults.duration),
-      y: {200: this.randomize(defaults.y[200])}, 
-      x: {400: this.randomize(defaults.x[400])},
+      y: {[window.outerHeight / 2]: -this.randomize(window.outerHeight / 2)},
+      x: {[xAxis]: this.randomize(xAxis, 50)}
     }
+
+    console.log(newSpecs);
 
     const copy = Object.assign({}, defaults)
 
@@ -19,7 +23,7 @@ export default {
     // if no deviation is supplied we default to 25% of the passed in number (rounded down)
     deviation = deviation || number / 4
     // we add number to a randomized portion of deviation, whichc ould be positive or negative
-    return number + ((Math.random() * deviation) * this.plusOrMinus())
+    return Math.floor(number + ((Math.random() * deviation) * this.plusOrMinus()))
   },
 
   plusOrMinus() {

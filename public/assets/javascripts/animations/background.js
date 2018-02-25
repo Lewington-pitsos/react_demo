@@ -4,9 +4,14 @@ import sizzleGenerator from './sizzleGenerator'
 
 // default paramaters for a sizzle animation
 const sizzleDefaults = {
+  parent: document.getElementById('background'),
   duration: 5000,
   y: {200: -200}, // the start and end x and y axies for the motion
   x: {400: 400},
+  fill: '#908089',
+  fillOpacity: 0.6,
+  stroke: '#908089',
+  strokeOpacity: 0.2,
   easing: 'sin.out',
   zIndex: -1 // super conveniant
 }
