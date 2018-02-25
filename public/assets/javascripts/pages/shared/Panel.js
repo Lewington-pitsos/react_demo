@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-export default class ControlPanel extends React.Component {
+export default class Panel extends React.Component {
   render() {
     const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut
 
@@ -16,11 +16,11 @@ export default class ControlPanel extends React.Component {
   }
 }
 
-ControlPanel.propTypes = {
+Panel.propTypes = {
   side: PropTypes.string.isRequired
 }
 
-ControlPanel.defaultProps = {
+Panel.defaultProps = {
   // sets default prop values
   side: 'bottom',
   classes: ''

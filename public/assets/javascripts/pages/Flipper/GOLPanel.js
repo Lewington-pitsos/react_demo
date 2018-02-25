@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import cellActions from '../../actions/cellActions'
 import boardStore from '../../stores/BoardStore'
-import ControlPanel from '../shared/ControlPanel'
+import Panel from '../shared/Panel'
 
 export default class Board extends React.Component {
   constructor() {
@@ -47,12 +47,12 @@ export default class Board extends React.Component {
       'Start'
 
     return(
-      <ControlPanel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.props.GOLActive}>
+      <Panel classes="GOL animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={this.props.GOLActive}>
         <button className="btn btn-primary cascade-flip" onClick={this.cascadeFlip.bind(this)} disabled={this.state.playing}>Invert</button>
         <button className="btn btn-primary play-round" onClick={this.playRound.bind(this)} disabled={this.state.playing}>Play Single Round</button>
         <button className="btn btn-primary play-round" onClick={this.toggleGOL.bind(this)}>{GOLPlayMessage} Game of life</button>
         <button className="btn btn-primary exit" onClick={this.exit.bind(this)}>Exit GOL</button>
-      </ControlPanel>
+      </Panel>
     )
   }
 }

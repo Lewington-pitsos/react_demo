@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Board from './Flipper/Board'
-import ControlPanel from './shared/ControlPanel'
+import Panel from './shared/Panel'
 import cellActions from '../actions/cellActions'
 import flipperStore from '../stores/FlipperStore'
 import GOLPanel from './Flipper/GOLPanel'
@@ -41,19 +41,19 @@ export default class Flipper extends React.Component {
 
     return(
       <div className="animated fadeIn">
-        <ControlPanel classes="GOL animated" side="top" fadeIn="fadeInDown" fadeOut="fadeOutUp" GOLActive={this.state.GOLMode}>
+        <Panel classes="GOL animated" side="top" fadeIn="fadeInDown" fadeOut="fadeOutUp" GOLActive={this.state.GOLMode}>
           <h2>Game of Life Simulator</h2>
-        </ControlPanel>
+        </Panel>
         <h1>Flipper</h1>
         <div className="d-flex align-items-center flex-column GOL_wrapper p-4">
           <Board />
         </div>
-        <ControlPanel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLMode}>
+        <Panel classes="animated" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={!this.state.GOLMode}>
           <button className="btn btn-primary" onClick={this.addCell.bind(this)}>Add Cell</button>
           <button className="btn btn-primary" onClick={this.addFiveCells.bind(this)}>Add 5</button>
           <RandFlipper />
           <button className="btn btn-primary fix-board" onClick={this.fixBoard.bind(this)}>Game of Life</button>
-        </ControlPanel>
+        </Panel>
         <GOLPanel GOLActive={this.state.GOLMode}/>
       </div>
     )

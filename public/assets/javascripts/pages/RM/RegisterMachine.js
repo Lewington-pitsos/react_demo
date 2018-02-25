@@ -2,7 +2,7 @@ import React from 'react'
 
 import Buckets from './Buckets'
 import Program from './Program'
-import ControlPanel from '../shared/ControlPanel'
+import Panel from '../shared/Panel'
 import rmActions from '../../actions/rmActions'
 import BucketSelector from './BucketSelector'
 import ExecutePanel from './ExecutePanel'
@@ -52,7 +52,7 @@ export default class RegisterMachine extends React.Component {
           <div className="overlay hidden" id="RM-overlay">
           </div>
         </div>
-        <ControlPanel classes="animated row rm-panel" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
+        <Panel classes="animated row rm-panel" fadeIn="fadeInUp" fadeOut="fadeOutDown" GOLActive={true}>
             <div className="col-md-8 p-0 edit d-flex state-panel flex-wrap position-relative">
               <button className="btn btn-primary" onClick={this.addBucket.bind(this)} disabled={this.state.executing} >Add Bucket</button>
               <button className="btn btn-primary" onClick={this.removeBucket.bind(this)} disabled={this.state.executing} >Remove Bucket</button>
@@ -62,7 +62,7 @@ export default class RegisterMachine extends React.Component {
             <div className="col-md-4 p-0 execute">
               <ExecutePanel />
             </div>
-        </ControlPanel>
+        </Panel>
       </div>
     )
   }

@@ -12776,43 +12776,7 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore
 /* harmony default export */ __webpack_exports__["a"] = (boardStore);
 
 /***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-
-
-
-class ControlPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  render() {
-    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
-
-    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'container-fluid interface ' + classes },
-      this.props.children
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ControlPanel;
-
-
-ControlPanel.propTypes = {
-  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
-};
-
-ControlPanel.defaultProps = {
-  // sets default prop values
-  side: 'bottom',
-  classes: ''
-};
-
-/***/ }),
+/* 32 */,
 /* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30802,7 +30766,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_Panel__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(116);
@@ -30852,7 +30816,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       'div',
       { className: 'animated fadeIn' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
+        __WEBPACK_IMPORTED_MODULE_2__shared_Panel__["a" /* default */],
         { classes: 'GOL animated', side: 'top', fadeIn: 'fadeInDown', fadeOut: 'fadeOutUp', GOLActive: this.state.GOLMode },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h2',
@@ -30871,7 +30835,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Flipper_Board__["a" /* default */], null)
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_2__shared_ControlPanel__["a" /* default */],
+        __WEBPACK_IMPORTED_MODULE_2__shared_Panel__["a" /* default */],
         { classes: 'animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: !this.state.GOLMode },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
@@ -31389,7 +31353,7 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperSto
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_ControlPanel__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_Panel__ = __webpack_require__(147);
 /*
 
 A panel component that houses a bunch of buttons that fire off various events to cellActions when clicked.
@@ -31438,7 +31402,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     const GOLPlayMessage = this.state.playing ? 'Stop' : 'Start';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      __WEBPACK_IMPORTED_MODULE_4__shared_ControlPanel__["a" /* default */],
+      __WEBPACK_IMPORTED_MODULE_4__shared_Panel__["a" /* default */],
       { classes: 'GOL animated', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: this.props.GOLActive },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
@@ -31482,7 +31446,7 @@ A component that renders a single button
 When clicked it toggles random flipping through cellActions
 It has access to the Cellstore so it can display correctly depending on whether randomflipping is already occuring or not
 
-Other than this button, seemed to make more sense to make this button it's own component 
+This button has a fair bit of unique functionality, I thought I'd extract it to help de-clutter it's parent
 
 */
 
@@ -31819,7 +31783,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_Panel__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BucketSelector__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ExecutePanel__ = __webpack_require__(138);
@@ -31882,7 +31846,7 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay hidden', id: 'RM-overlay' })
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_3__shared_ControlPanel__["a" /* default */],
+        __WEBPACK_IMPORTED_MODULE_3__shared_Panel__["a" /* default */],
         { classes: 'animated row rm-panel', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: true },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
@@ -45066,6 +45030,43 @@ class SizzlePlayer {
     return Math.round(Math.random()) * 2 - 1;
   }
 });
+
+/***/ }),
+/* 147 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+
+
+
+class Panel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
+
+    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'container-fluid interface ' + classes },
+      this.props.children
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Panel;
+
+
+Panel.propTypes = {
+  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
+};
+
+Panel.defaultProps = {
+  // sets default prop values
+  side: 'bottom',
+  classes: ''
+};
 
 /***/ })
 /******/ ]);

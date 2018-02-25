@@ -4,7 +4,7 @@ A component that renders a single button
 When clicked it toggles random flipping through cellActions
 It has access to the Cellstore so it can display correctly depending on whether randomflipping is already occuring or not
 
-Other than this button, seemed to make more sense to make this button it's own component 
+This button has a fair bit of unique functionality, I thought I'd extract it to help de-clutter it's parent
 
 */
 
