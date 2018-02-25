@@ -5,7 +5,7 @@ import Flash from './Layout/Flash'
 export default class Layout extends React.Component {
   render() {
     return(
-      <div className="position-relative">
+      <div id="main-content-wrapper" className="position-relative">
         <Flash />
         <nav className="container-fluid">
           <ul className="d-flex justify-content-end">
