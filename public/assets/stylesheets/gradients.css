@@ -1,0 +1,10 @@
+.home-content {
+  background: rgba(63, 54, 59, 0.7);
+  background: -moz-radial-gradient(center, ellipse cover, rgba(63,54,59,1) 0%, rgba(63,54,59,0.65) 61%, rgba(63,54,59,0) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(63,54,59,1)), color-stop(61%, rgba(63,54,59,0.65)), color-stop(100%, rgba(63,54,59,0)));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(63,54,59,1) 0%, rgba(63,54,59,0.65) 61%, rgba(63,54,59,0) 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(63,54,59,1) 0%, rgba(63,54,59,0.65) 61%, rgba(63,54,59,0) 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(63,54,59,1) 0%, rgba(63,54,59,0.65) 61%, rgba(63,54,59,0) 100%);
+  background: radial-gradient(ellipse at center, rgba(63,54,59,1) 0%, rgba(63,54,59,0.65) 61%, rgba(63,54,59,0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f363b', endColorstr='#3f363b', GradientType=1 );
+}
