@@ -32905,12 +32905,13 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 // default paramaters for a sizzle animation
 const sizzleDefaults = {
   parent: document.getElementById('background'),
-  duration: 10000,
+  duration: 15000,
   scale: 2,
   y: { 200: -200 }, // the start and end x and y axies for the motion
   x: { 400: 400 },
   fill: '#908089',
   fillOpacity: 0.6,
+  strokeWidth: 4,
   stroke: '#908089',
   strokeOpacity: 0.2,
   zIndex: -1 // super conveniant
@@ -44939,6 +44940,7 @@ const timeline = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.Timeline({
     const newSpecs = {
       duration: this.randomize(defaults.duration, defaults.duration / 2),
       scale: { [defaults.scale * Math.random()]: 0 },
+      strokeWidth: { [defaults.strokeWidth * Math.random() + 1]: [defaults.strokeWidth * Math.random() + 4] },
       // somewhere between 1 and two, shrinks to 0
       y: { [window.outerHeight / 2]: -this.randomize(window.outerHeight / 2) },
       x: { [xAxis]: this.randomize(xAxis, 50) }

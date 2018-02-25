@@ -8,6 +8,7 @@ export default {
     const newSpecs = {
       duration: this.randomize(defaults.duration, defaults.duration / 2),
       scale: {[defaults.scale * Math.random()]: 0},
+      strokeWidth: {[defaults.strokeWidth * Math.random() + 1]: [defaults.strokeWidth * Math.random() + 4]},
       // somewhere between 1 and two, shrinks to 0
       y: {[window.outerHeight / 2]: -this.randomize(window.outerHeight / 2)},
       x: {[xAxis]: this.randomize(xAxis, 50)}
