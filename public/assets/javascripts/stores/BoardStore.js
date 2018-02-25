@@ -1,3 +1,10 @@
+/*
+
+The beating heart of the flipper interface, it:
+  - stores an array of cell objects. Their indexes in this array act as unique identifiers
+
+*/
+
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
@@ -6,6 +13,22 @@ import matrixHelper from './BoardStore/matrixHelper'
 import PositionedCell from './BoardStore/PositionedCell'
 import GOLHelper from './BoardStore/GOLHelper'
 import flashActions from '../actions/flashActions'
+
+// the cells that start off on the board
+const defaultCells = [
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  { backSide: false },
+  {  backSide: false },
+  {  backSide: false },
+  {  backSide: false }
+]
 
 class BoardStore extends EventEmitter {
   constructor() {
@@ -25,20 +48,7 @@ class BoardStore extends EventEmitter {
     // trackes whether changes were made during the last GOL round
     this.noChanges = true
     // cells are stored as an array of PositionedCell objects
-    this.cells = [
-      { id: 1, backSide: false },
-      { id: 2, backSide: false },
-      { id: 3, backSide: false },
-      { id: 4, backSide: false },
-      { id: 5, backSide: false },
-      { id: 6, backSide: false },
-      { id: 7, backSide: false },
-      { id: 8, backSide: false },
-      { id: 9, backSide: false },
-      { id: 10, backSide: false },
-      { id: 11, backSide: false },
-      { id: 12, backSide: false }
-    ].map(cell => new PositionedCell(cell.id, cell.backSide))
+    this.cells = defaultCells.map(cell => new PositionedCell(cell.id, cell.backSide))
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, randomFLippingHelper);
@@ -143,11 +153,7 @@ class BoardStore extends EventEmitter {
 
   flipCell(id) {
     // finds the cell object that matches id and toggles it's side value
-    this.cells.forEach(function(cell) {
-      if (cell.id == id) {
-        cell.backSide = !cell.backSide
-      }
-    })
+    this.cells[id].backSide = !this.cells[id].backSide
 
     this.emit('change')
   }

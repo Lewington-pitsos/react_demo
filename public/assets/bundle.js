@@ -12593,6 +12593,13 @@ var createTransitionManager = function createTransitionManager() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions_flashActions__ = __webpack_require__(11);
+/*
+
+The beating heart of the flipper interface, it:
+  - stores an array of cell objects. Their indexes in this array act as unique identifiers
+
+*/
+
  // 'events is like, part of nodejs'
 
 
@@ -12601,6 +12608,9 @@ var createTransitionManager = function createTransitionManager() {
 
 
 
+
+// the cells that start off on the board
+const defaultCells = [{ backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }];
 
 class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
@@ -12620,7 +12630,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     // trackes whether changes were made during the last GOL round
     this.noChanges = true;
     // cells are stored as an array of PositionedCell objects
-    this.cells = [{ id: 1, backSide: false }, { id: 2, backSide: false }, { id: 3, backSide: false }, { id: 4, backSide: false }, { id: 5, backSide: false }, { id: 6, backSide: false }, { id: 7, backSide: false }, { id: 8, backSide: false }, { id: 9, backSide: false }, { id: 10, backSide: false }, { id: 11, backSide: false }, { id: 12, backSide: false }].map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
+    this.cells = defaultCells.map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
 
     // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
@@ -12733,11 +12743,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
 
   flipCell(id) {
     // finds the cell object that matches id and toggles it's side value
-    this.cells.forEach(function (cell) {
-      if (cell.id == id) {
-        cell.backSide = !cell.backSide;
-      }
-    });
+    this.cells[id].backSide = !this.cells[id].backSide;
 
     this.emit('change');
   }
@@ -30918,8 +30924,8 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     // creates a number of cell componeents and then renders them within a flexbox
     // the overarching cell size is passed in to each cell as a prop
-    const cells = this.state.cells.map(cell => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: cell.id,
-      key: cell.id,
+    const cells = this.state.cells.map((cell, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Board_Cell__["a" /* default */], { id: index,
+      key: index,
       size: this.state.cellSize,
       backSide: cell.backSide }));
 

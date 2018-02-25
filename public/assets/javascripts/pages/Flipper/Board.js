@@ -30,9 +30,9 @@ export default class Board extends React.Component {
     const cells = this
       .state
       .cells
-      .map((cell) =>
-        <Cell id={cell.id}
-          key={cell.id}
+      .map((cell, index) =>
+        <Cell id={index}
+          key={index}
           size={this.state.cellSize}
           backSide={cell.backSide}/>)
 
