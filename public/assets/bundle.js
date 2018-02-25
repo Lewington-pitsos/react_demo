@@ -14013,6 +14013,21 @@ __WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programSto
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_BucketsStore__ = __webpack_require__(15);
+/*
+
+This component renders out a form select box.
+It has direct access to the Bucketstore, and updates it's state whenever that store changes. The only property it cares about though is the total number of buckets.
+
+Though it could be used more broadly, we only need it to edit commands.
+
+It uses this number to render out an <option> for every bucket.
+
+It expects two props:
+  - current: should be the index/id of the bucket that the command we're editing currently has selected
+  - update: a method to be fired whenever the select value changes
+
+*/
+
 
 
 
@@ -14032,7 +14047,8 @@ class BucketSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
   }
 
   generateOptions() {
-    // generates bucket options (starting at one and ending ON the total number of buckets) and pushes them to an array
+    // generates bucket options and pushes them to an array untill it hits the total number of buckets
+    // option is displayed as refering to a bucket one higher than it's value
     var options = [];
 
     for (var i = 0; i < this.state.number; i++) {
@@ -32897,6 +32913,18 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(139);
+/*
+
+This component represnets a sub-panel, or sub-section deitcated to execution of the register machine. While execution is occuring, this panel should display a spinner, and a 'halt' button that allows the user to halt execution. While not executing it should display an 'execute button' that allows the user to start execution.
+
+It has direct access to the ExecutionStore, which is uses to work out whether execution is currently occuring.
+
+It handles halting itself by triggering flashActions with a message AND rmActions with a halt command.
+
+Both the halt/spinner and the execution button are always rendered, but the one that isn't active is hidden using css classes.
+
+*/
+
 
 
 
