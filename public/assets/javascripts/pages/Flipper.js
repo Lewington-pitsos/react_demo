@@ -6,7 +6,7 @@ High level page display, containing:
   - two overapping control panels, one for the GOL, one for normal flipping and board editing
   - one header panel for the GOL
 
-Has direct access to the flipperSTore so it can display cues to the user
+Has direct access to the flipperSTore so it can tell whether the user is in GOL mode. In response it displays or hides the GOL panels.
 
 Fires off board editing editing actions, and one action that activates the GOL
 

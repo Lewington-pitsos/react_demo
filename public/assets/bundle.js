@@ -30779,7 +30779,7 @@ High level page display, containing:
   - two overapping control panels, one for the GOL, one for normal flipping and board editing
   - one header panel for the GOL
 
-Has direct access to the flipperSTore so it can display cues to the user
+Has direct access to the flipperSTore so it can tell whether the user is in GOL mode. In response it displays or hides the GOL panels.
 
 Fires off board editing editing actions, and one action that activates the GOL
 
@@ -31311,6 +31311,12 @@ class SiblingsTracker {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
+/*
+
+literally only responsible for working out whether the use is in GOL mode or not since the board exists irrespective of whether the user is in GOL mode or not I didn't want the BoardStore to be responsible for monitoring this.
+
+*/
+
  // 'events is like, part of nodejs'
 
 

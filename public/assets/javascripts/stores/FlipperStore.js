@@ -1,3 +1,9 @@
+/*
+
+literally only responsible for working out whether the use is in GOL mode or not since the board exists irrespective of whether the user is in GOL mode or not I didn't want the BoardStore to be responsible for monitoring this.
+
+*/
+
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
