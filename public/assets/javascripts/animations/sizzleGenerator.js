@@ -1,4 +1,5 @@
 export default {
+  // a library for the sizzleplayer class. Covers the generation of Shape specifications for sizzles
   generate(defaults) {
     // generates an object with randomized versions of some of defualt's keys
     // copies default (don't want to mess with it)

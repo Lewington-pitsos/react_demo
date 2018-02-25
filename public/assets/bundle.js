@@ -44922,6 +44922,7 @@ sizzlePlayer.play(900);
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
+  // a library for the sizzleplayer class. Covers the generation of Shape specifications for sizzles
   generate(defaults) {
     // generates an object with randomized versions of some of defualt's keys
     // copies default (don't want to mess with it)
@@ -44971,6 +44972,8 @@ sizzlePlayer.play(900);
 
 
 class SizzlePlayer {
+  // creates and plays randomized mojs "sizzle" shapeswirls based on the passed in default ShapeSwirl specs
+  // a "sizzle" should start at the bottom of the page and slowly rise upwards, becoming smaller and smaller, untill it dissapears
   constructor(defaults) {
     console.log('constructed');
     this.minWait = 700;
@@ -44984,10 +44987,6 @@ class SizzlePlayer {
   sizzleWait(oldWait) {
     // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
     var newWait = oldWait + (Math.round(Math.random()) * 2 - 1) * this.waitDeviation;
-
-    console.log(newWait);
-    console.log(this.waitDeviation);
-    console.log(oldWait);
 
     if (newWait < this.minWait) {
       return this.minWait;
@@ -45005,8 +45004,7 @@ class SizzlePlayer {
 
   play(wait) {
     // creates and plays a new sizzle, then sets a timer to call the same function again
-    console.log('wait: ' + wait);
-    setTimeout(this.addSizzle.bind(this, wait), Math.floor(Math.random() * wait, wait));
+    setTimeout(this.addSizzle.bind(this, wait), Math.floor(Math.random() * wait));
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SizzlePlayer;
