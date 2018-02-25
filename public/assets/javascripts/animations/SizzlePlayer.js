@@ -15,6 +15,7 @@ export default class SizzlePlayer {
 
   sizzleWait(oldWait) {
     // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
+    // the idea here is that the number of sizzles being added to the page per second should vary over the course of, say a few minutes, but the variation should not be jarring, or attention-grabbing
     var newWait = oldWait +
       ((Math.round(Math.random()) * 2 - 1) * this.waitDeviation)
 
@@ -28,6 +29,7 @@ export default class SizzlePlayer {
   }
 
   addSizzle(wait) {
+    // creates and plays a sizzle, then calls play with a modifed wait time
     new mojs.ShapeSwirl(this.generate(this.defaults)).play()
     this.play(this.sizzleWait(wait))
   }

@@ -19,10 +19,7 @@ export default {
       x: {[xAxis]: this.randomize(xAxis, 50)}
     }
 
-    console.log(newSpecs);
-
     const copy = Object.assign({}, defaults)
-
     return Object.assign(copy, newSpecs)
   },
 
