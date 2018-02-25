@@ -61,15 +61,6 @@ export default {
 
   // SIMPLE CELL OPERATIONS
 
-  everyCell(func) {
-    // takes a function and calls it on every cell, plus that cell's coordinates
-    for (var i = 0; i < this.cellMatrix.length; i++) {
-      for (var j = 0; j < this.cellMatrix[i].length; j++) {
-        func(this.cellMatrix[i][j], i, j)
-      }
-    }
-  },
-
   calculateNextState(cell) {
     // finds the next state of the passed in cell and whether this is the same as its current one
     // sets noChanges to false as soon as it gets a single change

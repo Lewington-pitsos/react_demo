@@ -65,6 +65,16 @@ export default {
 
   // ITERATOR FUNCTIONS
 
+  everyCell(func) {
+    // takes a function and calls it on every cell, plus that cell's coordinates
+    for (var i = 0; i < this.cellMatrix.length; i++) {
+      for (var j = 0; j < this.cellMatrix[i].length; j++) {
+        func(this.cellMatrix[i][j], i, j)
+      }
+    }
+  },
+
+
   cascadeFlip(func) {
     // takes a function as an argument and For each row in the matrix,
     //  => it waits successivly longer and then applies the function to every cell in that row
