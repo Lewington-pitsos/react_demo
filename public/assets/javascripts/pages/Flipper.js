@@ -1,3 +1,18 @@
+/*
+
+High level page display, containing:
+  - a board of cell components
+  - the page title
+  - two overapping control panels, one for the GOL, one for normal flipping and board editing
+  - one header panel for the GOL
+
+Has direct access to the flipperSTore so it can display cues to the user
+
+Fires off board editing editing actions, and one action that activates the GOL
+
+*/
+
+
 import React from 'react'
 
 import Board from './Flipper/Board'
@@ -21,6 +36,7 @@ export default class Flipper extends React.Component {
   }
 
   componentDidMount() {
+    // we want to hide GOL related components by default, otherwise they would start by fading out
     $('.GOL').addClass('hidden')
   }
 

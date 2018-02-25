@@ -30771,6 +30771,20 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__ = __webpack_require__(117);
+/*
+
+High level page display, containing:
+  - a board of cell components
+  - the page title
+  - two overapping control panels, one for the GOL, one for normal flipping and board editing
+  - one header panel for the GOL
+
+Has direct access to the flipperSTore so it can display cues to the user
+
+Fires off board editing editing actions, and one action that activates the GOL
+
+*/
+
 
 
 
@@ -30794,6 +30808,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   componentDidMount() {
+    // we want to hide GOL related components by default, otherwise they would start by fading out
     $('.GOL').addClass('hidden');
   }
 
