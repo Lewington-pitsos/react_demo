@@ -1,3 +1,12 @@
+/*
+
+A position: fixed panel that fades in and out at an edge of the screen. It has a very high z-index.
+It's screen edge and particular fade method are determiend by its props.
+For added resuability it also takes and adds a list of extra classes from props.
+
+*/
+
+
 import React from 'react'
 import PropTypes from 'prop-types';
 
