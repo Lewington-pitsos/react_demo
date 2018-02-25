@@ -75,22 +75,22 @@ class BucketsStore extends EventEmitter {
       } case "REMOVE_BUCKET": {
         this.removeBucket()
         break
-      } case "INCREMENT_BUCKET": {
+      } case "INCREMENT_BUCKET": { // through a program
         this.incrementBucket(action.id)
         break
-      } case "DECREMENT_BUCKET": {
+      } case "DECREMENT_BUCKET": { // through a program
         this.decrementBucket(action.id)
         break
       } case "SWITCH_BUCKET_EDITOR": {
         this.switchEditor(action.id)
         break
-      } case "AUTO_INCREMENT_BUCKET": {
+      } case "AUTO_INCREMENT_BUCKET": { // user commanded
         this.addStoneTo(action.id)
         break
-      } case "AUTO_DECREMENT_BUCKET": {
+      } case "AUTO_DECREMENT_BUCKET": { // user commanded
         this.takeStoneFrom(action.id)
         break
-      } case "EMPTY_BUCKET": {
+      } case "EMPTY_BUCKET": { // user commanded
         this.empty(action.id)
         break
       } case "FINISH_EXECUTION": {
