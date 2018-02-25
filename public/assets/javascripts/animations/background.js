@@ -18,20 +18,14 @@ const sizzleDefaults = {
 }
 
 // shapes take on the specifications of passed in objects on instantiation
-const sizzle = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle2 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle3 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle4 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle5 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle6 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle7 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle8 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle9 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
-const sizzle10 = new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults))
 
+new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults)).play()
 
-const timeline = new mojs.Timeline({
-  repeat: 999
-})
-  .add(sizzle, sizzle2, sizzle3, sizzle4, sizzle5, sizzle6, sizzle7, sizzle8, sizzle9, sizzle10)
-  .play()
+playSizzle()
+
+function playSizzle() {
+  setTimeout(function() {
+    new mojs.ShapeSwirl(sizzleGenerator.generate(sizzleDefaults)).play()
+    playSizzle()
+  }, Math.floor(Math.random() * 900))
+}

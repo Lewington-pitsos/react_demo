@@ -32918,20 +32918,17 @@ const sizzleDefaults = {
 
 
   // shapes take on the specifications of passed in objects on instantiation
-};const sizzle = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle2 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle3 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle4 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle5 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle6 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle7 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle8 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle9 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
-const sizzle10 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
 
-const timeline = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.Timeline({
-  repeat: 999
-}).add(sizzle, sizzle2, sizzle3, sizzle4, sizzle5, sizzle6, sizzle7, sizzle8, sizzle9, sizzle10).play();
+};new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults)).play();
+
+playSizzle();
+
+function playSizzle() {
+  setTimeout(function () {
+    new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults)).play();
+    playSizzle();
+  }, Math.floor(Math.random() * 900));
+}
 
 /***/ }),
 /* 141 */
