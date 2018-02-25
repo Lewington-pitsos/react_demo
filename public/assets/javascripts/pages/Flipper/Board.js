@@ -1,3 +1,11 @@
+/*
+
+A board that displays all the cells in CellStore
+Has direct access to Cellstore and updates state on Cellstore changes
+Has access to and renders out Cell components according to its state
+
+*/
+
 import React from 'react'
 import PropTypes from 'prop-types';
 
@@ -22,12 +30,13 @@ export default class Board extends React.Component {
     const cells = this
       .state
       .cells
-      .map((cell) => <Cell id={cell.id}
-        key={cell.id}
-        size={this.state.cellSize}
-        backSide={cell.backSide}/>)
+      .map((cell) =>
+        <Cell id={cell.id}
+          key={cell.id}
+          size={this.state.cellSize}
+          backSide={cell.backSide}/>)
 
-    // if a fixed width exists in state, we want to fix the board do that width
+    // if a fixed width exists in state, we want to fix the board do that width and change the alignment of its cells slightly
     var boardStyle = null
     if (this.state.fixedWidth) {
       boardStyle =   {
@@ -37,6 +46,7 @@ export default class Board extends React.Component {
         }
     }
 
+    // we activate an invisible overlay to stop the user from triggering clicks while the GOL is playing
     const isHidden = this.state.playing ?
       '' :
       'hidden'

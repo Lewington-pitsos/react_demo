@@ -30909,6 +30909,14 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Board_Cell__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
+/*
+
+A board that displays all the cells in CellStore
+Has direct access to Cellstore and updates state on Cellstore changes
+Has access to and renders out Cell components according to its state
+
+*/
+
 
 
 
@@ -30936,7 +30944,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       size: this.state.cellSize,
       backSide: cell.backSide }));
 
-    // if a fixed width exists in state, we want to fix the board do that width
+    // if a fixed width exists in state, we want to fix the board do that width and change the alignment of its cells slightly
     var boardStyle = null;
     if (this.state.fixedWidth) {
       boardStyle = {
@@ -30946,6 +30954,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       };
     }
 
+    // we activate an invisible overlay to stop the user from triggering clicks while the GOL is playing
     const isHidden = this.state.playing ? '' : 'hidden';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -30970,6 +30979,7 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(19);
 /*
+
 a vertically flippable cell
 relies on props to determine it's size and it's current facing
 dispatches flip events through callActions on clicks

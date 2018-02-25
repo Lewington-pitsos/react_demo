@@ -1,4 +1,5 @@
 /*
+
 a vertically flippable cell
 relies on props to determine it's size and it's current facing
 dispatches flip events through callActions on clicks
