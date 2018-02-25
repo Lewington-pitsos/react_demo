@@ -1,3 +1,18 @@
+/*
+
+Represents a single bucket in the RM.
+Each bucket can trigger rmActions to switch the currently edited bucket to itself.
+
+Throgh Props
+  - displays the number of stones it holds, according to BucketsStore.
+  - displays it's id as part of a css id selector
+  - works out if it is being edited. If so, it displays a special edit panel though the BucketEditor component.
+  - works out if it has just been added, and if so animates in accoridngly
+
+
+
+*/
+
 import React from 'react'
 
 import Stone from './Stone'
@@ -9,15 +24,9 @@ export default class Bucket extends React.Component {
     rmActions.switchBucketEditor(this.props.id)
   }
 
-  noBucketEditor() {
-    rmActions.switchBucketEditor(-1)
-  }
-
   render() {
-    // renders a number of stones according to props
-
     var editor = this.props.editMode ?
-      <BucketEditor exit={this.noBucketEditor.bind(this)} index={this.props.id}/> :
+      <BucketEditor index={this.props.id}/> :
       null
 
     var animationClasses = this.props.newBucket ? 'animated fadeInUp' : ''

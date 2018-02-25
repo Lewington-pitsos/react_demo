@@ -31997,6 +31997,21 @@ class Buckets extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
+/*
+
+Represents a single bucket in the RM.
+Each bucket can trigger rmActions to switch the currently edited bucket to itself.
+
+Throgh Props
+  - displays the number of stones it holds, according to BucketsStore.
+  - displays it's id as part of a css id selector
+  - works out if it is being edited. If so, it displays a special edit panel though the BucketEditor component.
+  - works out if it has just been added, and if so animates in accoridngly
+
+
+
+*/
+
 
 
 
@@ -32008,14 +32023,8 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(this.props.id);
   }
 
-  noBucketEditor() {
-    __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
-  }
-
   render() {
-    // renders a number of stones according to props
-
-    var editor = this.props.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__BucketEditor__["a" /* default */], { exit: this.noBucketEditor.bind(this), index: this.props.id }) : null;
+    var editor = this.props.editMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__BucketEditor__["a" /* default */], { index: this.props.id }) : null;
 
     var animationClasses = this.props.newBucket ? 'animated fadeInUp' : '';
 
@@ -32059,10 +32068,24 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
+/*
+
+This component just houses a list of buttons that directly trigger rmActions:
+  - to switch it's parent bucket component out of edit mode
+  - increment, decrment and empty the stones in it's parent bucket
+
+The only thing it gets through props is an index/id, which isn't displayed but used to target it's particular parent with stone-altering actions.
+
+*/
+
 
 
 
 class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  noBucketEditor() {
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
+  }
+
   increment() {
     __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].autoIncrement(this.props.index);
   }
@@ -32096,7 +32119,7 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { className: 'btn btn-primary', onClick: this.props.exit },
+        { className: 'btn btn-primary', onClick: this.noBucketEditor.bind(this) },
         'Done'
       )
     );
