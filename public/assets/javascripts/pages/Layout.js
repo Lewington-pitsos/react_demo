@@ -5,7 +5,7 @@ import Flash from './Layout/Flash'
 export default class Layout extends React.Component {
   render() {
     return(
-      <div id="background" className="position-relative">
+      <div className="position-relative">
         <Flash />
         <nav className="container-fluid">
           <ul className="d-flex justify-content-end">
@@ -23,6 +23,8 @@ export default class Layout extends React.Component {
 
         <div className="container-fluid content p-0">
           {this.props.children}
+        </div>
+        <div id="background" className="overlay behind">
         </div>
       </div>
 

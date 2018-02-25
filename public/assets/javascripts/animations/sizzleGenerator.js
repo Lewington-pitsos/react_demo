@@ -4,13 +4,15 @@ export default {
     // copies default (don't want to mess with it)
     // overwrites some of the copy's keys with the randomized keys
 
-    var xAxis = Math.random() * (window.outerWidth / 2) * this.plusOrMinus()
+    const background = document.getElementById('background')
+
+    var xAxis = Math.random() * (background.offsetWidth / 2) * this.plusOrMinus()
     const newSpecs = {
       duration: this.randomize(defaults.duration, defaults.duration / 2),
       scale: {[defaults.scale * Math.random()]: 0},
       strokeWidth: {[defaults.strokeWidth * Math.random() + 1]: [defaults.strokeWidth * Math.random() + 4]},
       // somewhere between 1 and two, shrinks to 0
-      y: {[window.outerHeight / 2]: -this.randomize(window.outerHeight / 2)},
+      y: {[background.offsetHeight / 2]: -this.randomize(background.offsetHeight / 2)},
       x: {[xAxis]: this.randomize(xAxis, 50)}
     }
 
