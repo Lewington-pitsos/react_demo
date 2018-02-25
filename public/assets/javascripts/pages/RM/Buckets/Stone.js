@@ -16,8 +16,7 @@ export default class Stone extends React.Component {
     }
 
     return(
-      <div className="stone" style={size}>
-      </div>
+      <div className="stone" style={size}></div>
     )
   }
 }

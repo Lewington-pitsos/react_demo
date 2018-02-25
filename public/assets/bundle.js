@@ -14075,7 +14075,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascripts_basic_js__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_backgroundAnimation_background__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_backgroundAnimation_background__ = __webpack_require__(145);
 // this is currently the only Webpack entry point so all JS that we could ever need must be requireed here
 
 // css
@@ -30807,7 +30807,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_Panel__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_Panel__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(116);
@@ -31402,7 +31402,7 @@ These methods are also responsible for stopping and starting the GOL cleanly whe
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_Panel__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_Panel__ = __webpack_require__(144);
 /*
 
 A panel component that houses a bunch of buttons that fire off various events to cellActions when clicked.
@@ -31832,7 +31832,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_Panel__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_Panel__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BucketSelector__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ExecutePanel__ = __webpack_require__(138);
@@ -32039,7 +32039,8 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { className: 'bucket ' + animationClasses, id: 'bucket-' + this.props.id,
+        { className: 'bucket ' + animationClasses,
+          id: 'bucket-' + this.props.id,
           onClick: this.switchBucketEditor.bind(this) },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h5',
@@ -32110,22 +32111,26 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
       { className: 'bucket-editor d-flex justify-content-between flex-wrap animated fadeIn' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { className: 'btn btn-primary', onClick: this.increment.bind(this) },
+        { className: 'btn btn-primary',
+          onClick: this.increment.bind(this) },
         'Increment'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { className: 'btn btn-primary', onClick: this.decrement.bind(this) },
+        { className: 'btn btn-primary',
+          onClick: this.decrement.bind(this) },
         'Decrement'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { className: 'btn btn-primary', onClick: this.empty.bind(this) },
+        { className: 'btn btn-primary',
+          onClick: this.empty.bind(this) },
         'Empty'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { className: 'btn btn-primary', onClick: this.noBucketEditor.bind(this) },
+        { className: 'btn btn-primary',
+          onClick: this.noBucketEditor.bind(this) },
         'Done'
       )
     );
@@ -32165,7 +32170,8 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'ugg row p-0 position-relative animated', onClick: this.grunt.bind(this) },
+      { className: 'ugg row p-0 position-relative animated',
+        onClick: this.grunt.bind(this) },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'col-6 pt-2' },
@@ -44983,9 +44989,54 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/*
+
+A position: fixed panel that fades in and out at an edge of the screen. It has a very high z-index.
+It's screen edge and particular fade method are determiend by its props.
+For added resuability it also takes and adds a list of extra classes from props.
+
+*/
+
+
+
+
+class Panel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
+
+    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'container-fluid interface ' + classes },
+      this.props.children
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Panel;
+
+
+Panel.propTypes = {
+  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
+};
+
+Panel.defaultProps = {
+  // sets default prop values
+  side: 'bottom',
+  classes: ''
+};
+
+/***/ }),
+/* 145 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mo_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(146);
 /*
 THE IDEA: small circles should start popping in at the bottom of the page and drift slowly upwards untill they reach the top or dissapear. They should be added at a random x axis and at seemingly random intervals. Should kind of look the screen is sitting over a wide vent which is slowly releasing small bubbles.
 
@@ -45016,11 +45067,11 @@ new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.genera
 sizzlePlayer.play(2000);
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(147);
 
 
 class SizzlePlayer {
@@ -45064,7 +45115,7 @@ class SizzlePlayer {
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45108,43 +45159,6 @@ class SizzlePlayer {
     return Math.round(Math.random()) * 2 - 1;
   }
 });
-
-/***/ }),
-/* 147 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-
-
-
-class Panel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  render() {
-    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
-
-    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'container-fluid interface ' + classes },
-      this.props.children
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Panel;
-
-
-Panel.propTypes = {
-  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
-};
-
-Panel.defaultProps = {
-  // sets default prop values
-  side: 'bottom',
-  classes: ''
-};
 
 /***/ })
 /******/ ]);
