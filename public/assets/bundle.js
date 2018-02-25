@@ -12620,7 +12620,6 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.nextId = 99;
     this.maxSize = 600;
     this.cellSize = 200;
-    this.number = 13;
     this.boardWidth = false;
 
     this.playing = false;
@@ -12642,7 +12641,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     // returns all the cell info stored as a single object
     return {
       cellSize: this.cellSize,
-      number: this.number,
+      number: this.cells.length,
       cells: this.cells,
       fixedWidth: this.boardWidth,
       playing: this.playing
@@ -12713,7 +12712,6 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     // checks whether the board is already maxed out
     // if not, adds number new PositionedCells to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
     if (!this.maxedOut) {
-      this.number += number;
       this.pushCells(number);
       this.emit('change');
     } else {
