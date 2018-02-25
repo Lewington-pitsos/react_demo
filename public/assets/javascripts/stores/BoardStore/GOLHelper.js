@@ -1,3 +1,16 @@
+/*
+
+Here lie some methods to help the BoardStore play the GOL. The game is played in successive rounds. Each round consists of:
+  - a check of every cell to determine it's next state accoridng to GOL rules
+    - A related check to confirm that SOME cell at least has a next state different from it's current one (otherwise no more changes in state will happen ever and the game is over)
+  - finally, an update of every cell to that next state*
+
+These methods are also responsible for stopping and starting the GOL cleanly when commanded by the user.
+
+  *the state-calculating and updating steps must be done as two seperate passes. Otherwise updates on cells early in a pass might effect the next-state-calculations of siblings of those cells which occur later in that pass.
+
+*/
+
 import flashActions from '../../actions/flashActions'
 
 export default {
