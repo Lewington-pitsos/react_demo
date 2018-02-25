@@ -4,13 +4,6 @@ import PropTypes from 'prop-types';
 import cellActions from '../../../actions/cellActions'
 
 export default class Cell extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // This binding is necessary to make `this` work in the callback
-    this.flipCell = this.flipCell.bind(this)
-  }
-
   flipCell() {
     cellActions.flipCell(this.props.id)
   }

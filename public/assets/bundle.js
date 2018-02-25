@@ -30975,13 +30975,6 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 class Cell extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor(props) {
-    super(props);
-
-    // This binding is necessary to make `this` work in the callback
-    this.flipCell = this.flipCell.bind(this);
-  }
-
   flipCell() {
     __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__["a" /* default */].flipCell(this.props.id);
   }
