@@ -32898,7 +32898,7 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mo_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(143);
 
 
 
@@ -32915,50 +32915,12 @@ const sizzleDefaults = {
   stroke: '#908089',
   strokeOpacity: 0.2,
   zIndex: -1 // super conveniant
+};
 
+const sizzlePlayer = new __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__["a" /* default */](sizzleDefaults);
 
-  // shapes take on the specifications of passed in objects on instantiation
-
-};new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults)).play();
-
-class SizzlePlayer {
-  constructor() {
-    console.log('constructed');
-    this.minWait = 900;
-    this.maxWait = 3000;
-    this.waitDeviation = 200;
-  }
-
-  sizzleWait(oldWait) {
-    // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
-    var newWait = oldWait + (Math.round(Math.random()) * 2 - 1) * this.waitDeviation;
-
-    console.log(newWait);
-    console.log(this.waitDeviation);
-    console.log(oldWait);
-
-    if (newWait < this.minWait) {
-      return this.minWait;
-    } else if (newWait > this.maxWait) {
-      return this.maxWait;
-    } else {
-      return newWait;
-    }
-  }
-
-  addSizzle(wait) {
-    new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults)).play();
-    this.play(this.sizzleWait(wait));
-  }
-
-  play(wait) {
-    // creates and plays a new sizzle, then sets a timer to call the same function again
-    console.log('wait: ' + wait);
-    setTimeout(this.addSizzle.bind(this, wait), Math.floor(Math.random() * wait, wait));
-  }
-}
-
-const sizzlePlayer = new SizzlePlayer();
+// shapes take on the specifications of passed in objects on instantiation
+new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.generate(sizzleDefaults)).play();
 
 sizzlePlayer.play(900);
 
@@ -44999,6 +44961,56 @@ sizzlePlayer.play(900);
     return Math.round(Math.random()) * 2 - 1;
   }
 });
+
+/***/ }),
+/* 143 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(142);
+
+
+class SizzlePlayer {
+  constructor(defaults) {
+    console.log('constructed');
+    this.minWait = 700;
+    this.maxWait = 4000;
+    this.waitDeviation = 200;
+    this.defaults = defaults;
+
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__["a" /* default */]);
+  }
+
+  sizzleWait(oldWait) {
+    // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
+    var newWait = oldWait + (Math.round(Math.random()) * 2 - 1) * this.waitDeviation;
+
+    console.log(newWait);
+    console.log(this.waitDeviation);
+    console.log(oldWait);
+
+    if (newWait < this.minWait) {
+      return this.minWait;
+    } else if (newWait > this.maxWait) {
+      return this.maxWait;
+    } else {
+      return newWait;
+    }
+  }
+
+  addSizzle(wait) {
+    new mojs.ShapeSwirl(this.generate(this.defaults)).play();
+    this.play(this.sizzleWait(wait));
+  }
+
+  play(wait) {
+    // creates and plays a new sizzle, then sets a timer to call the same function again
+    console.log('wait: ' + wait);
+    setTimeout(this.addSizzle.bind(this, wait), Math.floor(Math.random() * wait, wait));
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SizzlePlayer;
+
 
 /***/ })
 /******/ ]);
