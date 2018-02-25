@@ -2,6 +2,8 @@
 
 The beating heart of the flipper interface, it:
   - stores an array of cell objects. Their indexes in this array act as unique identifiers
+  - stores additional informaiton about the board
+    -
 
 */
 
@@ -33,13 +35,14 @@ const defaultCells = [
 class BoardStore extends EventEmitter {
   constructor() {
     super()
+    // information about the board's contents
     this.maxCells = 100
     this.maxedOut = false
-    this.nextId = 99
     this.maxSize = 600
     this.cellSize = 200
     this.boardWidth = false
 
+    // infromation about what is occuring to/on the board
     this.playing = false
     this.autoFlipper = false
     this.secondAutoFlipper = false
@@ -47,9 +50,10 @@ class BoardStore extends EventEmitter {
     // trackes whether changes were made during the last GOL round
     this.noChanges = true
     // cells are stored as an array of PositionedCell objects
-    this.cells = defaultCells.map(cell => new PositionedCell(cell.id, cell.backSide))
+    this.cells = defaultCells.map(cell =>
+      new PositionedCell(cell.id,     cell.backSide))
 
-    // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
+    // mixins
     Object.assign(this, randomFLippingHelper);
     Object.assign(this, matrixHelper)
     Object.assign(this, GOLHelper)
@@ -114,10 +118,6 @@ class BoardStore extends EventEmitter {
     this.emit('change')
   }
 
-  getNextId() {
-    return this.nextId++
-  }
-
   addCell(number) {
     // checks whether the board is already maxed out
     // if not, adds number new PositionedCells to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
@@ -136,7 +136,7 @@ class BoardStore extends EventEmitter {
     // if not, cells to the array equal to the passed in number, resizing the cell size each time
     for (var i = 0; i < number; i++) {
       if (this.cells.length < this.maxCells) {
-        this.cells.push(new PositionedCell(this.getNextId()))
+        this.cells.push(new PositionedCell)
         this.resizeCells()
       } else {
         this.maxedOut = true

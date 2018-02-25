@@ -12597,6 +12597,8 @@ var createTransitionManager = function createTransitionManager() {
 
 The beating heart of the flipper interface, it:
   - stores an array of cell objects. Their indexes in this array act as unique identifiers
+  - stores additional informaiton about the board
+    -
 
 */
 
@@ -12615,13 +12617,14 @@ const defaultCells = [{ backSide: false }, { backSide: false }, { backSide: fals
 class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
+    // information about the board's contents
     this.maxCells = 100;
     this.maxedOut = false;
-    this.nextId = 99;
     this.maxSize = 600;
     this.cellSize = 200;
     this.boardWidth = false;
 
+    // infromation about what is occuring to/on the board
     this.playing = false;
     this.autoFlipper = false;
     this.secondAutoFlipper = false;
@@ -12631,7 +12634,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     // cells are stored as an array of PositionedCell objects
     this.cells = defaultCells.map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
 
-    // random flipping mixin. All properties in randomFLipping are copied accross to our BoardStore instance
+    // mixins
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__["a" /* default */]);
@@ -12704,10 +12707,6 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.emit('change');
   }
 
-  getNextId() {
-    return this.nextId++;
-  }
-
   addCell(number) {
     // checks whether the board is already maxed out
     // if not, adds number new PositionedCells to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
@@ -12726,7 +12725,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     // if not, cells to the array equal to the passed in number, resizing the cell size each time
     for (var i = 0; i < number; i++) {
       if (this.cells.length < this.maxCells) {
-        this.cells.push(new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](this.getNextId()));
+        this.cells.push(new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */]());
         this.resizeCells();
       } else {
         this.maxedOut = true;
@@ -31209,9 +31208,8 @@ class PositionedCell {
   // holds the data for this cell (it's id and current facing)
   // also tracks the sibling (touching) cells of this cell
   // contains methods for updating the cell's facing, and working out it's next facing
-  constructor(id, backSide = false) {
+  constructor(backSide = false) {
     this.backSide = backSide;
-    this.id = id;
     this.futureBackSide = backSide;
   }
 
