@@ -2,8 +2,38 @@
 
 The beating heart of the flipper interface, it:
   - stores an array of cell objects. Their indexes in this array act as unique identifiers
-  - stores additional informaiton about the board
-    -
+  - Also keeps track of:
+    - the maximum number of cells the board should hold
+    - whether this number has been reached
+    - the maximum size of a cell
+    - the current size of all cells on the board
+    - whether the board's width is fixed
+
+    - whether we are currently playing the GOL
+    - whether randomflipping is occuring
+
+It contains a bunch of methods for updating components
+
+It is responsible for going in and out of GOL mode
+
+  - normal mode unique features:
+    - cells are stored in the normal array
+    - random flipping is possible
+    - cells can be added
+    - the board's width varies depending on how wide the view is
+
+  - GOL mode unique features:
+    - cells are stored in a matrix (as well as the array) and have references to their siblings (the matrix should reflect the matrix of cells that the user sees)
+    - GOL can be played, step-at-a-time or indefinitly
+    - The board's width is fixed
+
+It can trigger random flipping when in normal mode
+
+It can trigger a GOL round or indefinite GOL round playing while in GOL mode (see GOLHelper)
+
+It can add cells to the cell tracking array
+
+It can change the flip-state (facing) of a given cell
 
 */
 
@@ -59,6 +89,8 @@ class BoardStore extends EventEmitter {
     Object.assign(this, GOLHelper)
   }
 
+  // ======= component updating =========
+
   cellSpecs() {
     // returns all the cell info stored as a single object
     return {
@@ -77,6 +109,8 @@ class BoardStore extends EventEmitter {
   isFlipping() {
     return { flipping: this.autoFlipper }
   }
+
+  // ======= Dispatcher interaction =========
 
   handleActions(action) {
     switch(action.type) {
@@ -99,7 +133,7 @@ class BoardStore extends EventEmitter {
         this.playRound()
         break
       } case 'EXIT_GOL': {
-        this.exitGol()
+        this.stopGol()
         break
       } case 'TOGGLE_GOL': {
         this.toggleGOL()
@@ -108,15 +142,29 @@ class BoardStore extends EventEmitter {
     }
   }
 
-  toggleGOL() {
-    // starts the game of life if there isn't one running currently, otherwise, stops the current one and triggers a change event
-    if (!this.playing) {
-      this.startPlaying()
-    } else {
-      this.stopPlaying()
-    }
+  // ======= board fixing (i.e. getting into GOL mode) =========
+
+  fixBoard(boardWidth) {
+    // firstly we stop any random flipping that might be going on
+    this.stopRandFlip()
+    // fixes the width of the board component/element to it's current width and creates a matrix from the cell objects
+    this.fixBoardUi(boardWidth)
+    this.everyCell(this.assignSiblings.bind(this))
+
+    // this is only here so the board width gets fixed on the DOM
     this.emit('change')
   }
+
+  fixBoardUi(boardWidth) {
+    // calculates the maximum number of cells per row
+    // fixes the board width using this number and the cell width
+    // creates a matrix based on the cell number which reflects what the user sees on screen
+    var cellsPerRow = Math.floor(boardWidth / this.cellSize)
+    this.boardWidth = cellsPerRow * this.cellSize
+    this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
+  }
+
+  // ======= cell interaction =========
 
   addCell(number) {
     // checks whether the board is already maxed out
@@ -153,33 +201,6 @@ class BoardStore extends EventEmitter {
     // finds the cell object that matches id and toggles it's side value
     this.cells[id].backSide = !this.cells[id].backSide
 
-    this.emit('change')
-  }
-
-  fixBoard(boardWidth) {
-    // firstly we stop any random flipping that might be going on
-    this.stopRandFlip()
-    // fixes the width of the board component/element to it's current width and creates a matrix from the cell objects
-    this.fixBoardUi(boardWidth)
-    this.everyCell(this.assignSiblings.bind(this))
-
-    // this is only here so the board width gets fixed on the DOM
-    this.emit('change')
-  }
-
-  fixBoardUi(boardWidth) {
-    // calculates the maximum number of cells per row
-    // fixes the board width using this number and the cell width
-    // creates a matrix based on the cell number which reflects what the user sees on screen
-    var cellsPerRow = Math.floor(boardWidth / this.cellSize)
-    this.boardWidth = cellsPerRow * this.cellSize
-    this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
-  }
-
-  exitGol() {
-    // the opposute of fixBoard, returns us to non-GOL flipping
-    this.boardWidth = false
-    this.stopPlaying()
     this.emit('change')
   }
 }

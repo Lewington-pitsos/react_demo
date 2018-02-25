@@ -15,6 +15,23 @@ export default {
     }
   },
 
+  stopGol() {
+    // the opposute of fixBoard, returns us to non-GOL flipping
+    this.boardWidth = false
+    this.stopPlaying()
+    this.emit('change')
+  },
+
+  toggleGOL() {
+    // starts the game of life if there isn't one running currently, otherwise, stops the current one and triggers a change event
+    if (!this.playing) {
+      this.startPlaying()
+    } else {
+      this.stopPlaying()
+    }
+    this.emit('change')
+  },
+
   gameOver() {
     // ceases the curent game, flashes a game over message and emits a change event
     this.stopPlaying()
