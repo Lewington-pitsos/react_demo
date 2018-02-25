@@ -30304,7 +30304,7 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
               { to: '/register_machines' },
-              'Register Machines'
+              'Register Machine'
             )
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -30738,7 +30738,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           { className: "row justify-content-center" },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             "div",
-            { className: "col-lg-6 col-md-8 text-center home-content" },
+            { className: "col-lg-7 col-md-9 text-center home-content" },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               "h3",
               null,
@@ -30747,18 +30747,41 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               "p",
               null,
-              "So because every employer and his dog seems to want you to know React.js inside-out these days I thought I'd try to make a middlingly difficult react app as a kind of learning exercise. I ended up using FLUX for the backend. Basically what we've got here are two basic user interfaces. Firstly a dynamic array of flippable cells which can be rigged up to play  J. H. Conway's ",
+              "So because it's apparently all the rave these days, I thought I'd try to make a middlingly difficult ",
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "a",
+                { href: "https://reactjs.org/", target: "_blank" },
+                "react.js"
+              ),
+              " app as a kind of learning exercise. I ended up using ",
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "a",
+                { href: "https://facebook.github.io/flux/docs/overview.html", target: "_blank" },
+                "FLUX"
+              ),
+              " for the backend. Basically what we've got here are two basic user interfaces. Firstly a dynamic array of flippable cells which can be rigged up to play  J. H. Conway's ",
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "a",
                 { href: "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life", target: "_blank" },
                 " Game of Life"
               ),
-              " (should one be so inclined). That was a lot more straightforward. And secondly a simple *rubs blearily at sleep-deprived eyes* Register Machine interface. It's probably realistically about as useful as an umbrella in a hurricane, but I felt like I needed to do something with all that logic I studied at University so here we are. If you want to ask me something you can email me at lewington@student.unimelb.edu.au. The code itself is sitting right ",
+              " (should one be so inclined). That was a lot more straightforward. And secondly a simple *rubs blearily at sleep-deprived eyes* Register Machine interface. It's probably realistically about as useful as an umbrella in a hurricane, but I felt like I needed to do something with all that logic I studied at University so here we are. The fancy background stuff is rigged up using ",
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "a",
-                {
-                  href: "https://github.com/Lewington-pitsos/react_demo", target: "_blank" },
-                "here"
+                { href: "http://mojs.io/", target: "_blank" },
+                "mo.js"
+              ),
+              ", which is an immensly satisfying library to work with. If you'd like to ask me something you can email me at ",
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "a",
+                { href: "mailto:lewington@student.unlb.edu.au" },
+                " lewington@student.unimelb.edu.au."
+              ),
+              " The code itself is sitting right",
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "a",
+                { href: "https://github.com/Lewington-pitsos/react_demo", target: "_blank" },
+                " here"
               ),
               ". Happy hunting."
             )
