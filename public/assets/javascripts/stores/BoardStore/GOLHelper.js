@@ -28,13 +28,6 @@ export default {
     }
   },
 
-  stopGol() {
-    // the opposute of fixBoard, returns us to non-GOL flipping
-    this.boardWidth = false
-    this.stopPlaying()
-    this.emit('change')
-  },
-
   toggleGOL() {
     // starts the game of life if there isn't one running currently, otherwise, stops the current one and triggers a change event
     if (!this.playing) {

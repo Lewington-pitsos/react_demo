@@ -12691,6 +12691,10 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     return { flipping: this.autoFlipper };
   }
 
+  GOLMode() {
+    return { GOLMode: this.boardWidth };
+  }
+
   // ======= Dispatcher interaction =========
 
   handleActions(action) {
@@ -12721,7 +12725,7 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
           break;
         }case 'EXIT_GOL':
         {
-          this.stopGol();
+          this.exitGol();
           break;
         }case 'TOGGLE_GOL':
         {
@@ -12751,6 +12755,13 @@ class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     var cellsPerRow = Math.floor(boardWidth / this.cellSize);
     this.boardWidth = cellsPerRow * this.cellSize;
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow);
+  }
+
+  exitGol() {
+    // the opposute of fixBoard, returns us to non-GOL flipping
+    this.boardWidth = false;
+    this.stopPlaying();
+    this.emit('change');
   }
 
   // ======= cell interaction =========
@@ -30792,7 +30803,7 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_Panel__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__ = __webpack_require__(117);
 /*
@@ -30821,13 +30832,13 @@ Fires off board editing editing actions, and one action that activates the GOL
 class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor() {
     super();
-    this.state = __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__["a" /* default */].getInfo();
+    this.state = __WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__["a" /* default */].GOLMode();
   }
 
   componentWillMount() {
     // triggered just before a render occurs apparently
-    __WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_4__stores_FlipperStore__["a" /* default */].getInfo());
+    __WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__["a" /* default */].GOLMode());
     });
   }
 
@@ -31317,13 +31328,6 @@ These methods are also responsible for stopping and starting the GOL cleanly whe
     }
   },
 
-  stopGol() {
-    // the opposute of fixBoard, returns us to non-GOL flipping
-    this.boardWidth = false;
-    this.stopPlaying();
-    this.emit('change');
-  },
-
   toggleGOL() {
     // starts the game of life if there isn't one running currently, otherwise, stops the current one and triggers a change event
     if (!this.playing) {
@@ -31357,66 +31361,7 @@ These methods are also responsible for stopping and starting the GOL cleanly whe
 });
 
 /***/ }),
-/* 115 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
-/*
-
-literally only responsible for working out whether the use is in GOL mode or not since the board exists irrespective of whether the user is in GOL mode or not I didn't want the BoardStore to be responsible for monitoring this.
-
-*/
-
- // 'events is like, part of nodejs'
-
-
-
-class FlipperStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
-  constructor() {
-    super();
-    this.GOLMode = false;
-  }
-
-  getInfo() {
-    return { GOLMode: this.GOLMode };
-  }
-
-  handleActions(action) {
-    switch (action.type) {
-      case "FIX_BOARD":
-        {
-          this.layoutGOL();
-          break;
-        }case "EXIT_GOL":
-        {
-          this.exitGol();
-          break;
-        }
-    }
-  }
-
-  exitGol() {
-    this.GOLMode = false;
-
-    this.emit('change');
-  }
-
-  layoutGOL() {
-    this.GOLMode = true;
-
-    this.emit('change');
-  }
-}
-
-const flipperStore = new FlipperStore();
-
-__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(flipperStore.handleActions.bind(flipperStore));
-/* harmony default export */ __webpack_exports__["a"] = (flipperStore);
-
-/***/ }),
+/* 115 */,
 /* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

@@ -18,7 +18,7 @@ import React from 'react'
 import Board from './Flipper/Board'
 import Panel from './shared/Panel'
 import cellActions from '../actions/cellActions'
-import flipperStore from '../stores/FlipperStore'
+import boardStore from '../stores/BoardStore'
 import GOLPanel from './Flipper/GOLPanel'
 import RandFlipper from './Flipper/RandFlipper'
 
@@ -26,12 +26,12 @@ import RandFlipper from './Flipper/RandFlipper'
 export default class Flipper extends React.Component {
   constructor() {
     super()
-    this.state = flipperStore.getInfo()
+    this.state = boardStore.GOLMode()
   }
 
   componentWillMount() { // triggered just before a render occurs apparently
-    flipperStore.on('change', () => {
-      this.setState( flipperStore.getInfo() )
+    boardStore.on('change', () => {
+      this.setState( boardStore.GOLMode() )
     })
   }
 

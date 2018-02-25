@@ -110,6 +110,10 @@ class BoardStore extends EventEmitter {
     return { flipping: this.autoFlipper }
   }
 
+  GOLMode() {
+    return {GOLMode: this.boardWidth }
+  }
+
   // ======= Dispatcher interaction =========
 
   handleActions(action) {
@@ -133,7 +137,7 @@ class BoardStore extends EventEmitter {
         this.playRound()
         break
       } case 'EXIT_GOL': {
-        this.stopGol()
+        this.exitGol()
         break
       } case 'TOGGLE_GOL': {
         this.toggleGOL()
@@ -162,6 +166,13 @@ class BoardStore extends EventEmitter {
     var cellsPerRow = Math.floor(boardWidth / this.cellSize)
     this.boardWidth = cellsPerRow * this.cellSize
     this.cellMatrix = this.matrixify(this.cells, cellsPerRow)
+  }
+
+  exitGol() {
+    // the opposute of fixBoard, returns us to non-GOL flipping
+    this.boardWidth = false
+    this.stopPlaying()
+    this.emit('change')
   }
 
   // ======= cell interaction =========
