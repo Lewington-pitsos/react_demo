@@ -1,3 +1,9 @@
+/*
+
+This Mixin contains methods for starting intervals that flip cells on the board in normal mode. 
+
+*/
+
 export default {
   toggleRandFlipping() {
     // starts two staggered intervals which keep choosing random numbers of random cells and flipping them

@@ -1,9 +1,17 @@
+/*
+
+This object represents a cell.
+It tracks the current facing of a cell
+It also tracks the sibling (touching) cells of this cell
+Lastly, it contains methods for
+  - updating the cell's facing
+  - working out it's next facing
+
+*/
+
 import SiblingsTracker from './SiblingsTracker'
 
 export default class PositionedCell {
-  // holds the data for this cell (it's id and current facing)
-  // also tracks the sibling (touching) cells of this cell
-  // contains methods for updating the cell's facing, and working out it's next facing
   constructor(backSide=false) {
     this.backSide = backSide
     this.futureBackSide = backSide

@@ -31063,6 +31063,12 @@ Cell.defaultProps = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/*
+
+This Mixin contains methods for starting intervals that flip cells on the board in normal mode. 
+
+*/
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   toggleRandFlipping() {
     // starts two staggered intervals which keep choosing random numbers of random cells and flipping them
@@ -31209,12 +31215,20 @@ I figured the best way to play the GOL would be to set the cells up into a matri
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SiblingsTracker__ = __webpack_require__(113);
+/*
+
+This object represents a cell.
+It tracks the current facing of a cell
+It also tracks the sibling (touching) cells of this cell
+Lastly, it contains methods for
+  - updating the cell's facing
+  - working out it's next facing
+
+*/
+
 
 
 class PositionedCell {
-  // holds the data for this cell (it's id and current facing)
-  // also tracks the sibling (touching) cells of this cell
-  // contains methods for updating the cell's facing, and working out it's next facing
   constructor(backSide = false) {
     this.backSide = backSide;
     this.futureBackSide = backSide;
@@ -31252,6 +31266,13 @@ class PositionedCell {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/*
+
+This just houses an array of all the siblings of a cell.
+It can also return a count of how many of those siblings are currently faceing backwards (i.e. dead)
+
+*/
+
 class SiblingsTracker {
   constructor(siblingsArray) {
     this.all = siblingsArray;
