@@ -32905,27 +32905,32 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 // default paramaters for a sizzle animation
 const sizzleDefaults = {
   parent: document.getElementById('background'),
-  duration: 5000,
+  duration: 10000,
+  scale: 2,
   y: { 200: -200 }, // the start and end x and y axies for the motion
   x: { 400: 400 },
   fill: '#908089',
   fillOpacity: 0.6,
   stroke: '#908089',
   strokeOpacity: 0.2,
-  easing: 'sin.out',
   zIndex: -1 // super conveniant
-};
 
-const copy = Object.assign({}, sizzleDefaults);
 
-// a mojs Shapewirl created by passing in the copy of the sizzle animation parameters.
-const sizzle = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(copy);
-
+  // shapes take on the specifications of passed in objects on instantiation
+};const sizzle = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
 const sizzle2 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle3 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle4 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle5 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle6 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle7 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle8 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle9 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
+const sizzle10 = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(__WEBPACK_IMPORTED_MODULE_1__sizzleGenerator__["a" /* default */].generate(sizzleDefaults));
 
 const timeline = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.Timeline({
   repeat: 999
-}).add(sizzle, sizzle2).play();
+}).add(sizzle, sizzle2, sizzle3, sizzle4, sizzle5, sizzle6, sizzle7, sizzle8, sizzle9, sizzle10).play();
 
 /***/ }),
 /* 141 */
@@ -44930,9 +44935,11 @@ const timeline = new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.Timeline({
     // copies default (don't want to mess with it)
     // overwrites some of the copy's keys with the randomized keys
 
-    var xAxis = Math.random() * window.outerWidth * this.plusOrMinus();
+    var xAxis = Math.random() * (window.outerWidth / 2) * this.plusOrMinus();
     const newSpecs = {
-      duration: this.randomize(defaults.duration),
+      duration: this.randomize(defaults.duration, defaults.duration / 2),
+      scale: { [defaults.scale * Math.random()]: 0 },
+      // somewhere between 1 and two, shrinks to 0
       y: { [window.outerHeight / 2]: -this.randomize(window.outerHeight / 2) },
       x: { [xAxis]: this.randomize(xAxis, 50) }
     };
