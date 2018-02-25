@@ -5,7 +5,6 @@ import sizzleGenerator from './sizzleGenerator'
 // default paramaters for a sizzle animation
 const sizzleDefaults = {
   parent: document.getElementById('background'),
-  duration: 15000,
   scale: 2,
   y: {200: -200}, // the start and end x and y axies for the motion
   x: {400: 400},

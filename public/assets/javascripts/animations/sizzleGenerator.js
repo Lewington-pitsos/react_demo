@@ -6,9 +6,11 @@ export default {
 
     const background = document.getElementById('background')
 
+    const speed = background.offsetHeight * 50
+
     var xAxis = Math.random() * (background.offsetWidth / 2) * this.plusOrMinus()
     const newSpecs = {
-      duration: this.randomize(defaults.duration, defaults.duration / 2),
+      duration: this.randomize(speed, speed / 2),
       scale: {[defaults.scale * Math.random()]: 0},
       strokeWidth: {[defaults.strokeWidth * Math.random() + 1]: [defaults.strokeWidth * Math.random() + 4]},
       // somewhere between 1 and two, shrinks to 0
