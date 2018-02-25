@@ -1,3 +1,11 @@
+/*
+
+Almost entirely cosmetic. It's only functionalty is to send flashes which have no lasting impact on the state of anything other than the flash store.
+
+*/
+
+
+
 import React from 'react'
 import Stone from './Stone'
 
@@ -7,13 +15,13 @@ export default class Ugg extends React.Component {
 
   grunt() {
     var grunts = [
-      '*Rrrrr*',
-      '*hugrrg*',
-      '*Hrumff*',
-      '*RrrGgh!*',
+      '*Grr*',
+      '*Grolk!*',
+      '*Prooo*',
+      '*...*',
       '*Agrooo?*',
       '*Rogen?*',
-      '*oork*'
+      '*UmphhH*'
     ]
 
     flashActions.flash(grunts[Math.floor(Math.random() * grunts.length)])

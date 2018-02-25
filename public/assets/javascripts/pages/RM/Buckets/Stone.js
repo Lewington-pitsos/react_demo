@@ -1,3 +1,9 @@
+/*
+
+purely a cosmetic component. All it keeps track of is it's own size, which ie gets passed down from props.
+
+*/
+
 import React from 'react'
 import PropTypes from 'prop-types';
 

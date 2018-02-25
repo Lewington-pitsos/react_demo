@@ -13801,6 +13801,12 @@ var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/*
+
+purely a cosmetic component. All it keeps track of is it's own size, which ie gets passed down from props.
+
+*/
+
 
 
 
@@ -32137,6 +32143,12 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(11);
+/*
+
+Almost entirely cosmetic. It's only functionalty is to send flashes which have no lasting impact on the state of anything other than the flash store.
+
+*/
+
 
 
 
@@ -32145,7 +32157,7 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   grunt() {
-    var grunts = ['*Rrrrr*', '*hugrrg*', '*Hrumff*', '*RrrGgh!*', '*Agrooo?*', '*Rogen?*', '*oork*'];
+    var grunts = ['*Grr*', '*Grolk!*', '*Prooo*', '*...*', '*Agrooo?*', '*Rogen?*', '*UmphhH*'];
 
     __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash(grunts[Math.floor(Math.random() * grunts.length)]);
   }
