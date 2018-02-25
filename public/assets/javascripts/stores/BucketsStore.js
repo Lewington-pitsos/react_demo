@@ -1,3 +1,22 @@
+/*
+
+This store tracks the buckets (as an array of objects) and the bucket currently being edited.
+
+Bucket objects consist of:
+  - a 'stones' count of stones
+  - a 'justAdded' boolean represneitng whether this bucket has just been added to the DOM for the first time
+
+It also plays the ugg and bucket related animations see uggAnimations module
+
+For our register machine the "input" for a given program is assumed to be the number of stones in each bucket passed in as a seperate integer argument. The return value is simlarly considered to be the number of stones in the first bucket when execution finishes. Regarding this, this store is responsible for:
+  - tracking the input value of the program at all times while no program is runging so the user knows what their input will be
+  - working out the return value of a given program so it can be explicitly displayed to the user
+
+It also adds and removes buckets from the list. Because each bucket is id'd ding it's index all we need to do is push and pop.
+
+Lastly it also edits the stones value of the bucket, both when the user commands it, and when ugg does it through a program. (see bucketsInteractions)
+
+*/
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'
@@ -5,14 +24,17 @@ import uggAnimations from './BucketsStore/uggAnimations'
 import bucketsInteractions from './BucketsStore/bucketsInteractions'
 import flashActions from '../actions/flashActions'
 
+const defaultBuckets = [
+  {stones: 1, justAdded: true},
+  {stones: 1, justAdded: true}
+]
+
 class BucketsStore extends EventEmitter {
   constructor() {
     super()
-    this.buckets = [
-      {stones: 1, justAdded: true},
-      {stones: 1, justAdded: true}
-    ]
+    this.buckets = defaultBuckets
 
+    // which bucket object is being edited is worked out in the Buckets component but comparing the value of editingBucket to the bucket indicies. Since none of the indicies wil be negative, a editingBucket value of -1 will lead to no buckets being identified as the editing bucket
     this.editingBucket = -1
 
     Object.assign(this, uggAnimations);
@@ -25,26 +47,10 @@ class BucketsStore extends EventEmitter {
     this.emit('change')
   }
 
+  // ======= component updating =========
+
   getBucketContents() {
     return {contents: this.bucketContents()}
-  }
-
-  bucketContents() {
-    // iterate backwards through buckets and as soon as we find a bucket with > 0 stones in it, add it and all the other bucket's stone counts to the empty contents array
-    var contents =  []
-    var addAllTheRest = false
-
-    for (var i = this.buckets.length - 1; i >= 0; i--) {
-      if (addAllTheRest) {
-        contents.push(this.buckets[i].stones)
-      } else if (this.buckets[i].stones) {
-        contents.push(this.buckets[i].stones)
-        addAllTheRest = true
-      }
-    }
-
-    // return a reversed version of contents
-    return contents.reverse()
   }
 
   getInfo() {
@@ -58,6 +64,8 @@ class BucketsStore extends EventEmitter {
   getBucket(index) {
     return this.buckets[index]
   }
+
+  // ======= Dispatcher interaction =========
 
   handleActions(action) {
     switch(action.type) {
@@ -92,6 +100,26 @@ class BucketsStore extends EventEmitter {
     }
   }
 
+  // ======= input and output =========
+
+  bucketContents() {
+    // iterate backwards through buckets and as soon as we find a bucket with > 0 stones in it, add it and all the other bucket's stone counts to the empty contents array
+    var contents =  []
+    var addAllTheRest = false
+
+    for (var i = this.buckets.length - 1; i >= 0; i--) {
+      if (addAllTheRest) {
+        contents.push(this.buckets[i].stones)
+      } else if (this.buckets[i].stones) {
+        contents.push(this.buckets[i].stones)
+        addAllTheRest = true
+      }
+    }
+
+    // return a reversed version of contents since we were iterating backwards before
+    return contents.reverse()
+  }
+
   flashReturnValue() {
     // we have to set a timeout to avoid simaltanious dispatches
     var returnVal = this.buckets[0].stones
@@ -100,6 +128,8 @@ class BucketsStore extends EventEmitter {
     }, 0)
     this.uggDance()
   }
+
+  // ======= Bucket list editing =========
 
   addBucket() {
     // We record that all previously added buckets have been added already
