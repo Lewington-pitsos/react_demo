@@ -6,7 +6,7 @@ export default class SizzlePlayer {
   constructor(defaults) {
     this.minWait = 700
     this.maxWait = 4000
-    this.waitDeviation = 200
+    this.waitDeviation = 300
     this.defaults = defaults
 
     Object.assign(this, sizzleGenerator)
@@ -15,8 +15,8 @@ export default class SizzlePlayer {
   sizzleWait(oldWait) {
     // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
     // the idea here is that the number of sizzles being added to the page per second should vary over the course of, say a few minutes, but the variation should not be jarring, or attention-grabbing
-    var newWait = oldWait +
-      ((Math.round(Math.random()) * 2 - 1) * this.waitDeviation)
+    var newWait = this.randomize(oldWait, this.waitDeviation)
+
 
     if (newWait < this.minWait) {
       return this.minWait

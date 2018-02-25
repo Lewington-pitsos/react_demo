@@ -14070,7 +14070,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascripts_basic_js__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_animations_background__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_backgroundAnimation_background__ = __webpack_require__(144);
 // this is currently the only Webpack entry point so all JS that we could ever need must be requireed here
 
 // css
@@ -32915,40 +32915,7 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 
 
 /***/ }),
-/* 140 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mo_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(143);
-
-
-
-
-// default paramaters for a sizzle animation
-const sizzleDefaults = {
-  parent: document.getElementById('background'),
-  scale: 2,
-  y: { 200: -200 }, // the start and end x and y axies for the motion
-  x: { 400: 400 },
-  fill: '#908089',
-  swirlSize: 25,
-  fillOpacity: 0.6,
-  strokeWidth: 3,
-  stroke: '#908089',
-  strokeOpacity: 0.2,
-  zIndex: -1 // super conveniant
-};
-
-const sizzlePlayer = new __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__["a" /* default */](sizzleDefaults);
-
-// shapes take on the specifications of passed in objects on instantiation
-new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.generate(sizzleDefaults)).play();
-
-sizzlePlayer.play(2000);
-
-/***/ }),
+/* 140 */,
 /* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -44941,7 +44908,94 @@ sizzlePlayer.play(2000);
 ;
 
 /***/ }),
-/* 142 */
+/* 142 */,
+/* 143 */,
+/* 144 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mo_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(145);
+/*
+THE IDEA: small circles should start popping in at the bottom of the page and drift slowly upwards untill they reach the top or dissapear. They should be added at a random x axis and at seemingly random intervals. Should kind of look the screen is sitting over a wide vent which is slowly releasing small bubbles.
+
+*/
+
+
+
+
+// default paramaters for a sizzle animation
+const sizzleDefaults = {
+  parent: document.getElementById('background'),
+  scale: 2,
+  y: { 200: -200 }, // the start and end x and y axies for the motion
+  x: { 400: 400 },
+  fill: '#908089',
+  swirlSize: 25,
+  fillOpacity: 0.6,
+  strokeWidth: 3,
+  stroke: '#908089',
+  strokeOpacity: 0.2,
+  zIndex: -1 // super conveniant
+};
+
+const sizzlePlayer = new __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__["a" /* default */](sizzleDefaults);
+
+// shapes take on the specifications of passed in objects on instantiation
+new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.generate(sizzleDefaults)).play();
+sizzlePlayer.play(2000);
+
+/***/ }),
+/* 145 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(146);
+
+
+class SizzlePlayer {
+  // creates and plays randomized mojs "sizzle" shapeswirls based on the passed in default ShapeSwirl specs
+  // a "sizzle" should start at the bottom of the page and slowly rise upwards, becoming smaller and smaller, untill it dissapears
+  constructor(defaults) {
+    this.minWait = 700;
+    this.maxWait = 4000;
+    this.waitDeviation = 300;
+    this.defaults = defaults;
+
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__["a" /* default */]);
+  }
+
+  sizzleWait(oldWait) {
+    // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
+    // the idea here is that the number of sizzles being added to the page per second should vary over the course of, say a few minutes, but the variation should not be jarring, or attention-grabbing
+    var newWait = this.randomize(oldWait, this.waitDeviation);
+
+    if (newWait < this.minWait) {
+      return this.minWait;
+    } else if (newWait > this.maxWait) {
+      return this.maxWait;
+    } else {
+      return newWait;
+    }
+  }
+
+  addSizzle(wait) {
+    // creates and plays a sizzle, then calls play with a modifed wait time
+    new mojs.ShapeSwirl(this.generate(this.defaults)).play();
+    this.play(this.sizzleWait(wait));
+  }
+
+  play(wait) {
+    // creates and plays a new sizzle, then sets a timer to call the same function again
+    setTimeout(this.addSizzle.bind(this, wait), Math.floor(Math.random() * wait));
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SizzlePlayer;
+
+
+/***/ }),
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44985,54 +45039,6 @@ sizzlePlayer.play(2000);
     return Math.round(Math.random()) * 2 - 1;
   }
 });
-
-/***/ }),
-/* 143 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(142);
-
-
-class SizzlePlayer {
-  // creates and plays randomized mojs "sizzle" shapeswirls based on the passed in default ShapeSwirl specs
-  // a "sizzle" should start at the bottom of the page and slowly rise upwards, becoming smaller and smaller, untill it dissapears
-  constructor(defaults) {
-    this.minWait = 700;
-    this.maxWait = 4000;
-    this.waitDeviation = 200;
-    this.defaults = defaults;
-
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__["a" /* default */]);
-  }
-
-  sizzleWait(oldWait) {
-    // adds or subtracts waitDeviation from time and returns the result, as long as it is within the min and max waits
-    // the idea here is that the number of sizzles being added to the page per second should vary over the course of, say a few minutes, but the variation should not be jarring, or attention-grabbing
-    var newWait = oldWait + (Math.round(Math.random()) * 2 - 1) * this.waitDeviation;
-
-    if (newWait < this.minWait) {
-      return this.minWait;
-    } else if (newWait > this.maxWait) {
-      return this.maxWait;
-    } else {
-      return newWait;
-    }
-  }
-
-  addSizzle(wait) {
-    // creates and plays a sizzle, then calls play with a modifed wait time
-    new mojs.ShapeSwirl(this.generate(this.defaults)).play();
-    this.play(this.sizzleWait(wait));
-  }
-
-  play(wait) {
-    // creates and plays a new sizzle, then sets a timer to call the same function again
-    setTimeout(this.addSizzle.bind(this, wait), Math.floor(Math.random() * wait));
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = SizzlePlayer;
-
 
 /***/ })
 /******/ ]);

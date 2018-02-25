@@ -10,4 +10,4 @@ import 'bootstrap'; // yeah, this is just bootstrap js
 import './javascripts/basic.js';
 
 // this is our mojs animation file
-import sizzle from './javascripts/animations/background'
+import './javascripts/backgroundAnimation/background'
