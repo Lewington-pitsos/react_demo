@@ -4,8 +4,8 @@ Thos module contains methods for editing the command list, such as adding, delet
 
 */
 
-import Increment from './Increment'
-import Decrement from './Decrement'
+import Increment from './CommandObjects/Increment'
+import Decrement from './CommandObjects/Decrement'
 
 export default {
   switchEditor(id) {

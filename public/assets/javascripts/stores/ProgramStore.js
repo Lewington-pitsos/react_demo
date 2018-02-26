@@ -2,11 +2,20 @@
 
 This Store is responsible for storing data about commands and exeuting them in sequence when asked.
 
-Commands are stored as an array of Increment and Decrement objects (see ProgramStore). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
+Commands are stored as an array of Increment and Decrement objects (see ProgramStore/CommandObjects). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
 
-It also manages the adding of new commands and the editing of existing commands by:
+== Command ids ==
+
+  Each command has it's own unique Id generated using an always incrementing count. As commands are added and deleted these Id's do not change. Consiquently commands will always reference each other correctly, regardless of how the list is edited.
+
+
+This Store also manages the adding of new commands and the editing of existing commands by:
   - updateing the commands array with new commands
   - keeping track of the command being edited
+  - adding and deleting commands
+
+  see commandListEditing
+
 
 
 */
@@ -20,8 +29,8 @@ import rmActions from '../actions/rmActions'
 import flashActions from '../actions/flashActions'
 
 // Helper Libraries
-import Increment from './ProgramStore/Increment'
-import Decrement from './ProgramStore/Decrement'
+import Increment from './ProgramStore/CommandObjects/Increment'
+import Decrement from './ProgramStore/CommandObjects/Decrement'
 import executionAnimations from './ProgramStore/executionAnimations'
 import commandListEditing from './ProgramStore/commandListEditing'
 import finders from './ProgramStore/finders'

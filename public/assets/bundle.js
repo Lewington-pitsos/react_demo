@@ -12894,29 +12894,7 @@ Panel.defaultProps = {
 };
 
 /***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BucketsStore__ = __webpack_require__(15);
-
-
-class Command {
-  // this is the basis for Increment and Decrmeent: both need a default next command, a bucket to interact with, access to the bucketsStore, an id and an indicator of whether the command is newly added
-
-  constructor(nextCommand, bucket, id) {
-    this.nextCommand = nextCommand;
-    this.bucketId = bucket;
-    this.store = __WEBPACK_IMPORTED_MODULE_0__BucketsStore__["a" /* default */];
-    this.id = id;
-    // justAdded set to true by default so every new command is indeed registered as being just added
-    this.justAdded = true;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Command;
-
-
-/***/ }),
+/* 33 */,
 /* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13925,8 +13903,8 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ProgramStore_Increment__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_Decrement__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_executionAnimations__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__ = __webpack_require__(143);
@@ -13936,11 +13914,20 @@ Stone.defaultProps = {
 
 This Store is responsible for storing data about commands and exeuting them in sequence when asked.
 
-Commands are stored as an array of Increment and Decrement objects (see ProgramStore). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
+Commands are stored as an array of Increment and Decrement objects (see ProgramStore/CommandObjects). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
 
-It also manages the adding of new commands and the editing of existing commands by:
+== Command ids ==
+
+  Each command has it's own unique Id generated using an always incrementing count. As commands are added and deleted these Id's do not change. Consiquently commands will always reference each other correctly, regardless of how the list is edited.
+
+
+This Store also manages the adding of new commands and the editing of existing commands by:
   - updateing the commands array with new commands
   - keeping track of the command being edited
+  - adding and deleting commands
+
+  see commandListEditing
+
 
 
 */
@@ -13964,7 +13951,7 @@ It also manages the adding of new commands and the editing of existing commands 
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_Decrement__["a" /* default */](2, 1, 1, 0), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_Increment__["a" /* default */](1, 0, 2)];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__["a" /* default */](2, 1, 1, 0), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__["a" /* default */](1, 0, 2)];
     this.nextId = 3;
     this.editingCommand = 0;
 
@@ -32517,67 +32504,8 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 128 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(33);
-
-
-class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
-  // prompts BucketSTore to increment a bucket. Always returns the same commaned though next()
-  constructor(next, index, id) {
-    super(next, index, id);
-  }
-
-  run() {
-    this.store.incrementBucket(this.bucketId);
-  }
-
-  next() {
-    return this.nextCommand;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Increment;
-
-
-/***/ }),
-/* 129 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(33);
-
-
-class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
-  // like Increment, except that it prompts BucketsStore to decrement instead, and the command it returns via next() depends on how the previous decrement went
-  constructor(next, index, id, alternateNext, bucket) {
-    super(next, index, id);
-    this.actualNext = next;
-    this.alternateNext = alternateNext;
-    this.bucketObject = this.store.getBucket(index);
-  }
-
-  run() {
-    // if there are any stones in the assigned bucket we decrement and switch the next command to the default command
-    // otherwise simply swicth the next command to the alternate command
-    if (this.bucketObject.stones) {
-      this.store.decrementBucket(this.bucketId);
-      this.actualNext = this.nextCommand;
-    } else {
-      this.store.failToDecrement(this.bucketId);
-      this.actualNext = this.alternateNext;
-    }
-  }
-
-  next() {
-    return this.actualNext;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Decrement;
-
-
-/***/ }),
+/* 128 */,
+/* 129 */,
 /* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45271,8 +45199,8 @@ class SizzlePlayer {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Increment__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Decrement__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CommandObjects_Increment__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandObjects_Decrement__ = __webpack_require__(147);
 /*
 
 Thos module contains methods for editing the command list, such as adding, deleting and updating commands, plus related helper methods.
@@ -45304,9 +45232,9 @@ Thos module contains methods for editing the command list, such as adding, delet
     // returns a new command object given an object of command properties
     var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
     if (props.increment) {
-      return new __WEBPACK_IMPORTED_MODULE_0__Increment__["a" /* default */](props.nextCommand, props.bucket, id);
+      return new __WEBPACK_IMPORTED_MODULE_0__CommandObjects_Increment__["a" /* default */](props.nextCommand, props.bucket, id);
     } else {
-      return new __WEBPACK_IMPORTED_MODULE_1__Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext);
+      return new __WEBPACK_IMPORTED_MODULE_1__CommandObjects_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext);
     }
   },
 
@@ -45338,6 +45266,90 @@ Thos module contains methods for editing the command list, such as adding, delet
     this.emit('change');
   }
 });
+
+/***/ }),
+/* 145 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BucketsStore__ = __webpack_require__(15);
+
+
+class Command {
+  // this is the basis for Increment and Decrmeent: both need a default next command, a bucket to interact with, access to the bucketsStore, an id and an indicator of whether the command is newly added
+
+  constructor(nextCommand, bucket, id) {
+    this.nextCommand = nextCommand;
+    this.bucketId = bucket;
+    this.store = __WEBPACK_IMPORTED_MODULE_0__BucketsStore__["a" /* default */];
+    this.id = id;
+    // justAdded set to true by default so every new command is indeed registered as being just added
+    this.justAdded = true;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Command;
+
+
+/***/ }),
+/* 146 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(145);
+
+
+class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  // prompts BucketSTore to increment a bucket. Always returns the same commaned though next()
+  constructor(next, index, id) {
+    super(next, index, id);
+  }
+
+  run() {
+    this.store.incrementBucket(this.bucketId);
+  }
+
+  next() {
+    return this.nextCommand;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Increment;
+
+
+/***/ }),
+/* 147 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Command_js__ = __webpack_require__(145);
+
+
+class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default */] {
+  // like Increment, except that it prompts BucketsStore to decrement instead, and the command it returns via next() depends on how the previous decrement went
+  constructor(next, index, id, alternateNext, bucket) {
+    super(next, index, id);
+    this.actualNext = next;
+    this.alternateNext = alternateNext;
+    this.bucketObject = this.store.getBucket(index);
+  }
+
+  run() {
+    // if there are any stones in the assigned bucket we decrement and switch the next command to the default command
+    // otherwise simply swicth the next command to the alternate command
+    if (this.bucketObject.stones) {
+      this.store.decrementBucket(this.bucketId);
+      this.actualNext = this.nextCommand;
+    } else {
+      this.store.failToDecrement(this.bucketId);
+      this.actualNext = this.alternateNext;
+    }
+  }
+
+  next() {
+    return this.actualNext;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Decrement;
+
 
 /***/ })
 /******/ ]);
