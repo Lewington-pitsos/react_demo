@@ -36,7 +36,7 @@ export default class Buckets extends React.Component {
       .state
       .buckets
       .map((bucket, index) =>
-        <Bucke
+        <Bucket
           stoneNumber={bucket.stones}
           id={index}
           key={index}

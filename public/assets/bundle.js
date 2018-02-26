@@ -10523,6 +10523,66 @@ module.exports = emptyFunction;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -10792,66 +10852,6 @@ function isUndefined(arg) {
 }
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
 /* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11105,11 +11105,11 @@ var createPath = function createPath(location) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_uggAnimations__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketsStore_uggAnimations__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BucketsStore_bucketsInteractions__ = __webpack_require__(126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__ = __webpack_require__(11);
 /*
 
@@ -11245,12 +11245,13 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   flashReturnValue() {
-    // we have to set a timeout to avoid simaltanious dispatches
+    // flashes the value of the first bucket and gets ugg to dance
+    // the flash timeout is delayed so ugg starts dancing before it  comes up
     var returnVal = this.buckets[0].stones;
+    this.uggDance();
     setTimeout(function () {
       __WEBPACK_IMPORTED_MODULE_4__actions_flashActions__["a" /* default */].flash('The program has terminated successfully with a return value of ' + returnVal);
-    }, 0);
-    this.uggDance();
+    }, 300);
   }
 
   // ======= Bucket list editing =========
@@ -11260,7 +11261,9 @@ class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.buckets.forEach(bucket => bucket.justAdded = false);
 
     // then we add a new bucket to the list of buckets
-    this.buckets.push({ stones: 0, justAdded: true });
+    this.buckets.push(
+    // we store the justAdded value in each bucket, because (like on when the page loads for the first time) there might be situations where two buckets are added at the same time.
+    { stones: 0, justAdded: true });
 
     this.emit('change');
   }
@@ -11517,6 +11520,236 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 
 /***/ }),
 /* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions_flashActions__ = __webpack_require__(11);
+/*
+
+The beating heart of the flipper interface, it:
+  - stores an array of cell objects. Their indexes in this array act as unique identifiers
+  - Also keeps track of:
+    - the maximum number of cells the board should hold
+    - whether this number has been reached
+    - the maximum size of a cell
+    - the current size of all cells on the board
+    - whether the board's width is fixed
+
+    - whether we are currently playing the GOL
+    - whether randomflipping is occuring
+
+It contains a bunch of methods for updating components
+
+It is responsible for going in and out of GOL mode
+
+  - normal mode unique features:
+    - cells are stored in the normal array
+    - random flipping is possible
+    - cells can be added
+    - the board's width varies depending on how wide the view is
+
+  - GOL mode unique features:
+    - cells are stored in a matrix (as well as the array) and have references to their siblings (the matrix should reflect the matrix of cells that the user sees)
+    - GOL can be played, step-at-a-time or indefinitly
+    - The board's width is fixed
+
+It can trigger random flipping when in normal mode
+
+It can trigger a GOL round or indefinite GOL round playing while in GOL mode (see GOLHelper)
+
+It can add cells to the cell tracking array
+
+It can change the flip-state (facing) of a given cell
+
+*/
+
+ // 'events is like, part of nodejs'
+
+
+
+
+
+
+
+
+// the cells that start off on the board
+const defaultCells = [{ backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }];
+
+class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
+  constructor() {
+    super();
+    // information about the board's contents
+    this.maxCells = 100;
+    this.maxedOut = false;
+    this.maxSize = 600;
+    this.cellSize = 200;
+    this.boardWidth = false;
+
+    // infromation about what is occuring to/on the board
+    this.playing = false;
+    this.autoFlipper = false;
+    this.secondAutoFlipper = false;
+
+    // trackes whether changes were made during the last GOL round
+    this.noChanges = true;
+    // cells are stored as an array of PositionedCell objects
+    this.cells = defaultCells.map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
+
+    // mixins
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__["a" /* default */]);
+  }
+
+  // ======= component updating =========
+
+  cellSpecs() {
+    // returns all the cell info stored as a single object
+    return {
+      cellSize: this.cellSize,
+      number: this.cells.length,
+      cells: this.cells,
+      fixedWidth: this.boardWidth,
+      playing: this.playing
+    };
+  }
+
+  isPlaying() {
+    return { playing: this.playing };
+  }
+
+  isFlipping() {
+    return { flipping: this.autoFlipper };
+  }
+
+  GOLMode() {
+    return { GOLMode: this.boardWidth };
+  }
+
+  // ======= Dispatcher interaction =========
+
+  handleActions(action) {
+    switch (action.type) {
+      case "ADD_CELL":
+        {
+          this.addCell(action.number);
+          break;
+        }case "FLIP_CELL":
+        {
+          this.flipCell(action.cellId);
+          break;
+        }case 'RAND_FLIPPING':
+        {
+          this.toggleRandFlipping();
+          break;
+        }case 'FIX_BOARD':
+        {
+          this.fixBoard(action.boardWidth);
+          break;
+        }case 'CASCADE_FLIP':
+        {
+          this.cascadeFlip(this.reverse.bind(this));
+          break;
+        }case 'PLAY_ROUND':
+        {
+          this.playRound();
+          break;
+        }case 'EXIT_GOL':
+        {
+          this.exitGol();
+          break;
+        }case 'TOGGLE_GOL':
+        {
+          this.toggleGOL();
+          break;
+        }
+    }
+  }
+
+  // ======= board fixing (i.e. getting into GOL mode) =========
+
+  fixBoard(boardWidth) {
+    // firstly we stop any random flipping that might be going on
+    this.stopRandFlip();
+    // fixes the width of the board component/element to it's current width and creates a matrix from the cell objects
+    this.fixBoardUi(boardWidth);
+    this.everyCell(this.assignSiblings.bind(this));
+
+    // this is only here so the board width gets fixed on the DOM
+    this.emit('change');
+  }
+
+  fixBoardUi(boardWidth) {
+    // calculates the maximum number of cells per row
+    // fixes the board width using this number and the cell width
+    // creates a matrix based on the cell number which reflects what the user sees on screen
+    var cellsPerRow = Math.floor(boardWidth / this.cellSize);
+    this.boardWidth = cellsPerRow * this.cellSize;
+    this.cellMatrix = this.matrixify(this.cells, cellsPerRow);
+  }
+
+  exitGol() {
+    // the opposute of fixBoard, returns us to non-GOL flipping
+    this.boardWidth = false;
+    this.stopPlaying();
+    this.emit('change');
+  }
+
+  // ======= cell interaction =========
+
+  addCell(number) {
+    // checks whether the board is already maxed out
+    // if not, adds number new PositionedCells to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
+    if (!this.maxedOut) {
+      this.pushCells(number);
+      this.emit('change');
+    } else {
+      setTimeout(function () {
+        __WEBPACK_IMPORTED_MODULE_6__actions_flashActions__["a" /* default */].flash('Maximum cell count reached. Don\'t be greedy now...');
+      }, 0);
+    }
+  }
+
+  pushCells(number) {
+    // checks if the maximum cell count has been reached and records if it has
+    // if not, cells to the array equal to the passed in number, resizing the cell size each time
+    for (var i = 0; i < number; i++) {
+      if (this.cells.length < this.maxCells) {
+        this.cells.push(new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */]());
+        this.resizeCells();
+      } else {
+        this.maxedOut = true;
+      }
+    }
+  }
+
+  resizeCells() {
+    // Hackily reudces cell size as more cells are added
+    this.cellSize = this.cellSize <= 80 ? 80 : this.cellSize - 5;
+  }
+
+  flipCell(id) {
+    // finds the cell object that matches id and toggles it's side value
+    this.cells[id].backSide = !this.cells[id].backSide;
+
+    this.emit('change');
+  }
+}
+
+const boardStore = new BoardStore();
+
+__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore.handleActions.bind(boardStore));
+/* harmony default export */ __webpack_exports__["a"] = (boardStore);
+
+/***/ }),
+/* 21 */
 /***/ (function(module, exports) {
 
 /*
@@ -11595,7 +11828,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11977,7 +12210,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11991,9 +12224,9 @@ function updateLink (link, options, obj) {
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(10);
+  var invariant = __webpack_require__(9);
   var warning = __webpack_require__(17);
-  var ReactPropTypesSecret = __webpack_require__(23);
+  var ReactPropTypesSecret = __webpack_require__(24);
   var loggedTypeFailures = {};
 }
 
@@ -12043,7 +12276,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12061,7 +12294,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12081,7 +12314,7 @@ module.exports = ReactPropTypesSecret;
 /* unused harmony reexport Redirect */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(45);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(28);
 /* unused harmony reexport Router */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__StaticRouter__ = __webpack_require__(93);
 /* unused harmony reexport StaticRouter */
@@ -12119,7 +12352,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12213,7 +12446,7 @@ var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12306,18 +12539,18 @@ var createTransitionManager = function createTransitionManager() {
 exports.default = createTransitionManager;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(29);
 // Written in this round about way for babel-transform-imports
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__["a" /* default */]);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12454,7 +12687,7 @@ Router.childContextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Router);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12531,7 +12764,7 @@ var matchPath = function matchPath(pathname) {
 /* harmony default export */ __webpack_exports__["a"] = (matchPath);
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12616,237 +12849,51 @@ var createTransitionManager = function createTransitionManager() {
 /* harmony default export */ __webpack_exports__["a"] = (createTransitionManager);
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions_flashActions__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /*
 
-The beating heart of the flipper interface, it:
-  - stores an array of cell objects. Their indexes in this array act as unique identifiers
-  - Also keeps track of:
-    - the maximum number of cells the board should hold
-    - whether this number has been reached
-    - the maximum size of a cell
-    - the current size of all cells on the board
-    - whether the board's width is fixed
-
-    - whether we are currently playing the GOL
-    - whether randomflipping is occuring
-
-It contains a bunch of methods for updating components
-
-It is responsible for going in and out of GOL mode
-
-  - normal mode unique features:
-    - cells are stored in the normal array
-    - random flipping is possible
-    - cells can be added
-    - the board's width varies depending on how wide the view is
-
-  - GOL mode unique features:
-    - cells are stored in a matrix (as well as the array) and have references to their siblings (the matrix should reflect the matrix of cells that the user sees)
-    - GOL can be played, step-at-a-time or indefinitly
-    - The board's width is fixed
-
-It can trigger random flipping when in normal mode
-
-It can trigger a GOL round or indefinite GOL round playing while in GOL mode (see GOLHelper)
-
-It can add cells to the cell tracking array
-
-It can change the flip-state (facing) of a given cell
+A position: fixed panel that fades in and out at an edge of the screen. It has a very high z-index.
+It's screen edge and particular fade method are determiend by its props.
+For added resuability it also takes and adds a list of extra classes from props.
 
 */
 
- // 'events is like, part of nodejs'
 
 
 
+class Panel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
 
-
-
-
-
-// the cells that start off on the board
-const defaultCells = [{ backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }, { backSide: false }];
-
-class BoardStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
-  constructor() {
-    super();
-    // information about the board's contents
-    this.maxCells = 100;
-    this.maxedOut = false;
-    this.maxSize = 600;
-    this.cellSize = 200;
-    this.boardWidth = false;
-
-    // infromation about what is occuring to/on the board
-    this.playing = false;
-    this.autoFlipper = false;
-    this.secondAutoFlipper = false;
-
-    // trackes whether changes were made during the last GOL round
-    this.noChanges = true;
-    // cells are stored as an array of PositionedCell objects
-    this.cells = defaultCells.map(cell => new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */](cell.id, cell.backSide));
-
-    // mixins
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_2__BoardStore_randomFlippingHelper__["a" /* default */]);
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_3__BoardStore_matrixHelper__["a" /* default */]);
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__BoardStore_GOLHelper__["a" /* default */]);
-  }
-
-  // ======= component updating =========
-
-  cellSpecs() {
-    // returns all the cell info stored as a single object
-    return {
-      cellSize: this.cellSize,
-      number: this.cells.length,
-      cells: this.cells,
-      fixedWidth: this.boardWidth,
-      playing: this.playing
-    };
-  }
-
-  isPlaying() {
-    return { playing: this.playing };
-  }
-
-  isFlipping() {
-    return { flipping: this.autoFlipper };
-  }
-
-  GOLMode() {
-    return { GOLMode: this.boardWidth };
-  }
-
-  // ======= Dispatcher interaction =========
-
-  handleActions(action) {
-    switch (action.type) {
-      case "ADD_CELL":
-        {
-          this.addCell(action.number);
-          break;
-        }case "FLIP_CELL":
-        {
-          this.flipCell(action.cellId);
-          break;
-        }case 'RAND_FLIPPING':
-        {
-          this.toggleRandFlipping();
-          break;
-        }case 'FIX_BOARD':
-        {
-          this.fixBoard(action.boardWidth);
-          break;
-        }case 'CASCADE_FLIP':
-        {
-          this.cascadeFlip(this.reverse.bind(this));
-          break;
-        }case 'PLAY_ROUND':
-        {
-          this.playRound();
-          break;
-        }case 'EXIT_GOL':
-        {
-          this.exitGol();
-          break;
-        }case 'TOGGLE_GOL':
-        {
-          this.toggleGOL();
-          break;
-        }
-    }
-  }
-
-  // ======= board fixing (i.e. getting into GOL mode) =========
-
-  fixBoard(boardWidth) {
-    // firstly we stop any random flipping that might be going on
-    this.stopRandFlip();
-    // fixes the width of the board component/element to it's current width and creates a matrix from the cell objects
-    this.fixBoardUi(boardWidth);
-    this.everyCell(this.assignSiblings.bind(this));
-
-    // this is only here so the board width gets fixed on the DOM
-    this.emit('change');
-  }
-
-  fixBoardUi(boardWidth) {
-    // calculates the maximum number of cells per row
-    // fixes the board width using this number and the cell width
-    // creates a matrix based on the cell number which reflects what the user sees on screen
-    var cellsPerRow = Math.floor(boardWidth / this.cellSize);
-    this.boardWidth = cellsPerRow * this.cellSize;
-    this.cellMatrix = this.matrixify(this.cells, cellsPerRow);
-  }
-
-  exitGol() {
-    // the opposute of fixBoard, returns us to non-GOL flipping
-    this.boardWidth = false;
-    this.stopPlaying();
-    this.emit('change');
-  }
-
-  // ======= cell interaction =========
-
-  addCell(number) {
-    // checks whether the board is already maxed out
-    // if not, adds number new PositionedCells to the array of cell objects, reduces the size of rendered cells and fires a 'change' event
-    if (!this.maxedOut) {
-      this.pushCells(number);
-      this.emit('change');
-    } else {
-      setTimeout(function () {
-        __WEBPACK_IMPORTED_MODULE_6__actions_flashActions__["a" /* default */].flash('Maximum cell count reached. Don\'t be greedy now...');
-      }, 0);
-    }
-  }
-
-  pushCells(number) {
-    // checks if the maximum cell count has been reached and records if it has
-    // if not, cells to the array equal to the passed in number, resizing the cell size each time
-    for (var i = 0; i < number; i++) {
-      if (this.cells.length < this.maxCells) {
-        this.cells.push(new __WEBPACK_IMPORTED_MODULE_4__BoardStore_PositionedCell__["a" /* default */]());
-        this.resizeCells();
-      } else {
-        this.maxedOut = true;
-      }
-    }
-  }
-
-  resizeCells() {
-    // Hackily reudces cell size as more cells are added
-    this.cellSize = this.cellSize <= 80 ? 80 : this.cellSize - 5;
-  }
-
-  flipCell(id) {
-    // finds the cell object that matches id and toggles it's side value
-    this.cells[id].backSide = !this.cells[id].backSide;
-
-    this.emit('change');
+    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'container-fluid interface ' + classes },
+      this.props.children
+    );
   }
 }
+/* harmony export (immutable) */ __webpack_exports__["a"] = Panel;
 
-const boardStore = new BoardStore();
 
-__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(boardStore.handleActions.bind(boardStore));
-/* harmony default export */ __webpack_exports__["a"] = (boardStore);
+Panel.propTypes = {
+  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
+};
+
+Panel.defaultProps = {
+  // sets default prop values
+  side: 'bottom',
+  classes: ''
+};
 
 /***/ }),
-/* 32 */,
 /* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12874,7 +12921,7 @@ class Command {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
  // 'events is like, part of nodejs'
@@ -13606,7 +13653,7 @@ Link.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(30);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -13873,18 +13920,18 @@ Stone.defaultProps = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(132);
  // 'events is like, part of nodejs'
 
 
@@ -14126,7 +14173,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascripts_basic_js__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_backgroundAnimation_background__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascripts_backgroundAnimation_background__ = __webpack_require__(139);
 // this is currently the only Webpack entry point so all JS that we could ever need must be requireed here
 
 // css
@@ -14160,7 +14207,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(21)(content, options);
+var update = __webpack_require__(22)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -14195,7 +14242,7 @@ if(false) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(20)(false);
+exports = module.exports = __webpack_require__(21)(false);
 // imports
 
 
@@ -14317,7 +14364,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(21)(content, options);
+var update = __webpack_require__(22)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -14352,7 +14399,7 @@ if(false) {
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(20)(false);
+exports = module.exports = __webpack_require__(21)(false);
 // imports
 
 
@@ -14381,7 +14428,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(21)(content, options);
+var update = __webpack_require__(22)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -14416,7 +14463,7 @@ if(false) {
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(20)(false);
+exports = module.exports = __webpack_require__(21)(false);
 // imports
 
 
@@ -19936,12 +19983,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.4
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_Layout__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_Home__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Flipper__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_RM__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_RM__ = __webpack_require__(117);
 
 
 
@@ -20102,10 +20149,10 @@ if (process.env.NODE_ENV !== "production") {
 
     var _assign = __webpack_require__(12);
     var emptyObject = __webpack_require__(16);
-    var invariant = __webpack_require__(10);
+    var invariant = __webpack_require__(9);
     var warning = __webpack_require__(17);
     var emptyFunction = __webpack_require__(8);
-    var checkPropTypes = __webpack_require__(22);
+    var checkPropTypes = __webpack_require__(23);
 
     // TODO: this is special because it gets imported during build.
 
@@ -23415,7 +23462,7 @@ module.exports = isNode;
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */if(process.env.NODE_ENV!=="production"){(function(){'use strict';var React=__webpack_require__(0);var invariant=__webpack_require__(10);var warning=__webpack_require__(17);var ExecutionEnvironment=__webpack_require__(35);var _assign=__webpack_require__(12);var emptyFunction=__webpack_require__(8);var EventListener=__webpack_require__(36);var getActiveElement=__webpack_require__(37);var shallowEqual=__webpack_require__(38);var containsNode=__webpack_require__(39);var focusNode=__webpack_require__(40);var emptyObject=__webpack_require__(16);var checkPropTypes=__webpack_require__(22);var hyphenateStyleName=__webpack_require__(69);var camelizeStyleName=__webpack_require__(71);/**
+ */if(process.env.NODE_ENV!=="production"){(function(){'use strict';var React=__webpack_require__(0);var invariant=__webpack_require__(9);var warning=__webpack_require__(17);var ExecutionEnvironment=__webpack_require__(35);var _assign=__webpack_require__(12);var emptyFunction=__webpack_require__(8);var EventListener=__webpack_require__(36);var getActiveElement=__webpack_require__(37);var shallowEqual=__webpack_require__(38);var containsNode=__webpack_require__(39);var focusNode=__webpack_require__(40);var emptyObject=__webpack_require__(16);var checkPropTypes=__webpack_require__(23);var hyphenateStyleName=__webpack_require__(69);var camelizeStyleName=__webpack_require__(71);/**
  * WARNING: DO NOT manually require this module.
  * This is a replacement for `invariant(...)` used by the error code system
  * and will _only_ be required by the corresponding babel pass.
@@ -26556,7 +26603,7 @@ module.exports = camelize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(28);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -26636,12 +26683,12 @@ BrowserRouter.propTypes = {
 
 
 var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(10);
+var invariant = __webpack_require__(9);
 var warning = __webpack_require__(17);
 var assign = __webpack_require__(12);
 
-var ReactPropTypesSecret = __webpack_require__(23);
-var checkPropTypes = __webpack_require__(22);
+var ReactPropTypesSecret = __webpack_require__(24);
+var checkPropTypes = __webpack_require__(23);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -27159,8 +27206,8 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 
 
 var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(10);
-var ReactPropTypesSecret = __webpack_require__(23);
+var invariant = __webpack_require__(9);
+var ReactPropTypesSecret = __webpack_require__(24);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -27236,11 +27283,11 @@ var _invariant = __webpack_require__(4);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(25);
+var _LocationUtils = __webpack_require__(26);
 
 var _PathUtils = __webpack_require__(13);
 
-var _createTransitionManager = __webpack_require__(26);
+var _createTransitionManager = __webpack_require__(27);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -27540,7 +27587,7 @@ exports.default = createBrowserHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createHashHistory__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createHashHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createHashHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(28);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -27631,11 +27678,11 @@ var _invariant = __webpack_require__(4);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(25);
+var _LocationUtils = __webpack_require__(26);
 
 var _PathUtils = __webpack_require__(13);
 
-var _createTransitionManager = __webpack_require__(26);
+var _createTransitionManager = __webpack_require__(27);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -27967,7 +28014,7 @@ exports.default = createHashHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(29);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -28063,9 +28110,9 @@ var _warning2 = _interopRequireDefault(_warning);
 
 var _PathUtils = __webpack_require__(13);
 
-var _LocationUtils = __webpack_require__(25);
+var _LocationUtils = __webpack_require__(26);
 
-var _createTransitionManager = __webpack_require__(26);
+var _createTransitionManager = __webpack_require__(27);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -29036,7 +29083,7 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(47);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -29349,7 +29396,7 @@ var createBrowserHistory = function createBrowserHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(47);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
@@ -29675,7 +29722,7 @@ var createHashHistory = function createHashHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PathUtils__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(31);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -29871,7 +29918,7 @@ var createMemoryHistory = function createMemoryHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_history_PathUtils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(29);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -30085,7 +30132,7 @@ StaticRouter.childContextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(30);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -30182,7 +30229,7 @@ Switch.propTypes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(30);
 // Written in this round about way for babel-transform-imports
 
 
@@ -30336,7 +30383,7 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Layout_Flash__ = __webpack_require__(102);
 
 
@@ -30447,7 +30494,7 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
 // othwesie keep executing new commands untill we
@@ -30553,7 +30600,7 @@ function _classCallCheck(instance, Constructor) {
   }
 }
 
-var invariant = __webpack_require__(10);
+var invariant = __webpack_require__(9);
 
 var _prefix = 'ID_';
 
@@ -30858,11 +30905,11 @@ class Home extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Flipper_Board__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_Panel__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_Panel__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_cellActions__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_BoardStore__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Flipper_GOLPanel__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Flipper_RandFlipper__ = __webpack_require__(116);
 /*
 
 High level page display, containing:
@@ -30979,7 +31026,7 @@ class Flipper extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Board_Cell__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(20);
 /*
 
 A board that displays all the cells in BoardStore
@@ -31442,8 +31489,7 @@ These methods are also responsible for stopping and starting the GOL cleanly whe
 });
 
 /***/ }),
-/* 115 */,
-/* 116 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31452,8 +31498,8 @@ These methods are also responsible for stopping and starting the GOL cleanly whe
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_cellActions__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_Panel__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BoardStore__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_Panel__ = __webpack_require__(32);
 /*
 
 A panel component that houses a bunch of buttons that fire off various events to cellActions when clicked.
@@ -31532,14 +31578,14 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_cellActions__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BoardStore__ = __webpack_require__(20);
 /*
 
 A component that renders a single button
@@ -31588,15 +31634,15 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_TutorialStore__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RM_Tutorial__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RM_RegisterMachine__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_TutorialStore__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RM_Tutorial__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RM_RegisterMachine__ = __webpack_require__(120);
 
 
 
@@ -31695,11 +31741,11 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
  // 'events is like, part of nodejs'
@@ -31751,7 +31797,7 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(tutorialSt
 /* harmony default export */ __webpack_exports__["a"] = (tutorialStore);
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31875,18 +31921,18 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_Panel__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_Panel__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BucketSelector__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ExecutePanel__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ExecutePanel__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__stores_ExecutionStore__ = __webpack_require__(34);
 
 
@@ -31985,14 +32031,14 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Buckets_Ugg__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_BucketsStore__ = __webpack_require__(15);
 /*
 
@@ -32028,7 +32074,7 @@ class Buckets extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   render() {
 
-    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Bucke, {
+    const buckets = this.state.buckets.map((bucket, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Buckets_Bucket__["a" /* default */], {
       stoneNumber: bucket.stones,
       id: index,
       key: index,
@@ -32059,14 +32105,14 @@ class Buckets extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Stone__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BucketEditor__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
 /*
 
@@ -32129,11 +32175,11 @@ class Bucket extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     );
   }
 }
-/* unused harmony export default */
+/* harmony export (immutable) */ __webpack_exports__["a"] = Bucket;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32205,7 +32251,7 @@ class BucketEditor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32271,7 +32317,7 @@ class Ugg extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32361,7 +32407,7 @@ const executorAnimations = {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32435,14 +32481,14 @@ Level 3 functions can also be called on their own (e.g. when the user manually e
 });
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(133);
 
 
 
@@ -32488,7 +32534,7 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32513,7 +32559,7 @@ class Increment extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32549,7 +32595,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32572,7 +32618,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32612,7 +32658,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32646,14 +32692,14 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 });
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandInfo__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandEdit__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandInfo__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandEdit__ = __webpack_require__(135);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
 
 
@@ -32735,7 +32781,7 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32790,14 +32836,14 @@ class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BucketSelector__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandSelector__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandSelector__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
 
 
@@ -32926,7 +32972,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32985,7 +33031,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32994,7 +33040,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(138);
 /*
 
 This component represnets a sub-panel, or sub-section deitcated to execution of the register machine. While execution is occuring, this panel should display a spinner, and a 'halt' button that allows the user to halt execution. While not executing it should display an 'execute button' that allows the user to start execution.
@@ -33062,7 +33108,7 @@ class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33114,8 +33160,44 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 
 
 /***/ }),
-/* 140 */,
-/* 141 */
+/* 139 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mo_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(141);
+/*
+THE IDEA: small circles should start popping in at the bottom of the page and drift slowly upwards untill they reach the top or dissapear. They should be added at a random x axis and at seemingly random intervals. Should kind of look the screen is sitting over a wide vent which is slowly releasing small bubbles.
+
+*/
+
+
+
+
+// default paramaters for a sizzle animation
+const sizzleDefaults = {
+  parent: document.getElementById('background'),
+  scale: 2,
+  y: { 200: -200 }, // the start and end x and y axies for the motion
+  x: { 400: 400 },
+  fill: '#908089',
+  swirlSize: 25,
+  fillOpacity: 0.6,
+  strokeWidth: 3,
+  stroke: '#908089',
+  strokeOpacity: 0.2,
+  zIndex: -1 // super conveniant
+};
+
+const sizzlePlayer = new __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__["a" /* default */](sizzleDefaults);
+
+// shapes take on the specifications of passed in objects on instantiation
+new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.generate(sizzleDefaults)).play();
+sizzlePlayer.play(2000);
+
+/***/ }),
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -45107,95 +45189,11 @@ class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 ;
 
 /***/ }),
-/* 142 */,
-/* 143 */,
-/* 144 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/*
-
-A position: fixed panel that fades in and out at an edge of the screen. It has a very high z-index.
-It's screen edge and particular fade method are determiend by its props.
-For added resuability it also takes and adds a list of extra classes from props.
-
-*/
-
-
-
-
-class Panel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  render() {
-    const fade = this.props.GOLActive ? this.props.fadeIn : this.props.fadeOut;
-
-    const classes = this.props.classes + ' ' + this.props.side + ' ' + fade;
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'container-fluid interface ' + classes },
-      this.props.children
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Panel;
-
-
-Panel.propTypes = {
-  side: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired
-};
-
-Panel.defaultProps = {
-  // sets default prop values
-  side: 'bottom',
-  classes: ''
-};
-
-/***/ }),
-/* 145 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mo_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mo_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__ = __webpack_require__(146);
-/*
-THE IDEA: small circles should start popping in at the bottom of the page and drift slowly upwards untill they reach the top or dissapear. They should be added at a random x axis and at seemingly random intervals. Should kind of look the screen is sitting over a wide vent which is slowly releasing small bubbles.
-
-*/
-
-
-
-
-// default paramaters for a sizzle animation
-const sizzleDefaults = {
-  parent: document.getElementById('background'),
-  scale: 2,
-  y: { 200: -200 }, // the start and end x and y axies for the motion
-  x: { 400: 400 },
-  fill: '#908089',
-  swirlSize: 25,
-  fillOpacity: 0.6,
-  strokeWidth: 3,
-  stroke: '#908089',
-  strokeOpacity: 0.2,
-  zIndex: -1 // super conveniant
-};
-
-const sizzlePlayer = new __WEBPACK_IMPORTED_MODULE_1__SizzlePlayer__["a" /* default */](sizzleDefaults);
-
-// shapes take on the specifications of passed in objects on instantiation
-new __WEBPACK_IMPORTED_MODULE_0_mo_js___default.a.ShapeSwirl(sizzlePlayer.generate(sizzleDefaults)).play();
-sizzlePlayer.play(2000);
-
-/***/ }),
-/* 146 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sizzleGenerator__ = __webpack_require__(142);
 
 
 class SizzlePlayer {
@@ -45239,7 +45237,7 @@ class SizzlePlayer {
 
 
 /***/ }),
-/* 147 */
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

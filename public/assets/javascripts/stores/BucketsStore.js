@@ -121,12 +121,13 @@ class BucketsStore extends EventEmitter {
   }
 
   flashReturnValue() {
-    // we have to set a timeout to avoid simaltanious dispatches
+    // flashes the value of the first bucket and gets ugg to dance
+    // the flash timeout is delayed so ugg starts dancing before it  comes up
     var returnVal = this.buckets[0].stones
+    this.uggDance()
     setTimeout(function() {
       flashActions.flash('The program has terminated successfully with a return value of ' + returnVal)
-    }, 0)
-    this.uggDance()
+    }, 300)
   }
 
   // ======= Bucket list editing =========
@@ -137,6 +138,7 @@ class BucketsStore extends EventEmitter {
 
     // then we add a new bucket to the list of buckets
     this.buckets.push(
+      // we store the justAdded value in each bucket, because (like on when the page loads for the first time) there might be situations where two buckets are added at the same time.
       {stones: 0, justAdded: true}
     )
 
