@@ -1,3 +1,17 @@
+/*
+
+This Store is responsible for storing data about commands and exeuting them in sequence when asked.
+
+Commands are stored as an array of Increment and Decrement objects (see ProgramStore). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
+
+It also manages the adding of new commands and the editing of existing commands. 
+
+
+*/
+
+
+
+
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import Command from './ProgramStore/Command'
@@ -29,9 +43,13 @@ class ProgramStore extends EventEmitter {
     Object.assign(this, validation);
   }
 
+  // ======= component updating =========
+
   getInfo() {
     return {commands: this.commands, editingCommand: this.editingCommand}
   }
+
+  // ======= Dispatcher stuff =========
 
   handleActions(action) {
     switch(action.type) {
@@ -57,6 +75,8 @@ class ProgramStore extends EventEmitter {
     }
   }
 
+  // ======= Command editing =========
+
   switchEditor(id) {
     this.editingCommand = id
 
@@ -72,6 +92,19 @@ class ProgramStore extends EventEmitter {
 
     this.emit('change')
   }
+
+  newCommand(props) {
+    // generates an id for the new command
+    // returns a new command object given an object of command properties
+    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
+    if (props.increment) {
+      return(new Increment(props.nextCommand, props.bucket, id))
+    } else {
+      return(new Decrement(props.nextCommand, props.bucket, id, props.alternateNext))
+    }
+  }
+
+  // ======= Program Execution =========
 
   execute() {
     // first validates the command list
@@ -96,24 +129,26 @@ class ProgramStore extends EventEmitter {
   }
 
   runNextCommand(id, animationDuration) {
-    // if we get stopped by a stop action, simply cease executing new commands (the execution store will also be stopped by the same actions)
+    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
     if (!this.stopped) {
-      // othwesie keep executing new commands untill we hit the end exectution command (id = 0)
-      if (id) {
+
+      // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
+        // in which case trigger an execution stopping action
 
         // otherwise we execute the current command and find its id
+        // then recur with the new id after a animationDuration milliseconds
+
+      if (id) {
         var newId = this.executeCommand(id)
-        // finally we recur with the new id after a animationDuration milliseconds
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
-        // in which case trigger an execution stopping action
         rmActions.finishExecution()
       }
     }
   }
 
   executeCommand(id) {
-    // moves the execution tracker over the current command runs it and returns the next command
+    // moves the execution tracker over the current command, runs it and returns the next command
     this.moveExecutionTracker(id)
     var currentCommand = this.findCommand(id)
     currentCommand.run()
@@ -133,17 +168,6 @@ class ProgramStore extends EventEmitter {
     }
 
     this.emit('change')
-  }
-
-  newCommand(props) {
-    // generates an id for the new command
-    // returns a new command object given an object of command properties
-    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
-    if (props.increment) {
-      return(new Increment(props.nextCommand, props.bucket, id))
-    } else {
-      return(new Decrement(props.nextCommand, props.bucket, id, props.alternateNext))
-    }
   }
 }
 
