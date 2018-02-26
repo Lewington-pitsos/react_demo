@@ -4,25 +4,28 @@ This Store is responsible for storing data about commands and exeuting them in s
 
 Commands are stored as an array of Increment and Decrement objects (see ProgramStore). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
 
-It also manages the adding of new commands and the editing of existing commands. 
+It also manages the adding of new commands and the editing of existing commands by:
+  - updateing the commands array with new commands
+  - keeping track of the command being edited
 
 
 */
 
 
-
-
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
-import Command from './ProgramStore/Command'
-import Increment from './ProgramStore/Increment'
-import Decrement from './ProgramStore/Decrement'
+// other FLUX things
 import dispatcher from '../dispatcher'
-import executionAnimations from './ProgramStore/executionAnimations'
-import programHelpers from './ProgramStore/programHelpers'
-import executionStore from  './ExecutionStore'
 import rmActions from '../actions/rmActions'
 import flashActions from '../actions/flashActions'
+
+// Helper Libraries
+import Increment from './ProgramStore/Increment'
+import Decrement from './ProgramStore/Decrement'
+import executionAnimations from './ProgramStore/executionAnimations'
+import commandListEditing from './ProgramStore/commandListEditing'
+import finders from './ProgramStore/finders'
+import executionStore from  './ExecutionStore'
 import validation from './ProgramStore/validation'
 
 class ProgramStore extends EventEmitter {
@@ -38,9 +41,10 @@ class ProgramStore extends EventEmitter {
 
     this.stopped = false
 
-    Object.assign(this, executionAnimations);
-    Object.assign(this, programHelpers);
-    Object.assign(this, validation);
+    Object.assign(this, executionAnimations)
+    Object.assign(this, finders)
+    Object.assign(this, validation)
+    Object.assign(this, commandListEditing)
   }
 
   // ======= component updating =========
@@ -72,35 +76,6 @@ class ProgramStore extends EventEmitter {
         this.switchEditor(action.id)
         break
       }
-    }
-  }
-
-  // ======= Command editing =========
-
-  switchEditor(id) {
-    this.editingCommand = id
-
-    this.emit('change')
-  }
-
-  addCommand(props) {
-    // set all currently added commands as old, and switches the editing command to be the new one
-    // creates and then pushes a new command object, and emits a change event
-    this.switchEditor(this.nextId)
-    this.commands.forEach((command) => command.justAdded = false)
-    this.commands.push(this.newCommand(props))
-
-    this.emit('change')
-  }
-
-  newCommand(props) {
-    // generates an id for the new command
-    // returns a new command object given an object of command properties
-    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
-    if (props.increment) {
-      return(new Increment(props.nextCommand, props.bucket, id))
-    } else {
-      return(new Decrement(props.nextCommand, props.bucket, id, props.alternateNext))
     }
   }
 
@@ -153,21 +128,6 @@ class ProgramStore extends EventEmitter {
     var currentCommand = this.findCommand(id)
     currentCommand.run()
     return currentCommand.next()
-  }
-
-  updateCommand(specs) {
-    // searches the command list for a command whose id matches the id in specs
-    // switches that command out for a new one created using specs
-    for (var i = 0; i < this.commands.length; i++) {
-      if (this.commands[i].id == specs.id) {
-        // we create a new command, specify that it had already been added, and overwrite the old command with it
-        var newCommand = this.newCommand(specs)
-        newCommand.justAdded = false
-        this.commands[i] = newCommand
-      }
-    }
-
-    this.emit('change')
   }
 }
 

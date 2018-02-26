@@ -13922,15 +13922,15 @@ Stone.defaultProps = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ProgramStore_Command__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dispatcher__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ExecutionStore__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ProgramStore_Increment__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProgramStore_Decrement__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_executionAnimations__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ExecutionStore__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(132);
 /*
 
@@ -13938,16 +13938,21 @@ This Store is responsible for storing data about commands and exeuting them in s
 
 Commands are stored as an array of Increment and Decrement objects (see ProgramStore). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
 
-It also manages the adding of new commands and the editing of existing commands. 
+It also manages the adding of new commands and the editing of existing commands by:
+  - updateing the commands array with new commands
+  - keeping track of the command being edited
 
 
 */
 
  // 'events is like, part of nodejs'
 
+// other FLUX things
 
 
 
+
+// Helper Libraries
 
 
 
@@ -13959,15 +13964,16 @@ It also manages the adding of new commands and the editing of existing commands.
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](2, 1, 1, 0), new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](1, 0, 2)];
+    this.commands = [new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_Decrement__["a" /* default */](2, 1, 1, 0), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_Increment__["a" /* default */](1, 0, 2)];
     this.nextId = 3;
     this.editingCommand = 0;
 
     this.stopped = false;
 
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_5__ProgramStore_executionAnimations__["a" /* default */]);
-    Object.assign(this, __WEBPACK_IMPORTED_MODULE_6__ProgramStore_programHelpers__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_6__ProgramStore_executionAnimations__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__["a" /* default */]);
   }
 
   // ======= component updating =========
@@ -14008,35 +14014,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     }
   }
 
-  // ======= Command editing =========
-
-  switchEditor(id) {
-    this.editingCommand = id;
-
-    this.emit('change');
-  }
-
-  addCommand(props) {
-    // set all currently added commands as old, and switches the editing command to be the new one
-    // creates and then pushes a new command object, and emits a change event
-    this.switchEditor(this.nextId);
-    this.commands.forEach(command => command.justAdded = false);
-    this.commands.push(this.newCommand(props));
-
-    this.emit('change');
-  }
-
-  newCommand(props) {
-    // generates an id for the new command
-    // returns a new command object given an object of command properties
-    var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
-    if (props.increment) {
-      return new __WEBPACK_IMPORTED_MODULE_2__ProgramStore_Increment__["a" /* default */](props.nextCommand, props.bucket, id);
-    } else {
-      return new __WEBPACK_IMPORTED_MODULE_3__ProgramStore_Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext);
-    }
-  }
-
   // ======= Program Execution =========
 
   execute() {
@@ -14050,8 +14027,8 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     } else {
       setTimeout(function () {
         // timeout to stop simaltanious dispatch errors
-        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].haltExecution();
-        __WEBPACK_IMPORTED_MODULE_9__actions_flashActions__["a" /* default */].flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.');
+        __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].haltExecution();
+        __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__["a" /* default */].flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.');
       }, 0);
     }
   }
@@ -14074,7 +14051,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         var newId = this.executeCommand(id);
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
       } else {
-        __WEBPACK_IMPORTED_MODULE_8__actions_rmActions__["a" /* default */].finishExecution();
+        __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
       }
     }
   }
@@ -14086,26 +14063,11 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     currentCommand.run();
     return currentCommand.next();
   }
-
-  updateCommand(specs) {
-    // searches the command list for a command whose id matches the id in specs
-    // switches that command out for a new one created using specs
-    for (var i = 0; i < this.commands.length; i++) {
-      if (this.commands[i].id == specs.id) {
-        // we create a new command, specify that it had already been added, and overwrite the old command with it
-        var newCommand = this.newCommand(specs);
-        newCommand.justAdded = false;
-        this.commands[i] = newCommand;
-      }
-    }
-
-    this.emit('change');
-  }
 }
 
 const programStore = new ProgramStore();
 
-__WEBPACK_IMPORTED_MODULE_4__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
+__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
 /* harmony default export */ __webpack_exports__["a"] = (programStore);
 
 /***/ }),
@@ -32639,46 +32601,7 @@ class Decrement extends __WEBPACK_IMPORTED_MODULE_0__Command_js__["a" /* default
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 131 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = ({
-  findCommand(id) {
-    // returns the command object that matches the passed in id
-    return $.grep(this.commands, function (command) {
-      return command.id == id;
-    })[0];
-  },
-
-  getCommandIndex(id) {
-    // takes the id of a command and returns its index
-    for (var i = 0; i < this.commands.length; i++) {
-      if (this.commands[i].id == id) {
-        return i;
-      }
-    }
-
-    // returns false if there is no match
-    return false;
-  },
-
-  deleteCommand(id) {
-    // finds the index of the command whose id matches the passed in int
-    // conducts a single element splice at that index and triggers a change
-    const index = this.getCommandIndex(id);
-    this.commands.splice(index, 1);
-    this.emit('change');
-  },
-
-  getNextId() {
-    // increments returns and then increments the nextId property
-    return this.nextId++;
-  }
-});
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
-
-/***/ }),
+/* 131 */,
 /* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45300,6 +45223,119 @@ class SizzlePlayer {
   plusOrMinus() {
     // returns 1 or -1
     return Math.round(Math.random()) * 2 - 1;
+  }
+});
+
+/***/ }),
+/* 143 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = ({
+  findCommand(id) {
+    // returns the command object that matches the passed in id
+    return $.grep(this.commands, function (command) {
+      return command.id == id;
+    })[0];
+  },
+
+  getCommandIndex(id) {
+    // takes the id of a command and returns its index
+    for (var i = 0; i < this.commands.length; i++) {
+      if (this.commands[i].id == id) {
+        return i;
+      }
+    }
+
+    // returns false if there is no match
+    return false;
+  },
+
+  deleteCommand(id) {
+    // finds the index of the command whose id matches the passed in int
+    // conducts a single element splice at that index and triggers a change
+    const index = this.getCommandIndex(id);
+    this.commands.splice(index, 1);
+    this.emit('change');
+  },
+
+  getNextId() {
+    // increments returns and then increments the nextId property
+    return this.nextId++;
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
+
+/***/ }),
+/* 144 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Increment__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Decrement__ = __webpack_require__(129);
+/*
+
+Thos module contains methods for editing the command list, such as adding, deleting and updating commands, plus related helper methods.
+
+*/
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  switchEditor(id) {
+    this.editingCommand = id;
+
+    this.emit('change');
+  },
+
+  addCommand(props) {
+    // set all currently added commands as old, and switches the editing command to be the new one
+    // creates and then pushes a new command object, and emits a change event
+    this.switchEditor(this.nextId);
+    this.commands.forEach(command => command.justAdded = false);
+    this.commands.push(this.newCommand(props));
+
+    this.emit('change');
+  },
+
+  newCommand(props) {
+    // generates an id for the new command
+    // returns a new command object given an object of command properties
+    var id = props.id || this.getNextId(); // if an id is passed in we are updating an existing command
+    if (props.increment) {
+      return new __WEBPACK_IMPORTED_MODULE_0__Increment__["a" /* default */](props.nextCommand, props.bucket, id);
+    } else {
+      return new __WEBPACK_IMPORTED_MODULE_1__Decrement__["a" /* default */](props.nextCommand, props.bucket, id, props.alternateNext);
+    }
+  },
+
+  updatedCommand(specs) {
+    // creates a command object and speciefies that this command is not newly added to the list of commands
+    var newCommand = this.newCommand(specs);
+    newCommand.justAdded = false;
+    return newCommand;
+  },
+
+  updateCommand(specs) {
+    // searches the command list for the old command (a command whose id matches the id in specs)
+    // creates a new command, specifying that that it has already been added before
+    // overwrites the old command and replaces it with the new one
+    for (var i = 0; i < this.commands.length; i++) {
+      if (this.commands[i].id == specs.id) {
+        this.commands[i] = this.updatedCommand(specs);
+      }
+    }
+
+    this.emit('change');
+  },
+
+  deleteCommand(id) {
+    // finds the index of the command whose id matches the passed in int
+    // conducts a single element splice at that index and triggers a change
+    const index = this.getCommandIndex(id);
+    this.commands.splice(index, 1);
+    this.emit('change');
   }
 });
 
