@@ -32558,6 +32558,13 @@ Level 3 functions can also be called on their own (e.g. when the user manually e
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program_Command__ = __webpack_require__(134);
+/*
+
+This Component renders the list of commands, as well as the execution tracking overlay.
+It has direct access to the ProgramStore, and renders one Command component for each command in that store.
+
+*/
+
 
 
 
@@ -32795,6 +32802,21 @@ Baiscally we just grab each command's bucket and successor(s) id, and iterate th
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CommandInfo__ = __webpack_require__(135);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CommandEdit__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__ = __webpack_require__(7);
+/*
+
+This component displays a single command, either in Info (normal) or Edit mode.
+
+All command specs are passed in via props. There are 3 kinds of specs passed in:
+  - the command specs (bucket, successor, command, type)
+  - Whether the command was just added (for the purpose of fading in)
+  - Whether the command is being edited
+
+All of these effect how the command is displayed and so must be worked out before rendering.
+
+Additionally this component has direct access to rmActions, and through this it can trigger updates of the ProgramStore that effect which command is being edited.
+
+*/
+
 
 
 
@@ -32802,11 +32824,6 @@ Baiscally we just grab each command's bucket and successor(s) id, and iterate th
 
 
 class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = { editMode: true };
-  }
-
   switchEditor() {
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(this.props.command.id);
   }
@@ -32814,6 +32831,8 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   noEditor() {
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(0);
   }
+
+  // ====== Render Helpers ====== 
 
   renderMode(command) {
     // renders the info or edit component depending on whether this command is being edited
@@ -32840,7 +32859,7 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   render() {
-    // renders out a command in either display or edit mode depending on state
+    // renders out a command in either display or edit mode depending on props
 
     const command = this.props.command;
     const classList = this.getClassList(command);
