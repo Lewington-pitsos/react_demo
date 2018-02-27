@@ -1,3 +1,16 @@
+/*
+
+Thike whole module only exists to spport a boolean test of whether the command list is valid.
+
+A valid command list is one where:
+  - every bucket whose id is mentioned in a command actually exists, and
+  - every command whose id is mentioned in a command actually eixsts OR is the null command
+
+Baiscally we just grab each command's bucket and successor(s) id, and iterate through the command and bucket lists to ensure that those ids actually eixst.
+
+*/
+
+
 import bucketsStore from '../BucketsStore'
 
 export default {

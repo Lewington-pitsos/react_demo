@@ -16,6 +16,17 @@ This Store also manages the adding of new commands and the editing of existing c
 
   see commandListEditing
 
+Lastly, it manages and tracks program execution and execution animations for the program list. The basic executuin procedure works like this:
+
+  - Upon receiving an execute command, this store first validates the command list (see ProgramStore/validation).
+  - if validation passes, the store locates the first command on the list and:
+    - runs that command (triggering animations, bth directly and through the BucketStore)
+    - finds the command scheudaled to be run next, and after a timeout (so that animations have a chance to run their course)
+    - runs that new command
+  - eventually we hit the null command, at which point execution is terminated and the bucketStore flashes a return value
+
+All the while, the ProgramStore listens for a halt action, and immiidately terminates execution if it hears one.
+
 
 
 */
