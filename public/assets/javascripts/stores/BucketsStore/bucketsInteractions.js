@@ -22,12 +22,12 @@ export default {
 
   failToDecrement(id) {
     this.moveUgg(id)
-    setTimeout(this.uggWaver.bind(this), 800)
+    setTimeout(this.uggWaver.bind(this), 700)
   },
 
   decrementBucket(id) {
     this.moveUgg(id)
-    setTimeout(this.animateOutStone.bind(this), 900, id)
+    setTimeout(this.animateOutStone.bind(this), 800, id)
   },
 
   incrementBucket(id) {
@@ -39,12 +39,12 @@ export default {
 
   animateInStone(id) {
     this.uggAddStone()
-    setTimeout(this.addStoneTo.bind(this), 500, id)
+    setTimeout(this.addStoneTo.bind(this), 350, id)
   },
 
   animateOutStone(id) {
     this.uggTakeStone()
-    setTimeout(this.takeStoneFrom.bind(this), 200, id)
+    setTimeout(this.takeStoneFrom.bind(this), 100, id)
   },
 
   // ======= Level 3 =========

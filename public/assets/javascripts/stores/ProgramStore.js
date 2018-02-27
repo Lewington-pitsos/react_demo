@@ -115,7 +115,7 @@ class ProgramStore extends EventEmitter {
     if (this.validateCommands()) {
       this.stopped = false
       var commandId = this.commands[0].id
-      this.runNextCommand(commandId, 1600)
+      this.runNextCommand(commandId, 1200)
     } else {
       setTimeout(function() {
         // timeout to stop simaltanious dispatch errors

@@ -14022,7 +14022,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     if (this.validateCommands()) {
       this.stopped = false;
       var commandId = this.commands[0].id;
-      this.runNextCommand(commandId, 1600);
+      this.runNextCommand(commandId, 1200);
     } else {
       setTimeout(function () {
         // timeout to stop simaltanious dispatch errors
@@ -32418,10 +32418,10 @@ const executorAnimations = {
     var currentBucketMiddle = bucketHeight * bucketId + 25;
     $('.ugg').animate({
       top: currentBucketMiddle
-    }, 900);
+    }, 700);
     $('.buckets-holder').animate({
       scrollTop: currentBucketMiddle - bucketHeight
-    }, 900);
+    }, 700);
   },
 
   uggAddStone() {
@@ -32430,7 +32430,7 @@ const executorAnimations = {
     var $stone = $('.uggs-stone');
     $stone.animate({
       right: this.stoneDistance()
-    }, 500, function () {
+    }, 300, function () {
       $stone.css('right', 0);
     });
   },
@@ -32442,7 +32442,7 @@ const executorAnimations = {
     $stone.css('right', this.stoneDistance());
     $stone.animate({
       right: 0
-    }, 500);
+    }, 300);
   },
 
   stoneDistance() {
@@ -32457,7 +32457,7 @@ const executorAnimations = {
     $('.ugg').addClass('shake');
     setTimeout(function () {
       $('.ugg').removeClass('shake');
-    }, 550);
+    }, 400);
   },
 
   uggDance() {
@@ -32500,12 +32500,12 @@ Level 3 functions can also be called on their own (e.g. when the user manually e
 
   failToDecrement(id) {
     this.moveUgg(id);
-    setTimeout(this.uggWaver.bind(this), 800);
+    setTimeout(this.uggWaver.bind(this), 700);
   },
 
   decrementBucket(id) {
     this.moveUgg(id);
-    setTimeout(this.animateOutStone.bind(this), 900, id);
+    setTimeout(this.animateOutStone.bind(this), 800, id);
   },
 
   incrementBucket(id) {
@@ -32517,12 +32517,12 @@ Level 3 functions can also be called on their own (e.g. when the user manually e
 
   animateInStone(id) {
     this.uggAddStone();
-    setTimeout(this.addStoneTo.bind(this), 500, id);
+    setTimeout(this.addStoneTo.bind(this), 350, id);
   },
 
   animateOutStone(id) {
     this.uggTakeStone();
-    setTimeout(this.takeStoneFrom.bind(this), 200, id);
+    setTimeout(this.takeStoneFrom.bind(this), 100, id);
   },
 
   // ======= Level 3 =========

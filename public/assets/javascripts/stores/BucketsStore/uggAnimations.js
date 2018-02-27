@@ -29,10 +29,10 @@ const executorAnimations =  {
     var currentBucketMiddle = ( ( bucketHeight * bucketId ) + 25  )
     $('.ugg').animate({
       top: currentBucketMiddle
-    }, 900)
+    }, 700)
     $('.buckets-holder').animate({
       scrollTop: currentBucketMiddle - bucketHeight
-    }, 900)
+    }, 700)
   },
 
   uggAddStone() {
@@ -41,7 +41,7 @@ const executorAnimations =  {
     var $stone = $('.uggs-stone')
     $stone.animate({
       right: this.stoneDistance()
-    }, 500, function() {
+    }, 300, function() {
       $stone.css('right', 0)
     })
   },
@@ -53,7 +53,7 @@ const executorAnimations =  {
     $stone.css('right', this.stoneDistance())
     $stone.animate({
       right: 0
-    }, 500)
+    }, 300)
   },
 
   stoneDistance() {
@@ -68,7 +68,7 @@ const executorAnimations =  {
     $('.ugg').addClass('shake')
     setTimeout(function() {
       $('.ugg').removeClass('shake')
-    }, 550)
+    }, 400)
   },
 
   uggDance() {
