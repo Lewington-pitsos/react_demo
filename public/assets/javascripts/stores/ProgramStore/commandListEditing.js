@@ -9,8 +9,6 @@ import Decrement from './CommandObjects/Decrement'
 
 export default {
   switchEditor(id) {
-
-    console.log('switched');
     this.editingCommand = id
 
     this.emit('change')

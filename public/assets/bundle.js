@@ -32650,8 +32650,6 @@ Thos module contains methods for editing the command list, such as adding, delet
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   switchEditor(id) {
-
-    console.log('switched');
     this.editingCommand = id;
 
     this.emit('change');
@@ -32827,6 +32825,7 @@ Additionally this component has direct access to rmActions, and through this it 
 
 class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   switchEditor() {
+    // we have to click inside the .command to cancel it, so we only switch the current editng to the clicked on command if that command ISN'T already being edited
     if (!this.props.editMode) {
       __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(this.props.command.id);
     }
@@ -32836,6 +32835,12 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   renderMode(command) {
     // renders the info or edit component depending on whether this command is being edited
+
+    if (this.props.editMode) {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command });
+    } else {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
+    }
   }
 
   getClassList(command) {
@@ -32858,15 +32863,7 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     const command = this.props.command;
     const classList = this.getClassList(command);
-    var display;
-
-    console.log('edit: ' + this.props.editMode);
-
-    if (this.props.editMode) {
-      display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CommandEdit__["a" /* default */], { command: command });
-    } else {
-      display = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CommandInfo__["a" /* default */], { command: command });
-    }
+    var display = this.renderMode(command);
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -32988,6 +32985,8 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
       nextCommand: props.command.nextCommand,
       alternateNext: props.command.alternateNext
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   changeType(event) {
@@ -33010,13 +33009,8 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(0);
   }
 
-  handleSubmit(e) {
-    // whenever the form closes it seems to auto-triggerna submit event, which we don't want since we want to be able to close the form (cancel) without changing the  underlying command
-    e.preventDefault();
-  }
-
-  submit() {
-    console.log('lol');
+  handleSubmit(event) {
+    event.preventDefault();
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].updateCommand(this.state);
     this.noEditor();
   }
@@ -33099,11 +33093,7 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
         { className: 'btn btn-primary delete', onClick: this.deleteCommand.bind(this) },
         ' Delete '
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'button',
-        { className: 'btn btn-primary submit', onClick: this.submit.bind(this) },
-        ' Save '
-      )
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'Save' })
     );
   }
 }

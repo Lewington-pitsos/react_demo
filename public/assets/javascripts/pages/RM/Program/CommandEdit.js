@@ -25,6 +25,8 @@ export default class CommandEdit extends React.Component {
       nextCommand: props.command.nextCommand,
       alternateNext: props.command.alternateNext
     }
+
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   changeType(event) {
@@ -47,13 +49,8 @@ export default class CommandEdit extends React.Component {
     rmActions.switchEditor(0)
   }
 
-  handleSubmit(e) {
-    // whenever the form closes it seems to auto-triggerna submit event, which we don't want since we want to be able to close the form (cancel) without changing the  underlying command
-    e.preventDefault()
-  }
-
-  submit() {
-    console.log('lol');
+  handleSubmit(event) {
+    event.preventDefault()
     rmActions.updateCommand(this.state)
     this.noEditor()
   }
@@ -99,7 +96,7 @@ export default class CommandEdit extends React.Component {
 
         <button className="btn btn-primary cancel" onClick={this.noEditor.bind(this)} > Cancel </button>
         <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
-        <button className="btn btn-primary submit" onClick={this.submit.bind(this)} > Save </button>
+        <input type="submit" className="btn btn-primary" value="Save" />
       </form>
     )
   }

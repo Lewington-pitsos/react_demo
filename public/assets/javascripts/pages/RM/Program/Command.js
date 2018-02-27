@@ -21,6 +21,7 @@ import rmActions from '../../../actions/rmActions'
 
 export default class Command extends React.Component {
   switchEditor() {
+    // we have to click inside the .command to cancel it, so we only switch the current editng to the clicked on command if that command ISN'T already being edited
     if (!this.props.editMode) {
       rmActions.switchEditor(this.props.command.id)
     }
@@ -30,6 +31,13 @@ export default class Command extends React.Component {
 
   renderMode(command) {
     // renders the info or edit component depending on whether this command is being edited
+
+    if (this.props.editMode) {
+      return <CommandEdit command={command} />
+    } else {
+      return <CommandInfo command={command} />
+    }
+
   }
 
   getClassList(command) {
@@ -52,15 +60,8 @@ export default class Command extends React.Component {
 
     const command = this.props.command
     const classList = this.getClassList(command)
-    var display
+    var display = this.renderMode(command)
 
-    console.log('edit: ' + this.props.editMode);
-
-    if (this.props.editMode) {
-      display =  <CommandEdit command={command} />
-    } else {
-      display =  <CommandInfo command={command} />
-    }
 
     return(
       <div className={classList} id={'command-' + command.id} onClick={this.switchEditor.bind(this)}>
