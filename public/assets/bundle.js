@@ -32900,6 +32900,12 @@ class Command extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/*
+
+Pretty Straightforward: gets props passed in and based on these, displays the command specifications for this command. No interactivity further than this.
+
+*/
+
 
 
 class CommandInfo extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
@@ -33114,6 +33120,18 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_ProgramStore__ = __webpack_require__(48);
+/*
+
+VERY similar to the BukcetSelector, except it;s <option>'s are based on the presently existing commands rather than buckets.
+
+Has direct access to the prorgam store.
+
+Has no access to rmActions, it's onChange method is passed in via props. At the moment CommandSelector's only appear inside CommandEdit components, to the onChange method ends up editing the state of the parent CommandEdit component
+
+Unlike buckets, commands have set ids independent of their index, so the CommandSelector needs access to a full list of all commands to be able to render out the options properly.
+
+*/
+
 
 
 
