@@ -1,22 +1,66 @@
+/*
+
+This Store is responsible for storing data about commands and exeuting them in sequence when asked.
+
+Commands are stored as an array of Increment and Decrement objects (see ProgramStore/CommandObjects). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
+
+== Command ids ==
+
+  Each command has it's own unique Id generated using an always incrementing count. As commands are added and deleted these Id's do not change. Consiquently commands will always reference each other correctly, regardless of how the list is edited.
+
+
+This Store also manages the adding of new commands and the editing of existing commands by:
+  - updateing the commands array with new commands
+  - keeping track of the command being edited
+  - adding and deleting commands
+
+  see commandListEditing
+
+Lastly, it manages and tracks program execution and execution animations for the program list. The basic executuin procedure works like this:
+
+  - Upon receiving an execute command, this store first validates the command list (see ProgramStore/validation).
+  - if validation passes, the store locates the first command on the list and:
+    - runs that command (triggering animations, bth directly and through the BucketStore)
+    - finds the command scheudaled to be run next, and after a timeout (so that animations have a chance to run their course)
+    - runs that new command
+  - eventually we hit the null command, at which point execution is terminated and the bucketStore flashes a return value
+
+All the while, the ProgramStore listens for a halt action, and immiidately terminates
+
+
+
+*/
+
+
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
-import Command from './ProgramStore/Command'
-import Increment from './ProgramStore/Increment'
-import Decrement from './ProgramStore/Decrement'
+// other FLUX things
 import dispatcher from '../dispatcher'
-import executionAnimations from './ProgramStore/executionAnimations'
-import programHelpers from './ProgramStore/programHelpers'
-import executionStore from  './ExecutionStore'
 import rmActions from '../actions/rmActions'
 import flashActions from '../actions/flashActions'
+
+// Helper Libraries
+import Increment from './ProgramStore/CommandObjects/Increment'
+import Decrement from './ProgramStore/CommandObjects/Decrement'
+import executionAnimations from './ProgramStore/executionAnimations'
+import commandListEditing from './ProgramStore/commandListEditing'
+import finders from './ProgramStore/finders'
+import executionStore from  './ExecutionStore'
 import validation from './ProgramStore/validation'
 
 class ProgramStore extends EventEmitter {
   constructor() {
     super()
     this.commands = [
-      new Decrement(2, 1, 1, 0),
-      new Increment(1, 0, 2)
+      // defaultNext, bucket, id, alternateNext
+      new Decrement(2, 0, 1, 7),
+      new Decrement(3, 1, 2, 5),
+      new Increment(4, 2, 3),
+      new Increment(2, 3, 4),
+      new Decrement(6, 2, 5, 1),
+      new Increment(5, 1, 6),
+      new Decrement(8, 3, 7, 0),
+      new Increment(7, 0, 8),
 
     ]
     this.nextId = 3
@@ -24,14 +68,19 @@ class ProgramStore extends EventEmitter {
 
     this.stopped = false
 
-    Object.assign(this, executionAnimations);
-    Object.assign(this, programHelpers);
-    Object.assign(this, validation);
+    Object.assign(this, executionAnimations)
+    Object.assign(this, finders)
+    Object.assign(this, validation)
+    Object.assign(this, commandListEditing)
   }
+
+  // ======= component updating =========
 
   getInfo() {
     return {commands: this.commands, editingCommand: this.editingCommand}
   }
+
+  // ======= Dispatcher stuff =========
 
   handleActions(action) {
     switch(action.type) {
@@ -50,6 +99,9 @@ class ProgramStore extends EventEmitter {
       } case "DELETE_COMMAND": {
         this.deleteCommand(action.id)
         break
+      } case "CLEAR_COMMANDS": {
+        this.clearCommands()
+        break
       } case "SWITCH_EDITOR": {
         this.switchEditor(action.id)
         break
@@ -57,21 +109,7 @@ class ProgramStore extends EventEmitter {
     }
   }
 
-  switchEditor(id) {
-    this.editingCommand = id
-
-    this.emit('change')
-  }
-
-  addCommand(props) {
-    // set all currently added commands as old, and switches the editing command to be the new one
-    // creates and then pushes a new command object, and emits a change event
-    this.switchEditor(this.nextId)
-    this.commands.forEach((command) => command.justAdded = false)
-    this.commands.push(this.newCommand(props))
-
-    this.emit('change')
-  }
+  // ======= Program Execution =========
 
   execute() {
     // first validates the command list
@@ -79,8 +117,8 @@ class ProgramStore extends EventEmitter {
     // otherwise triggers a halt execution action
     if (this.validateCommands()) {
       this.stopped = false
-      var commandId = this.commands[0].id
-      this.runNextCommand(commandId, 1600)
+      var commandId = this.getFirstCommandId()
+      this.runNextCommand(commandId, 1200)
     } else {
       setTimeout(function() {
         // timeout to stop simaltanious dispatch errors
@@ -91,59 +129,46 @@ class ProgramStore extends EventEmitter {
 
   }
 
+  getFirstCommandId() {
+    // returns the id of the first command, or the null id, if there are no commands
+    if (this.commands.length) {
+      return this.commands[0].id
+    } else {
+      return 0
+    }
+  }
+
   finish() {
     this.stopped = true
   }
 
   runNextCommand(id, animationDuration) {
-    // if we get stopped by a stop action, simply cease executing new commands (the execution store will also be stopped by the same actions)
+    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
     if (!this.stopped) {
-      // othwesie keep executing new commands untill we hit the end exectution command (id = 0)
-      if (id) {
+
+      // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
+        // in which case trigger an execution stopping action
 
         // otherwise we execute the current command and find its id
+        // then recur with the new id after a animationDuration milliseconds
+
+      if (id) {
         var newId = this.executeCommand(id)
-        // finally we recur with the new id after a animationDuration milliseconds
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
-        // in which case trigger an execution stopping action
-        rmActions.finishExecution()
+        setTimeout(function() {
+          rmActions.finishExecution()
+        }, 0)
       }
     }
   }
 
   executeCommand(id) {
-    // moves the execution tracker over the current command runs it and returns the next command
+    // moves the execution tracker over the current command, runs it and returns the next command
     this.moveExecutionTracker(id)
     var currentCommand = this.findCommand(id)
     currentCommand.run()
     return currentCommand.next()
-  }
-
-  updateCommand(specs) {
-    // searches the command list for a command whose id matches the id in specs
-    // switches that command out for a new one created using specs
-    for (var i = 0; i < this.commands.length; i++) {
-      if (this.commands[i].id == specs.id) {
-        // we create a new command, specify that it had already been added, and overwrite the old command with it
-        var newCommand = this.newCommand(specs)
-        newCommand.justAdded = false
-        this.commands[i] = newCommand
-      }
-    }
-
-    this.emit('change')
-  }
-
-  newCommand(props) {
-    // generates an id for the new command
-    // returns a new command object given an object of command properties
-    var id = props.id || this.getNextId() // if an id is passed in we are updating an existing command
-    if (props.increment) {
-      return(new Increment(props.nextCommand, props.bucket, id))
-    } else {
-      return(new Decrement(props.nextCommand, props.bucket, id, props.alternateNext))
-    }
   }
 }
 

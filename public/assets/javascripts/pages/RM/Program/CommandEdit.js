@@ -1,3 +1,17 @@
+/*
+
+This command handles thje command eding display, as well as managing a form input that the user can use to edit commands.
+
+The form works by updating this component's state whenever there is a change to one of it's inputs, and then triggering and update to ProgramStore on submission (through direct access to rmActions).
+
+The default values for the form's state are set through props, based on the specs of the relevent command before editing began. However it is the state values, not props that determine what actually gets displayed on the form, so as the user updates the form, it's display changes without effecting the ProgramStore.
+
+In addition, through rmActions the editor can update the ProgramStore to record a null id for the editing command, causing editing to terminate without changes (i.e. cancel).
+
+The form can also delete the present command through a similar process.
+
+*/
+
 import React from 'react'
 import BucketSelector from '../BucketSelector'
 import CommandSelector from './CommandSelector'
@@ -17,6 +31,8 @@ export default class CommandEdit extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  // ===== Updating State =====
+
   changeType(event) {
     this.setState({increment: !this.state.increment})
   }
@@ -33,10 +49,16 @@ export default class CommandEdit extends React.Component {
     this.setState({alternateNext: parseInt(event.target.value)})
   }
 
+  // ===== Updating Store =====
+
+  noEditor() {
+    rmActions.switchEditor(0)
+  }
+
   handleSubmit(event) {
     event.preventDefault()
     rmActions.updateCommand(this.state)
-    this.props.cancelEdit()
+    this.noEditor()
   }
 
   deleteCommand(event) {
@@ -78,7 +100,7 @@ export default class CommandEdit extends React.Component {
           <CommandSelector current={this.state.alternateNext || 0} update={this.changeAlternateNext.bind(this)} id="alternate-next-command"/>
         </div>
 
-        <button className="btn btn-primary cancel" onClick={this.props.cancelEdit} > Cancel </button>
+        <button className="btn btn-primary cancel" onClick={this.noEditor.bind(this)} > Cancel </button>
         <button className="btn btn-primary delete" onClick={this.deleteCommand.bind(this)} > Delete </button>
         <input type="submit" className="btn btn-primary" value="Save" />
       </form>

@@ -1,3 +1,10 @@
+/*
+
+This Component renders the list of commands, as well as the execution tracking overlay.
+It has direct access to the ProgramStore, and renders one Command component for each command in that store.
+
+*/
+
 import React from 'react'
 
 import programStore from '../../stores/ProgramStore'

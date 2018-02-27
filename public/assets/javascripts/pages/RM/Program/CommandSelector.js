@@ -1,3 +1,15 @@
+/*
+
+VERY similar to the BukcetSelector, except it;s <option>'s are based on the presently existing commands rather than buckets.
+
+Has direct access to the prorgam store.
+
+Has no access to rmActions, it's onChange method is passed in via props. At the moment CommandSelector's only appear inside CommandEdit components, to the onChange method ends up editing the state of the parent CommandEdit component
+
+Unlike buckets, commands have set ids independent of their index, so the CommandSelector needs access to a full list of all commands to be able to render out the options properly.
+
+*/
+
 import React from 'react'
 
 import programStore from '../../../stores/ProgramStore'

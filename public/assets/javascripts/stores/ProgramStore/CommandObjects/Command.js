@@ -1,4 +1,4 @@
-import bucketsStore from '../BucketsStore'
+import bucketsStore from '../../BucketsStore'
 
 export default class Command {
   // this is the basis for Increment and Decrmeent: both need a default next command, a bucket to interact with, access to the bucketsStore, an id and an indicator of whether the command is newly added

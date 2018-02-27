@@ -1,3 +1,9 @@
+/*
+
+Pretty Straightforward: gets props passed in and based on these, displays the command specifications for this command. No interactivity further than this.
+
+*/
+
 import React from 'react'
 
 export default class CommandInfo extends React.Component {
