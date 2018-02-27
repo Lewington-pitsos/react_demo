@@ -13973,6 +13973,11 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__["a" /* default */]);
   }
 
+  getNextId() {
+    // increments returns and then increments the nextId property
+    return this.nextId++;
+  }
+
   // ======= component updating =========
 
   getInfo() {
@@ -32698,7 +32703,13 @@ Thos module contains methods for editing the command list, such as adding, delet
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = ({
+/* WEBPACK VAR INJECTION */(function($) {/*
+
+This module contains methods pertaining to finding specific commands and then interacting with them or returning some of their information.
+
+*/
+
+/* harmony default export */ __webpack_exports__["a"] = ({
   findCommand(id) {
     // returns the command object that matches the passed in id
     return $.grep(this.commands, function (command) {
@@ -32724,11 +32735,6 @@ Thos module contains methods for editing the command list, such as adding, delet
     const index = this.getCommandIndex(id);
     this.commands.splice(index, 1);
     this.emit('change');
-  },
-
-  getNextId() {
-    // increments returns and then increments the nextId property
-    return this.nextId++;
   }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))

@@ -67,6 +67,11 @@ class ProgramStore extends EventEmitter {
     Object.assign(this, commandListEditing)
   }
 
+  getNextId() {
+    // increments returns and then increments the nextId property
+    return this.nextId++
+  }
+
   // ======= component updating =========
 
   getInfo() {

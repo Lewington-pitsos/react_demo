@@ -1,3 +1,9 @@
+/*
+
+This module contains methods pertaining to finding specific commands and then interacting with them or returning some of their information.
+
+*/
+
 export default {
   findCommand(id) {
     // returns the command object that matches the passed in id
@@ -24,10 +30,5 @@ export default {
     const index = this.getCommandIndex(id)
     this.commands.splice(index, 1)
     this.emit('change')
-  },
-
-  getNextId() {
-    // increments returns and then increments the nextId property
-    return this.nextId++
   }
 }
