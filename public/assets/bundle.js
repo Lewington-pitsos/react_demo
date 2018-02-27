@@ -11137,7 +11137,7 @@ Lastly it also edits the stones value of the bucket, both when the user commands
 
 
 
-const defaultBuckets = [{ stones: 1, justAdded: true }, { stones: 1, justAdded: true }];
+const defaultBuckets = [{ stones: 2, justAdded: true }, { stones: 3, justAdded: true }, { stones: 0, justAdded: true }, { stones: 0, justAdded: true }];
 
 class BucketsStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
@@ -13936,7 +13936,7 @@ Lastly, it manages and tracks program execution and execution animations for the
     - runs that new command
   - eventually we hit the null command, at which point execution is terminated and the bucketStore flashes a return value
 
-All the while, the ProgramStore listens for a halt action, and immiidately terminates execution if it hears one.
+All the while, the ProgramStore listens for a halt action, and immiidately terminates
 
 
 
@@ -13961,7 +13961,9 @@ All the while, the ProgramStore listens for a halt action, and immiidately termi
 class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
   constructor() {
     super();
-    this.commands = [new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__["a" /* default */](2, 1, 1, 0), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__["a" /* default */](1, 0, 2)];
+    this.commands = [
+    // defaultNext, bucket, id, alternateNext
+    new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__["a" /* default */](2, 0, 1, 7), new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__["a" /* default */](3, 1, 2, 5), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__["a" /* default */](4, 2, 3), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__["a" /* default */](2, 3, 4), new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__["a" /* default */](6, 2, 5, 1), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__["a" /* default */](5, 1, 6), new __WEBPACK_IMPORTED_MODULE_5__ProgramStore_CommandObjects_Decrement__["a" /* default */](8, 3, 7, 0), new __WEBPACK_IMPORTED_MODULE_4__ProgramStore_CommandObjects_Increment__["a" /* default */](7, 0, 8)];
     this.nextId = 3;
     this.editingCommand = 0;
 
@@ -13971,11 +13973,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__["a" /* default */]);
-  }
-
-  getNextId() {
-    // increments returns and then increments the nextId property
-    return this.nextId++;
   }
 
   // ======= component updating =========
@@ -31968,7 +31965,7 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'p',
               null,
-              'For example, I\'ve already rigged up a program that gets Ugg to calculate simple two-integer addition. If you\'re still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.'
+              'For example, I\'ve already rigged up a program that gets Ugg to calculate simple two-integer multiplication. If you\'re still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'p',

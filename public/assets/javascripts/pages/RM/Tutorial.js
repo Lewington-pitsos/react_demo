@@ -38,7 +38,7 @@ export default class Tutorial extends React.Component {
               </p>
 
               <p>
-                For example, I've already rigged up a program that gets Ugg to calculate simple two-integer addition. If you're still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.
+                For example, I've already rigged up a program that gets Ugg to calculate simple two-integer multiplication. If you're still a bit fuzzy go ahead and give it a whirl, hopefully it should clear things up slightly.
               </p>
 
               <p>

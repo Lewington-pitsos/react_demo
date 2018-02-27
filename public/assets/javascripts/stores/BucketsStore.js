@@ -25,8 +25,10 @@ import bucketsInteractions from './BucketsStore/bucketsInteractions'
 import flashActions from '../actions/flashActions'
 
 const defaultBuckets = [
-  {stones: 1, justAdded: true},
-  {stones: 1, justAdded: true}
+  {stones: 2, justAdded: true},
+  {stones: 3, justAdded: true},
+  {stones: 0, justAdded: true},
+  {stones: 0, justAdded: true}
 ]
 
 class BucketsStore extends EventEmitter {

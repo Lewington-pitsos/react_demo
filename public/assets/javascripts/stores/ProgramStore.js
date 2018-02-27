@@ -25,7 +25,7 @@ Lastly, it manages and tracks program execution and execution animations for the
     - runs that new command
   - eventually we hit the null command, at which point execution is terminated and the bucketStore flashes a return value
 
-All the while, the ProgramStore listens for a halt action, and immiidately terminates execution if it hears one.
+All the while, the ProgramStore listens for a halt action, and immiidately terminates
 
 
 
@@ -52,8 +52,15 @@ class ProgramStore extends EventEmitter {
   constructor() {
     super()
     this.commands = [
-      new Decrement(2, 1, 1, 0),
-      new Increment(1, 0, 2)
+      // defaultNext, bucket, id, alternateNext
+      new Decrement(2, 0, 1, 7),
+      new Decrement(3, 1, 2, 5),
+      new Increment(4, 2, 3),
+      new Increment(2, 3, 4),
+      new Decrement(6, 2, 5, 1),
+      new Increment(5, 1, 6),
+      new Decrement(8, 3, 7, 0),
+      new Increment(7, 0, 8),
 
     ]
     this.nextId = 3
@@ -65,11 +72,6 @@ class ProgramStore extends EventEmitter {
     Object.assign(this, finders)
     Object.assign(this, validation)
     Object.assign(this, commandListEditing)
-  }
-
-  getNextId() {
-    // increments returns and then increments the nextId property
-    return this.nextId++
   }
 
   // ======= component updating =========
