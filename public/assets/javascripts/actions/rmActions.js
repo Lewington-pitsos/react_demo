@@ -91,6 +91,12 @@ export default {
     })
   },
 
+  clearCommands() {
+    dispatcher.dispatch({
+      type: 'CLEAR_COMMANDS'
+    })
+  },
+
   switchEditor(id) {
     dispatcher.dispatch({
       type: 'SWITCH_EDITOR',

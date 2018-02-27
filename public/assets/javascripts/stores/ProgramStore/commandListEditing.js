@@ -60,6 +60,14 @@ export default {
     // conducts a single element splice at that index and triggers a change
     const index = this.getCommandIndex(id)
     this.commands.splice(index, 1)
+
+    this.emit('change')
+  },
+
+  clearCommands() {
+    this.commands = []
+    this.nextId = 1
+
     this.emit('change')
   }
 }

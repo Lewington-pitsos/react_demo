@@ -20,6 +20,12 @@ export default class RegisterMachine extends React.Component {
     })
   }
 
+  clearCommands() {
+    if (window.confirm('Are you sure you want to clear all commands?')) {
+      rmActions.clearCommands()
+    }
+  }
+
   addBucket() {
     rmActions.addBucket()
   }
@@ -57,6 +63,7 @@ export default class RegisterMachine extends React.Component {
               <button className="btn btn-primary" onClick={this.addBucket.bind(this)} disabled={this.state.executing} >Add Bucket</button>
               <button className="btn btn-primary" onClick={this.removeBucket.bind(this)} disabled={this.state.executing} >Remove Bucket</button>
               <button className="btn btn-primary" onClick={this.addIncrement.bind(this)} disabled={this.state.executing} >Add Command</button>
+              <button className="btn btn-primary" onClick={this.clearCommands.bind(this)} disabled={this.state.executing} >Clear Commands</button>
               <button className="btn btn-primary" onClick={this.enterTutorial.bind(this)} disabled={this.state.executing} >Tutorial</button>
             </div>
             <div className="col-md-4 p-0 execute">

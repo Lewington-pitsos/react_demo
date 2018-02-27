@@ -99,6 +99,9 @@ class ProgramStore extends EventEmitter {
       } case "DELETE_COMMAND": {
         this.deleteCommand(action.id)
         break
+      } case "CLEAR_COMMANDS": {
+        this.clearCommands()
+        break
       } case "SWITCH_EDITOR": {
         this.switchEditor(action.id)
         break
@@ -114,7 +117,7 @@ class ProgramStore extends EventEmitter {
     // otherwise triggers a halt execution action
     if (this.validateCommands()) {
       this.stopped = false
-      var commandId = this.commands[0].id
+      var commandId = this.getFirstCommandId()
       this.runNextCommand(commandId, 1200)
     } else {
       setTimeout(function() {
@@ -124,6 +127,15 @@ class ProgramStore extends EventEmitter {
       }, 0)
     }
 
+  }
+
+  getFirstCommandId() {
+    // returns the id of the first command, or the null id, if there are no commands
+    if (this.commands.length) {
+      return this.commands[0].id
+    } else {
+      return 0
+    }
   }
 
   finish() {
@@ -144,7 +156,9 @@ class ProgramStore extends EventEmitter {
         var newId = this.executeCommand(id)
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
-        rmActions.finishExecution()
+        setTimeout(function() {
+          rmActions.finishExecution()
+        }, 0)
       }
     }
   }

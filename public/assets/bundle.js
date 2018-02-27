@@ -10440,6 +10440,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
     });
   },
 
+  clearCommands() {
+    __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
+      type: 'CLEAR_COMMANDS'
+    });
+  },
+
   switchEditor(id) {
     __WEBPACK_IMPORTED_MODULE_0__dispatcher__["a" /* default */].dispatch({
       type: 'SWITCH_EDITOR',
@@ -14005,6 +14011,10 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.deleteCommand(action.id);
           break;
+        }case "CLEAR_COMMANDS":
+        {
+          this.clearCommands();
+          break;
         }case "SWITCH_EDITOR":
         {
           this.switchEditor(action.id);
@@ -14021,7 +14031,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     // otherwise triggers a halt execution action
     if (this.validateCommands()) {
       this.stopped = false;
-      var commandId = this.commands[0].id;
+      var commandId = this.getFirstCommandId();
       this.runNextCommand(commandId, 1200);
     } else {
       setTimeout(function () {
@@ -14029,6 +14039,15 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].haltExecution();
         __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__["a" /* default */].flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.');
       }, 0);
+    }
+  }
+
+  getFirstCommandId() {
+    // returns the id of the first command, or the null id, if there are no commands
+    if (this.commands.length) {
+      return this.commands[0].id;
+    } else {
+      return 0;
     }
   }
 
@@ -14050,7 +14069,9 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         var newId = this.executeCommand(id);
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
       } else {
-        __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
+        setTimeout(function () {
+          __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
+        }, 0);
       }
     }
   }
@@ -32023,6 +32044,12 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
     });
   }
 
+  clearCommands() {
+    if (window.confirm('Are you sure you want to clear all commands?')) {
+      __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].clearCommands();
+    }
+  }
+
   addBucket() {
     __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addBucket();
   }
@@ -32077,6 +32104,11 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
             'button',
             { className: 'btn btn-primary', onClick: this.addIncrement.bind(this), disabled: this.state.executing },
             'Add Command'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { className: 'btn btn-primary', onClick: this.clearCommands.bind(this), disabled: this.state.executing },
+            'Clear Commands'
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
@@ -32698,6 +32730,14 @@ Thos module contains methods for editing the command list, such as adding, delet
     // conducts a single element splice at that index and triggers a change
     const index = this.getCommandIndex(id);
     this.commands.splice(index, 1);
+
+    this.emit('change');
+  },
+
+  clearCommands() {
+    this.commands = [];
+    this.nextId = 1;
+
     this.emit('change');
   }
 });
@@ -32757,7 +32797,7 @@ A valid command list is one where:
   - every bucket whose id is mentioned in a command actually exists, and
   - every command whose id is mentioned in a command actually eixsts OR is the null command
 
-Baiscally we just grab each command's bucket and successor(s) id, and iterate through the command and bucket lists to ensure that those ids actually eixst.
+Baiscally we just grab each command's bucket and successor(s) id, and iterate through the command and bucket list ids to ensure that those ids actually eixst.
 
 */
 
