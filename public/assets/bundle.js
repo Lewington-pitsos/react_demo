@@ -32964,9 +32964,11 @@ This command handles thje command eding display, as well as managing a form inpu
 
 The form works by updating this component's state whenever there is a change to one of it's inputs, and then triggering and update to ProgramStore on submission (through direct access to rmActions).
 
-The default values for the form's state are set through props, based on the specs of the relevent command before editing began.
+The default values for the form's state are set through props, based on the specs of the relevent command before editing began. However it is the state values, not props that determine what actually gets displayed on the form, so as the user updates the form, it's display changes without effecting the ProgramStore.
 
-In addition
+In addition, through rmActions the editor can update the ProgramStore to record a null id for the editing command, causing editing to terminate without changes (i.e. cancel).
+
+The form can also delete the present command through a similar process.
 
 */
 
@@ -32989,6 +32991,8 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // ===== Updating State =====
+
   changeType(event) {
     this.setState({ increment: !this.state.increment });
   }
@@ -33004,6 +33008,8 @@ class CommandEdit extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
   changeAlternateNext(event) {
     this.setState({ alternateNext: parseInt(event.target.value) });
   }
+
+  // ===== Updating Store =====
 
   noEditor() {
     __WEBPACK_IMPORTED_MODULE_3__actions_rmActions__["a" /* default */].switchEditor(0);
