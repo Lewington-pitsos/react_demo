@@ -1,3 +1,13 @@
+/*
+
+This component just renders a very high z-index bar at the page top which displays a message.
+
+The message is determined through direct access to the flashStore.
+
+The page-top bar is also set to fade itself in and out depending on the state of flashStore.
+
+*/
+
 import React from 'react'
 import flashStore from '../../stores/FlashStore'
 

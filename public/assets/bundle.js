@@ -30537,6 +30537,16 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_FlashStore__ = __webpack_require__(105);
+/*
+
+This component just renders a very high z-index bar at the page top which displays a message.
+
+The message is determined through direct access to the flashStore.
+
+The page-top bar is also set to fade itself in and out depending on the state of flashStore.
+
+*/
+
 
 
 
@@ -30584,6 +30594,20 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
+/*
+
+barely even a true FLUX store, this store only handles a single action, and only ever renders a quickly fading message to the screen.
+
+The flashstore tracks the "message" which is reset everytime we want to flash something different, and stored indefinitly untill it gets reset.
+
+The flash component will fade itself in if:
+  - the message is not null (it starts null)
+  - recede is set to true (again, starts false)
+
+it fades itself out whenever recede is set to true (which it is after a timeout everytime the message is updated.)
+
+*/
+
 // othwesie keep executing new commands untill we
  // 'events is like, part of nodejs'
 
@@ -30617,7 +30641,7 @@ class FlashStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
     this.message = message;
 
     this.emit('change');
-    setTimeout(this.unFlash.bind(this), 4000);
+    setTimeout(this.unFlash.bind(this), 3500);
   }
 
   unFlash() {
