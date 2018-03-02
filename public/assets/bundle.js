@@ -32016,15 +32016,12 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Buckets__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Program__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_Panel__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__BucketSelector__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ExecutePanel__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__stores_ExecutionStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RegisterMachine_EditPanel__ = __webpack_require__(146);
+/*
 
+This component
 
-
-
+*/
 
 
 
@@ -32032,47 +32029,8 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 
 class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = __WEBPACK_IMPORTED_MODULE_7__stores_ExecutionStore__["a" /* default */].getInfo();
-  }
-
-  componentWillMount() {
-    // triggered just before a render occurs apparently
-    __WEBPACK_IMPORTED_MODULE_7__stores_ExecutionStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_7__stores_ExecutionStore__["a" /* default */].getInfo());
-    });
-  }
-
-  clearCommands() {
-    if (window.confirm('Are you sure you want to clear all commands?')) {
-      __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].clearCommands();
-    }
-  }
-
-  addBucket() {
-    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addBucket();
-  }
-
-  removeBucket() {
-    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].removeBucket();
-  }
-
-  // addDecrement() {
-  //   rmActions.addDecrement()
-  // }
-
-  addIncrement() {
-    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].addIncrement();
-  }
-
-  enterTutorial() {
-    __WEBPACK_IMPORTED_MODULE_4__actions_rmActions__["a" /* default */].enterTutorial();
-  }
 
   render() {
-
-    const animation = this.state.executing ? 'fadeIn' : 'fadeOut';
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -32084,44 +32042,7 @@ class RegisterMachine extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Buckets__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'overlay hidden', id: 'RM-overlay' })
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_3__shared_Panel__["a" /* default */],
-        { classes: 'animated row rm-panel', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: true },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'col-md-8 p-0 edit d-flex state-panel flex-wrap position-relative' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { className: 'btn btn-primary', onClick: this.addBucket.bind(this), disabled: this.state.executing },
-            'Add Bucket'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { className: 'btn btn-primary', onClick: this.removeBucket.bind(this), disabled: this.state.executing },
-            'Remove Bucket'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { className: 'btn btn-primary', onClick: this.addIncrement.bind(this), disabled: this.state.executing },
-            'Add Command'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { className: 'btn btn-primary', onClick: this.clearCommands.bind(this), disabled: this.state.executing },
-            'Clear Commands'
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { className: 'btn btn-primary', onClick: this.enterTutorial.bind(this), disabled: this.state.executing },
-            'Tutorial'
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'col-md-4 p-0 execute' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__ExecutePanel__["a" /* default */], null)
-        )
-      )
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__RegisterMachine_EditPanel__["a" /* default */], null)
     );
   }
 }
@@ -33221,147 +33142,8 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
 
 /***/ }),
-/* 138 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(139);
-/*
-
-This component represnets a sub-panel, or sub-section deitcated to execution of the register machine. While execution is occuring, this panel should display a spinner, and a 'halt' button that allows the user to halt execution. While not executing it should display an 'execute button' that allows the user to start execution.
-
-It has direct access to the ExecutionStore, which is uses to work out whether execution is currently occuring.
-
-It handles halting itself by triggering flashActions with a message AND rmActions with a halt command.
-
-Both the halt/spinner and the execution button are always rendered, but the one that isn't active is hidden using css classes.
-
-*/
-
-
-
-
-
-
-
-
-class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo();
-  }
-
-  componentWillMount() {
-    __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo());
-    });
-  }
-
-  stop() {
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].haltExecution();
-    __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash('Execution halted.');
-  }
-
-  render() {
-    // hides the execution button or the execution elements depending on state
-
-    const hide = this.state.executing ? '' : 'hidden';
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'execute-panel d-flex flex-wrap' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'execution-spinner button-looking ' + hide },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'p',
-          null,
-          'Executing'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'loader' })
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'button',
-        { className: 'btn btn-primary stop ' + hide, onClick: this.stop.bind(this) },
-        'Halt'
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__["a" /* default */], { hidden: this.state.executing })
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ExecutePanel;
-
-
-/***/ }),
-/* 139 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(15);
-/*
-
-This component renders a button which triggers the execution of the current program when cliked.
-
-It has direct access to the bucketstore so that it can display the program input (which are defined as the number of rocks in each bucket when the execution begins).
-
-It has direct access to rmActions. Execution is trigered by:
-  - setting both the currently editing command and the currently editing bucket to null (whether or not they are null already), i.e. making it so that nothing is being edited
-  - triggering an execute command
-
-*/
-
-
-
-
-
-
-class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor() {
-    super();
-    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents();
-  }
-
-  componentWillMount() {
-    __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents());
-    });
-  }
-
-  execute() {
-    // first remove all editors, then execute
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchEditor(0);
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
-    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
-  }
-
-  render() {
-    // renders a number of stones according to props
-
-    var contents = this.state.contents.join(', ');
-
-    var hide = this.props.hidden ? 'hidden' : '';
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'button',
-      { className: 'execute-button btn btn-primary ' + hide, onClick: this.execute.bind(this) },
-      'Execute program(',
-      contents,
-      ')'
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
-
-
-/***/ }),
+/* 138 */,
+/* 139 */,
 /* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45483,6 +45265,256 @@ class SizzlePlayer {
     return Math.round(Math.random()) * 2 - 1;
   }
 });
+
+/***/ }),
+/* 144 */,
+/* 145 */,
+/* 146 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_Panel__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__EditPanel_ExecutePanel__ = __webpack_require__(147);
+/*
+
+This component renders a panel for interacting with the register machine interface. It consists of two sub-panels: One for editing the register machine state, and one (ExecutionPanel) for exeuting the command list and displaying machine inputs.
+
+EditPanel tracks the contents of the executionStore, and uses these to disable execution-inappropriate panel buttons during execitution.
+
+It also has direct access to rmActions and can trigger a wide variety of actions.
+
+*/
+
+
+
+
+
+
+
+
+class EditPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo();
+  }
+
+  componentWillMount() {
+    // triggered just before a render occurs apparently
+    __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo());
+    });
+  }
+
+  clearCommands() {
+    if (window.confirm('Are you sure you want to clear all commands?')) {
+      __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].clearCommands();
+    }
+  }
+
+  addBucket() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].addBucket();
+  }
+
+  removeBucket() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].removeBucket();
+  }
+
+  addIncrement() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].addIncrement();
+  }
+
+  enterTutorial() {
+    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].enterTutorial();
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_1__shared_Panel__["a" /* default */],
+      { classes: 'animated row rm-panel', fadeIn: 'fadeInUp', fadeOut: 'fadeOutDown', GOLActive: true },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col-md-8 p-0 edit d-flex state-panel flex-wrap position-relative' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.addBucket.bind(this), disabled: this.state.executing },
+          'Add Bucket'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.removeBucket.bind(this), disabled: this.state.executing },
+          'Remove Bucket'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.addIncrement.bind(this), disabled: this.state.executing },
+          'Add Command'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.clearCommands.bind(this), disabled: this.state.executing },
+          'Clear Commands'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn btn-primary', onClick: this.enterTutorial.bind(this), disabled: this.state.executing },
+          'Tutorial'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col-md-4 p-0 execute' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__EditPanel_ExecutePanel__["a" /* default */], null)
+      )
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = EditPanel;
+
+
+/***/ }),
+/* 147 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(148);
+/*
+
+This component represnets a sub-panel, or sub-section deitcated to execution of the register machine. While execution is occuring, this panel should display a spinner, and a 'halt' button that allows the user to halt execution. While not executing it should display an 'execute button' that allows the user to start execution.
+
+It has direct access to the ExecutionStore, which is uses to work out whether execution is currently occuring.
+
+It handles halting itself by triggering flashActions with a message AND rmActions with a halt command.
+
+Both the halt/spinner and the execution button are always rendered, but the one that isn't active is hidden using css classes.
+
+*/
+
+
+
+
+
+
+
+
+class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo();
+  }
+
+  componentWillMount() {
+    __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo());
+    });
+  }
+
+  stop() {
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].haltExecution();
+    __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__["a" /* default */].flash('Execution halted.');
+  }
+
+  render() {
+    // hides the execution button or the execution elements depending on state
+
+    const hide = this.state.executing ? '' : 'hidden';
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'execute-panel d-flex flex-wrap' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'execution-spinner button-looking ' + hide },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          null,
+          'Executing'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'loader' })
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { className: 'btn btn-primary stop ' + hide, onClick: this.stop.bind(this) },
+        'Halt'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__["a" /* default */], { hidden: this.state.executing })
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExecutePanel;
+
+
+/***/ }),
+/* 148 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(15);
+/*
+
+This component renders a button which triggers the execution of the current program when cliked.
+
+It has direct access to the bucketstore so that it can display the program input (which are defined as the number of rocks in each bucket when the execution begins).
+
+It has direct access to rmActions. Execution is trigered by:
+  - setting both the currently editing command and the currently editing bucket to null (whether or not they are null already), i.e. making it so that nothing is being edited
+  - triggering an execute command
+
+*/
+
+
+
+
+
+
+class ExecuteButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor() {
+    super();
+    this.state = __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents();
+  }
+
+  componentWillMount() {
+    __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__["a" /* default */].getBucketContents());
+    });
+  }
+
+  execute() {
+    // first remove all editors, then execute
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchEditor(0);
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].switchBucketEditor(-1);
+    __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__["a" /* default */].execute();
+  }
+
+  render() {
+    // renders a number of stones according to props
+
+    var contents = this.state.contents.join(', ');
+
+    var hide = this.props.hidden ? 'hidden' : '';
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { className: 'execute-button btn btn-primary ' + hide, onClick: this.execute.bind(this) },
+      'Execute program(',
+      contents,
+      ')'
+    );
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExecuteButton;
+
 
 /***/ })
 /******/ ]);

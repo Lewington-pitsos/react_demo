@@ -12,9 +12,9 @@ Both the halt/spinner and the execution button are always rendered, but the one 
 
 import React from 'react'
 
-import rmActions from '../../actions/rmActions'
-import flashActions from '../../actions/flashActions'
-import executionStore from '../../stores/ExecutionStore'
+import rmActions from '../../../../actions/rmActions'
+import flashActions from '../../../../actions/flashActions'
+import executionStore from '../../../../stores/ExecutionStore'
 import ExecuteButton from './ExecutePanel/ExecuteButton'
 
 export default class ExecutePanel extends React.Component {
