@@ -33306,6 +33306,18 @@ class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_BucketsStore__ = __webpack_require__(15);
+/*
+
+This component renders a button which triggers the execution of the current program when cliked.
+
+It has direct access to the bucketstore so that it can display the program input (which are defined as the number of rocks in each bucket when the execution begins).
+
+It has direct access to rmActions. Execution is trigered by:
+  - setting both the currently editing command and the currently editing bucket to null (whether or not they are null already), i.e. making it so that nothing is being edited
+  - triggering an execute command
+
+*/
+
 
 
 

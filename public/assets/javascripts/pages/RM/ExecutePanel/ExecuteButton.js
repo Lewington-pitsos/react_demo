@@ -1,3 +1,16 @@
+/*
+
+This component renders a button which triggers the execution of the current program when cliked.
+
+It has direct access to the bucketstore so that it can display the program input (which are defined as the number of rocks in each bucket when the execution begins).
+
+It has direct access to rmActions. Execution is trigered by:
+  - setting both the currently editing command and the currently editing bucket to null (whether or not they are null already), i.e. making it so that nothing is being edited
+  - triggering an execute command
+
+*/
+
+
 import React from 'react'
 
 import rmActions from '../../../actions/rmActions'
