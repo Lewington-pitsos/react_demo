@@ -31891,6 +31891,14 @@ __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(tutorialSt
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
+/*
+
+This component represents the tutorial interface which introduces the user to the idea of a register machine. It mostly consists of a formatted wall of text plus some links.
+
+It also has direct access to rmActions, and can trigger a tutorial exiting action when it's only button is clicked. 
+
+*/
+
 
 
 
@@ -32019,7 +32027,10 @@ class Tutorial extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RegisterMachine_EditPanel__ = __webpack_require__(146);
 /*
 
-This component
+This component renders the whole non-tutorial register machine interface. This boils down to:
+  - The Program (list of commands)
+  - The list of buckets
+  - The EditPanel (for editing the interface and executing the program)
 
 */
 

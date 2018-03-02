@@ -1,6 +1,9 @@
 /*
 
-This component
+This component renders the whole non-tutorial register machine interface. This boils down to:
+  - The Program (list of commands)
+  - The list of buckets
+  - The EditPanel (for editing the interface and executing the program)
 
 */
 import React from 'react'

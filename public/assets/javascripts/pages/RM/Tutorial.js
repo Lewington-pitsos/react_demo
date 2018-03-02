@@ -1,3 +1,11 @@
+/*
+
+This component represents the tutorial interface which introduces the user to the idea of a register machine. It mostly consists of a formatted wall of text plus some links.
+
+It also has direct access to rmActions, and can trigger a tutorial exiting action when it's only button is clicked. 
+
+*/
+
 import React from 'react'
 
 import rmActions from '../../actions/rmActions'
