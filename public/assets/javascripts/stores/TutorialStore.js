@@ -1,3 +1,9 @@
+/*
+
+The RM component has to render either the register machine interface, or the regidter machine tutorial, and fade between them. This very trivial store tracks which of the two should be displayed.
+
+*/
+
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'

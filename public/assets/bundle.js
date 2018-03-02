@@ -12907,6 +12907,14 @@ Panel.defaultProps = {
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
+/*
+
+The only data in this store tracks is whether or not the RM program is currently executing. It also changes the UI depending on whether or not execution is occuring.
+
+This could all be done in the ProgramStore, but I felt that tasks like prepairing the execution IU weren't really it's perogative.
+
+*/
+
  // 'events is like, part of nodejs'
 
 
@@ -31754,6 +31762,26 @@ class Board extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_TutorialStore__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__RM_Tutorial__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RM_RegisterMachine__ = __webpack_require__(122);
+/*
+
+This Component renders the whole Register Machine. This consists of:
+  - A tutorial panel overlay
+  - The interactive register machine interface
+
+This component has the job of smoothly transitioning between these two components as the user wants.
+
+It does this through direct access to the TutorialStore, and rendering depending on what this says about whether the tutorial should be displayed.
+
+Transitioning between the tutorial and the RM interface looks like this:
+  - TutorialMode Activated:
+    - fade in the tutorial component to the foreground
+    - after a pause, hide the RM
+  -RMMode activated:
+    - un-hide the RM
+    - scroll back to the pagetop (we need this mainly because things get a bit weird on narrow screens)
+    - fade out the tutorial component from the foreground
+*/
+
 
 
 
@@ -31859,6 +31887,12 @@ class RM extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
+/*
+
+The RM component has to render either the register machine interface, or the regidter machine tutorial, and fade between them. This very trivial store tracks which of the two should be displayed.
+
+*/
+
  // 'events is like, part of nodejs'
 
 

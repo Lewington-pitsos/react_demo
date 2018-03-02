@@ -1,3 +1,11 @@
+/*
+
+The only data in this store tracks is whether or not the RM program is currently executing. It also changes the UI depending on whether or not execution is occuring.
+
+This could all be done in the ProgramStore, but I felt that tasks like prepairing the execution IU weren't really it's perogative.
+
+*/
+
 import {EventEmitter} from 'events'; // 'events is like, part of nodejs'
 
 import dispatcher from '../dispatcher'

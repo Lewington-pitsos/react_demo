@@ -1,3 +1,23 @@
+/*
+
+This Component renders the whole Register Machine. This consists of:
+  - A tutorial panel overlay
+  - The interactive register machine interface
+
+This component has the job of smoothly transitioning between these two components as the user wants.
+
+It does this through direct access to the TutorialStore, and rendering depending on what this says about whether the tutorial should be displayed.
+
+Transitioning between the tutorial and the RM interface looks like this:
+  - TutorialMode Activated:
+    - fade in the tutorial component to the foreground
+    - after a pause, hide the RM
+  -RMMode activated:
+    - un-hide the RM
+    - scroll back to the pagetop (we need this mainly because things get a bit weird on narrow screens)
+    - fade out the tutorial component from the foreground
+*/
+
 import React from 'react'
 
 import tutorialStore from '../stores/TutorialStore'
