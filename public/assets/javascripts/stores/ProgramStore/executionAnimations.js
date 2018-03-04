@@ -20,6 +20,11 @@ export default {
     $('#RM-overlay').removeClass('hidden')
   },
 
+  resetUi() {
+    this.resetExecutionTracker()
+    $('#RM-overlay').addClass('hidden')
+  },
+
   showExecutionTracker() {
     // makes the command-execution-tracker visible, then fades it in
     var $tracker = $('#command-execution-tracker')

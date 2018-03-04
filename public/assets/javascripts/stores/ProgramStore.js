@@ -45,7 +45,7 @@ import Decrement from './ProgramStore/CommandObjects/Decrement'
 import executionAnimations from './ProgramStore/executionAnimations'
 import commandListEditing from './ProgramStore/commandListEditing'
 import finders from './ProgramStore/finders'
-import executionStore from  './ExecutionStore'
+import executionLogic from  './ProgramStore/executionLogic'
 import validation from './ProgramStore/validation'
 
 class ProgramStore extends EventEmitter {
@@ -72,6 +72,7 @@ class ProgramStore extends EventEmitter {
     Object.assign(this, finders)
     Object.assign(this, validation)
     Object.assign(this, commandListEditing)
+    Object.assign(this, executionLogic)
   }
 
   // ======= component updating =========
@@ -115,17 +116,6 @@ class ProgramStore extends EventEmitter {
 
   // ======= Program Execution =========
 
-  execute() {
-    // prepairs the UI for smooth execution (e.g. invisible overlays to prevent clicks) and emits a change to let everthing know execution has begin
-    // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.prepairExecutionUi()
-    this.stopped = false
-    var commandId = this.getFirstCommandId()
-    this.runNextCommand(commandId, 1200)
-
-    this.emit('change')
-  }
-
   executeIfValid() {
     // first validates the command list and executes the commands if they pass
     // otherwise triggers a halt execution action
@@ -140,54 +130,18 @@ class ProgramStore extends EventEmitter {
     }
   }
 
-  getFirstCommandId() {
-    // returns the id of the first command, or the null id, if there are no commands
-    if (this.commands.length) {
-      return this.commands[0].id
-    } else {
-      return 0
-    }
-  }
-
   haltExecution() {
+    // resets the internal state and Ui for non-execution mode then emits a change
     this.stopped = true
-    this.resetExecutionTracker()
-    $('#RM-overlay').addClass('hidden')
+    this.resetUi()
 
     this.emit('change')
   }
 
   finishExecution() {
+    // same as halt but also triggers an action so that BucketStore can flash a  return value
     this.haltExecution()
-
     rmActions.finishExecution()
-  }
-
-  runNextCommand(id, animationDuration) {
-    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
-    if (!this.stopped) {
-
-      // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
-        // in which case trigger an execution stopping action
-
-        // otherwise we execute the current command and find its id
-        // then recur with the new id after a animationDuration milliseconds
-
-      if (id) {
-        var newId = this.executeCommand(id)
-        setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
-      } else {
-        setTimeout(this.finishExecution.bind(this), 0)
-      }
-    }
-  }
-
-  executeCommand(id) {
-    // moves the execution tracker over the current command, runs it and returns the next command
-    this.moveExecutionTracker(id)
-    var currentCommand = this.findCommand(id)
-    currentCommand.run()
-    return currentCommand.next()
   }
 }
 

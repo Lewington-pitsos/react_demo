@@ -12900,79 +12900,7 @@ Panel.defaultProps = {
 };
 
 /***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
-/*
-
-The only data in this store tracks is whether or not the RM program is currently executing. It also changes the UI depending on whether or not execution is occuring.
-
-This could all be done in the ProgramStore, but I felt that tasks like prepairing the execution IU weren't really it's perogative.
-
-*/
-
- // 'events is like, part of nodejs'
-
-
-
-class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] {
-  constructor() {
-    super();
-    this.executing = false;
-  }
-
-  getInfo() {
-    return { executing: this.executing };
-  }
-
-  execute() {
-    this.prepairExecutionUi();
-    this.executing = true;
-
-    this.emit('change');
-  }
-
-  prepairExecutionUi() {
-    // sets up the UI for execution
-    this.showExecutionTracker();
-    $('#RM-overlay').removeClass('hidden');
-  }
-
-  showExecutionTracker() {
-    // makes the command-execution-tracker visible, then fades it in
-    var $tracker = $('#command-execution-tracker');
-    $tracker.removeClass('hidden');
-    $tracker.fadeTo(300, 1);
-  }
-
-  finish() {
-    this.resetExecutionTracker();
-    $('#RM-overlay').addClass('hidden');
-    this.executing = false;
-
-    this.emit('change');
-  }
-
-  resetExecutionTracker() {
-    // fades the CET out, makes it invisible and then resets it's position to the very top again
-    var $tracker = $('#command-execution-tracker');
-    $tracker.fadeTo(300, 0);
-    setTimeout(function () {
-      $tracker.addClass('hidden');
-      $tracker.css({
-        top: 0
-      });
-    }, 301);
-  }
-
-}
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
-
-/***/ }),
+/* 33 */,
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13889,7 +13817,7 @@ Stone.defaultProps = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatcher__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__ = __webpack_require__(7);
@@ -13899,7 +13827,7 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ProgramStore_executionAnimations__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ExecutionStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ProgramStore_executionLogic__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(132);
 /*
 
@@ -13965,6 +13893,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_7__ProgramStore_commandListEditing__["a" /* default */]);
+    Object.assign(this, __WEBPACK_IMPORTED_MODULE_9__ProgramStore_executionLogic__["a" /* default */]);
   }
 
   // ======= component updating =========
@@ -14015,17 +13944,6 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
   // ======= Program Execution =========
 
-  execute() {
-    // prepairs the UI for smooth execution (e.g. invisible overlays to prevent clicks) and emits a change to let everthing know execution has begin
-    // gets the id of the first command and feeds it to the recursive runNextCommand function
-    this.prepairExecutionUi();
-    this.stopped = false;
-    var commandId = this.getFirstCommandId();
-    this.runNextCommand(commandId, 1200);
-
-    this.emit('change');
-  }
-
   executeIfValid() {
     // first validates the command list and executes the commands if they pass
     // otherwise triggers a halt execution action
@@ -14040,54 +13958,18 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     }
   }
 
-  getFirstCommandId() {
-    // returns the id of the first command, or the null id, if there are no commands
-    if (this.commands.length) {
-      return this.commands[0].id;
-    } else {
-      return 0;
-    }
-  }
-
   haltExecution() {
+    // resets the internal state and Ui for non-execution mode then emits a change
     this.stopped = true;
-    this.resetExecutionTracker();
-    $('#RM-overlay').addClass('hidden');
+    this.resetUi();
 
     this.emit('change');
   }
 
   finishExecution() {
+    // same as halt but also triggers an action so that BucketStore can flash a  return value
     this.haltExecution();
-
     __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
-  }
-
-  runNextCommand(id, animationDuration) {
-    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
-    if (!this.stopped) {
-
-      // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
-      // in which case trigger an execution stopping action
-
-      // otherwise we execute the current command and find its id
-      // then recur with the new id after a animationDuration milliseconds
-
-      if (id) {
-        var newId = this.executeCommand(id);
-        setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
-      } else {
-        setTimeout(this.finishExecution.bind(this), 0);
-      }
-    }
-  }
-
-  executeCommand(id) {
-    // moves the execution tracker over the current command, runs it and returns the next command
-    this.moveExecutionTracker(id);
-    var currentCommand = this.findCommand(id);
-    currentCommand.run();
-    return currentCommand.next();
   }
 }
 
@@ -14095,7 +13977,6 @@ const programStore = new ProgramStore();
 
 __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(programStore.handleActions.bind(programStore));
 /* harmony default export */ __webpack_exports__["a"] = (programStore);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 49 */
@@ -32583,6 +32464,11 @@ class Program extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     $('#RM-overlay').removeClass('hidden');
   },
 
+  resetUi() {
+    this.resetExecutionTracker();
+    $('#RM-overlay').addClass('hidden');
+  },
+
   showExecutionTracker() {
     // makes the command-execution-tracker visible, then fades it in
     var $tracker = $('#command-execution-tracker');
@@ -45603,6 +45489,62 @@ class SizzlePlayer {
     // returns 1 or -1
     return Math.round(Math.random()) * 2 - 1;
   }
+});
+
+/***/ }),
+/* 145 */,
+/* 146 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  execute() {
+    // prepairs the UI for smooth execution (e.g. invisible overlays to prevent clicks) and emits a change to let everthing know execution has begin
+    // gets the id of the first command and feeds it to the recursive runNextCommand function
+    this.prepairExecutionUi();
+    this.stopped = false;
+    var commandId = this.getFirstCommandId();
+    this.runNextCommand(commandId, 1200);
+
+    this.emit('change');
+  },
+
+  getFirstCommandId() {
+    // returns the id of the first command, or the null id, if there are no commands
+    if (this.commands.length) {
+      return this.commands[0].id;
+    } else {
+      return 0;
+    }
+  },
+
+  runNextCommand(id, animationDuration) {
+    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
+    if (!this.stopped) {
+
+      // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
+      // in which case trigger an execution stopping action
+
+      // otherwise we execute the current command and find its id
+      // then recur with the new id after a animationDuration milliseconds
+
+      if (id) {
+        var newId = this.executeCommand(id);
+        setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
+      } else {
+        setTimeout(this.finishExecution.bind(this), 0);
+      }
+    }
+  },
+
+  executeCommand(id) {
+    // moves the execution tracker over the current command, runs it and returns the next command
+    this.moveExecutionTracker(id);
+    var currentCommand = this.findCommand(id);
+    currentCommand.run();
+    return currentCommand.next();
+  }
+
 });
 
 /***/ })
