@@ -13831,7 +13831,7 @@ Stone.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ProgramStore_validation__ = __webpack_require__(132);
 /*
 
-This Store is responsible for storing data about commands and exeuting them in sequence when asked.
+This Store is responsible for storing data about commands, exeuting them in sequence when asked and keeping track of whether execution is occuring.
 
 Commands are stored as an array of Increment and Decrement objects (see ProgramStore/CommandObjects). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
 
@@ -13847,7 +13847,7 @@ This Store also manages the adding of new commands and the editing of existing c
 
   see commandListEditing
 
-Lastly, it manages and tracks program execution and execution animations for the program list. The basic executuin procedure works like this:
+Most importantly it manages and tracks program execution and execution animations for the program list. The basic executuin procedure works like this:
 
   - Upon receiving an execute command, this store first validates the command list (see ProgramStore/validation).
   - if validation passes, the store locates the first command on the list and:
@@ -13856,8 +13856,9 @@ Lastly, it manages and tracks program execution and execution animations for the
     - runs that new command
   - eventually we hit the null command, at which point execution is terminated and the bucketStore flashes a return value
 
-All the while, the ProgramStore listens for a halt action, and immiidately terminates
+All the while, the ProgramStore listens for a halt action, and immiidately terminates.
 
+Lastly, whether or not execution is occuring is tracked through this.executing, which is set to true whenever execution begins and false whenever it ends.
 
 
 */
@@ -13887,7 +13888,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     this.nextId = 3;
     this.editingCommand = 0;
 
-    this.stopped = true;
+    this.executing = false;
 
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_6__ProgramStore_executionAnimations__["a" /* default */]);
     Object.assign(this, __WEBPACK_IMPORTED_MODULE_8__ProgramStore_finders__["a" /* default */]);
@@ -13903,7 +13904,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   }
 
   executionInfo() {
-    return { executing: !this.stopped };
+    return { executing: this.executing };
   }
 
   // ======= Dispatcher stuff =========
@@ -13960,7 +13961,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
   haltExecution() {
     // resets the internal state and Ui for non-execution mode then emits a change
-    this.stopped = true;
+    this.executing = false;
     this.resetUi();
 
     this.emit('change');
@@ -45504,9 +45505,9 @@ class SizzlePlayer {
     // prepairs the UI for smooth execution (e.g. invisible overlays to prevent clicks) and emits a change to let everthing know execution has begin
     // gets the id of the first command and feeds it to the recursive runNextCommand function
     this.prepairExecutionUi();
-    this.stopped = false;
+    this.executing = true;
     var commandId = this.getFirstCommandId();
-    this.runNextCommand(commandId, 1200);
+    this.runCommand(commandId, 1200);
 
     this.emit('change');
   },
@@ -45520,23 +45521,27 @@ class SizzlePlayer {
     }
   },
 
-  runNextCommand(id, animationDuration) {
-    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
-    if (!this.stopped) {
+  runCommand(id, animationDuration) {
+    // if we get stopped by a human-commanded halt, simply cease executing new commands (the execution store will also be stopped by the same actions)
+    if (this.executing) {
 
       // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
       // in which case trigger an execution stopping action
-
-      // otherwise we execute the current command and find its id
-      // then recur with the new id after a animationDuration milliseconds
+      // otherwise run the next command
 
       if (id) {
-        var newId = this.executeCommand(id);
-        setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
+        this.continueRunning(id, animationDuration);
       } else {
-        this.finishExecution.bind(this);
+        this.finishExecution();
       }
     }
+  },
+
+  continueRunning(id, animationDuration) {
+    // execute the current command and find its id
+    // call runCommand with the new id after a animationDuration milliseconds
+    var newId = this.executeCommand(id);
+    setTimeout(this.runCommand.bind(this), animationDuration, newId, animationDuration);
   },
 
   executeCommand(id) {

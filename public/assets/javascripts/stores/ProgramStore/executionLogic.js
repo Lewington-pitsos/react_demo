@@ -3,9 +3,9 @@ export default {
     // prepairs the UI for smooth execution (e.g. invisible overlays to prevent clicks) and emits a change to let everthing know execution has begin
     // gets the id of the first command and feeds it to the recursive runNextCommand function
     this.prepairExecutionUi()
-    this.stopped = false
+    this.executing = true
     var commandId = this.getFirstCommandId()
-    this.runNextCommand(commandId, 1200)
+    this.runCommand(commandId, 1200)
 
     this.emit('change')
   },
@@ -19,23 +19,27 @@ export default {
     }
   },
 
-  runNextCommand(id, animationDuration) {
-    // if we get stopped by a stop dispatch, simply cease executing new commands (the execution store will also be stopped by the same actions)
-    if (!this.stopped) {
+  runCommand(id, animationDuration) {
+    // if we get stopped by a human-commanded halt, simply cease executing new commands (the execution store will also be stopped by the same actions)
+    if (this.executing) {
 
       // In all other cases keep executing new commands untill we hit the end exectution command (id = 0)
         // in which case trigger an execution stopping action
-
-        // otherwise we execute the current command and find its id
-        // then recur with the new id after a animationDuration milliseconds
+        // otherwise run the next command
 
       if (id) {
-        var newId = this.executeCommand(id)
-        setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
+        this.continueRunning(id, animationDuration)
       } else {
-        this.finishExecution.bind(this)
+        this.finishExecution()
       }
     }
+  },
+
+  continueRunning(id, animationDuration) {
+    // execute the current command and find its id
+    // call runCommand with the new id after a animationDuration milliseconds
+    var newId = this.executeCommand(id)
+    setTimeout(this.runCommand.bind(this), animationDuration, newId, animationDuration)
   },
 
   executeCommand(id) {

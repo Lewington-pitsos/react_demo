@@ -1,6 +1,6 @@
 /*
 
-This Store is responsible for storing data about commands and exeuting them in sequence when asked.
+This Store is responsible for storing data about commands, exeuting them in sequence when asked and keeping track of whether execution is occuring.
 
 Commands are stored as an array of Increment and Decrement objects (see ProgramStore/CommandObjects). Broadly each of these objecst stores a bucket to interact with, and a command to run after finishing. They can run their own interactions.
 
@@ -16,7 +16,7 @@ This Store also manages the adding of new commands and the editing of existing c
 
   see commandListEditing
 
-Lastly, it manages and tracks program execution and execution animations for the program list. The basic executuin procedure works like this:
+Most importantly it manages and tracks program execution and execution animations for the program list. The basic executuin procedure works like this:
 
   - Upon receiving an execute command, this store first validates the command list (see ProgramStore/validation).
   - if validation passes, the store locates the first command on the list and:
@@ -25,8 +25,9 @@ Lastly, it manages and tracks program execution and execution animations for the
     - runs that new command
   - eventually we hit the null command, at which point execution is terminated and the bucketStore flashes a return value
 
-All the while, the ProgramStore listens for a halt action, and immiidately terminates
+All the while, the ProgramStore listens for a halt action, and immiidately terminates.
 
+Lastly, whether or not execution is occuring is tracked through this.executing, which is set to true whenever execution begins and false whenever it ends.
 
 
 */
@@ -66,7 +67,7 @@ class ProgramStore extends EventEmitter {
     this.nextId = 3
     this.editingCommand = 0
 
-    this.stopped = true
+    this.executing = false
 
     Object.assign(this, executionAnimations)
     Object.assign(this, finders)
@@ -82,7 +83,7 @@ class ProgramStore extends EventEmitter {
   }
 
   executionInfo() {
-    return {executing: !this.stopped}
+    return {executing: this.executing}
   }
 
   // ======= Dispatcher stuff =========
@@ -132,7 +133,7 @@ class ProgramStore extends EventEmitter {
 
   haltExecution() {
     // resets the internal state and Ui for non-execution mode then emits a change
-    this.stopped = true
+    this.executing = false
     this.resetUi()
 
     this.emit('change')
