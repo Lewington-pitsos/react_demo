@@ -13969,7 +13969,9 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
   finishExecution() {
     // same as halt but also triggers an action so that BucketStore can flash a  return value
     this.haltExecution();
-    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
+    setTimeout(function () {
+      __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
+    }, 0);
   }
 }
 
@@ -33135,7 +33137,7 @@ class CommandSelector extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
 This component renders a panel for interacting with the register machine interface. It consists of two sub-panels: One for editing the register machine state, and one (ExecutionPanel) for exeuting the command list and displaying machine inputs.
 
-EditPanel tracks the contents of the executionStore, and uses these to disable execution-inappropriate panel buttons during execitution.
+EditPanel tracks the contents of the ProgramStore, and uses these to disable execution-inappropriate panel buttons during execitution.
 
 It also has direct access to rmActions and can trigger a wide variety of actions.
 
@@ -33242,7 +33244,7 @@ class EditPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component 
 
 This component represnets a sub-panel, or sub-section deitcated to execution of the register machine. While execution is occuring, this panel should display a spinner, and a 'halt' button that allows the user to halt execution. While not executing it should display an 'execute button' that allows the user to start execution.
 
-It has direct access to the ExecutionStore, which is uses to work out whether execution is currently occuring.
+It has direct access to the ProgramStore, which is uses to work out whether execution is currently occuring.
 
 It handles halting itself by triggering flashActions with a message AND rmActions with a halt command.
 
@@ -45532,7 +45534,7 @@ class SizzlePlayer {
         var newId = this.executeCommand(id);
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
       } else {
-        setTimeout(this.finishExecution.bind(this), 0);
+        this.finishExecution.bind(this);
       }
     }
   },

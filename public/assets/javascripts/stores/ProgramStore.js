@@ -141,7 +141,9 @@ class ProgramStore extends EventEmitter {
   finishExecution() {
     // same as halt but also triggers an action so that BucketStore can flash a  return value
     this.haltExecution()
-    rmActions.finishExecution()
+    setTimeout(function() {
+      rmActions.finishExecution()
+    }, 0)
   }
 }
 

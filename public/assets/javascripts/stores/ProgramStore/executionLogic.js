@@ -33,7 +33,7 @@ export default {
         var newId = this.executeCommand(id)
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
-        setTimeout(this.finishExecution.bind(this), 0)
+        this.finishExecution.bind(this)
       }
     }
   },

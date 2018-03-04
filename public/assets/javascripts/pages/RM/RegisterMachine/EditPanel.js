@@ -2,7 +2,7 @@
 
 This component renders a panel for interacting with the register machine interface. It consists of two sub-panels: One for editing the register machine state, and one (ExecutionPanel) for exeuting the command list and displaying machine inputs.
 
-EditPanel tracks the contents of the executionStore, and uses these to disable execution-inappropriate panel buttons during execitution.
+EditPanel tracks the contents of the ProgramStore, and uses these to disable execution-inappropriate panel buttons during execitution.
 
 It also has direct access to rmActions and can trigger a wide variety of actions.
 
