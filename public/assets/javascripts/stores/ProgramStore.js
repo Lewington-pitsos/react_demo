@@ -94,7 +94,7 @@ class ProgramStore extends EventEmitter {
         this.addCommand(action.commandProps)
         break
       } case "HALT_EXECUTION": {
-        this.finishExecution()
+        this.haltExecution()
         break
       } case "EXECUTE": {
         this.executeIfValid()

@@ -13917,7 +13917,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
           break;
         }case "HALT_EXECUTION":
         {
-          this.finishExecution();
+          this.haltExecution();
           break;
         }case "EXECUTE":
         {
