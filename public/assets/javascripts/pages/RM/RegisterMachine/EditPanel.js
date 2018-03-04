@@ -12,18 +12,18 @@ import React from 'react'
 
 import Panel from '../../shared/Panel'
 import rmActions from '../../../actions/rmActions'
-import executionStore from '../../../stores/ExecutionStore'
+import programStore from '../../../stores/ProgramStore'
 import ExecutePanel from './EditPanel/ExecutePanel'
 
 export default class EditPanel extends React.Component {
   constructor() {
     super()
-    this.state = executionStore.getInfo()
+    this.state = programStore.executionInfo()
   }
 
   componentWillMount() { // triggered just before a render occurs apparently
-    executionStore.on('change', () => {
-      this.setState( executionStore.getInfo() )
+    programStore.on('change', () => {
+      this.setState( programStore.executionInfo() )
     })
   }
 

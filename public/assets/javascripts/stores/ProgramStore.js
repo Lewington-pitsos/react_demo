@@ -66,7 +66,7 @@ class ProgramStore extends EventEmitter {
     this.nextId = 3
     this.editingCommand = 0
 
-    this.stopped = false
+    this.stopped = true
 
     Object.assign(this, executionAnimations)
     Object.assign(this, finders)
@@ -80,6 +80,10 @@ class ProgramStore extends EventEmitter {
     return {commands: this.commands, editingCommand: this.editingCommand}
   }
 
+  executionInfo() {
+    return {executing: !this.stopped}
+  }
+
   // ======= Dispatcher stuff =========
 
   handleActions(action) {
@@ -88,7 +92,7 @@ class ProgramStore extends EventEmitter {
         this.addCommand(action.commandProps)
         break
       } case "EXECUTE": {
-        this.execute()
+        this.executeIfValid()
         break
       } case "HALT_EXECUTION": {
         this.finish()
@@ -112,21 +116,28 @@ class ProgramStore extends EventEmitter {
   // ======= Program Execution =========
 
   execute() {
-    // first validates the command list
-    // if the list validates, gets the id of the first command and feeds it to the recursive runNextCommand function
+    // prepairs the UI for smooth execution (e.g. invisible overlays to prevent clicks) and emits a change to let everthing know execution has begin
+    // gets the id of the first command and feeds it to the recursive runNextCommand function
+    this.prepairExecutionUi()
+    this.stopped = false
+    var commandId = this.getFirstCommandId()
+    this.runNextCommand(commandId, 1200)
+
+    this.emit('change')
+  }
+
+  executeIfValid() {
+    // first validates the command list and executes the commands if they pass
     // otherwise triggers a halt execution action
     if (this.validateCommands()) {
-      this.stopped = false
-      var commandId = this.getFirstCommandId()
-      this.runNextCommand(commandId, 1200)
+      this.execute()
     } else {
       setTimeout(function() {
         // timeout to stop simaltanious dispatch errors
-        rmActions.haltExecution()
+        rmActions.finishExecution()
         flashActions.flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.')
       }, 0)
     }
-
   }
 
   getFirstCommandId() {
@@ -138,8 +149,11 @@ class ProgramStore extends EventEmitter {
     }
   }
 
-  finish() {
+  finishExecution() {
     this.stopped = true
+    this.halt()
+    this.resetExecutionTracker()
+    $('#RM-overlay').addClass('hidden')
   }
 
   runNextCommand(id, animationDuration) {
@@ -157,7 +171,7 @@ class ProgramStore extends EventEmitter {
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
         setTimeout(function() {
-          rmActions.finishExecution()
+          this.finishExecution()
         }, 0)
       }
     }
