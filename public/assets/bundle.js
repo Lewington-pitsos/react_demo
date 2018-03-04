@@ -14034,7 +14034,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     } else {
       setTimeout(function () {
         // timeout to stop simaltanious dispatch errors
-        __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
+        __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].haltExecution();
         __WEBPACK_IMPORTED_MODULE_3__actions_flashActions__["a" /* default */].flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.');
       }, 0);
     }
@@ -14049,12 +14049,18 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
     }
   }
 
-  finishExecution() {
+  haltExecution() {
     this.stopped = true;
     this.resetExecutionTracker();
     $('#RM-overlay').addClass('hidden');
 
     this.emit('change');
+  }
+
+  finishExecution() {
+    this.haltExecution();
+
+    __WEBPACK_IMPORTED_MODULE_2__actions_rmActions__["a" /* default */].finishExecution();
   }
 
   runNextCommand(id, animationDuration) {

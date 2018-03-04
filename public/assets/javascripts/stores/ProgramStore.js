@@ -134,7 +134,7 @@ class ProgramStore extends EventEmitter {
     } else {
       setTimeout(function() {
         // timeout to stop simaltanious dispatch errors
-        rmActions.finishExecution()
+        rmActions.haltExecution()
         flashActions.flash('Hang on, some of the commands aren\'t valid (they refer to non existant commands or buckets or something). Please fix.')
       }, 0)
     }
@@ -149,12 +149,18 @@ class ProgramStore extends EventEmitter {
     }
   }
 
-  finishExecution() {
+  haltExecution() {
     this.stopped = true
     this.resetExecutionTracker()
     $('#RM-overlay').addClass('hidden')
 
     this.emit('change')
+  }
+
+  finishExecution() {
+    this.haltExecution()
+
+    rmActions.finishExecution()
   }
 
   runNextCommand(id, animationDuration) {
