@@ -91,11 +91,11 @@ class ProgramStore extends EventEmitter {
       case "ADD_COMMAND": {
         this.addCommand(action.commandProps)
         break
+      } case "HALT_EXECUTION": {
+        this.finishExecution()
+        break
       } case "EXECUTE": {
         this.executeIfValid()
-        break
-      } case "HALT_EXECUTION": {
-        this.finish()
         break
       } case "UPDATE_COMMAND": {
         this.updateCommand(action.specs)
@@ -151,9 +151,10 @@ class ProgramStore extends EventEmitter {
 
   finishExecution() {
     this.stopped = true
-    this.halt()
     this.resetExecutionTracker()
     $('#RM-overlay').addClass('hidden')
+
+    this.emit('change')
   }
 
   runNextCommand(id, animationDuration) {
@@ -170,9 +171,7 @@ class ProgramStore extends EventEmitter {
         var newId = this.executeCommand(id)
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration)
       } else {
-        setTimeout(function() {
-          this.finishExecution()
-        }, 0)
+        setTimeout(this.finishExecution.bind(this), 0)
       }
     }
   }

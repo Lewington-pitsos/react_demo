@@ -60,23 +60,4 @@ class ExecutionStore extends EventEmitter {
     }, 301)
   }
 
-  handleActions(action) {
-    switch(action.type) {
-      case "EXECUTE": {
-        this.execute()
-        break
-      } case "HALT_EXECUTION": {
-        this.finish()
-        break
-      } case "FINISH_EXECUTION": {
-        this.finish()
-        break
-      }
-    }
-  }
 }
-
-const executionStore = new ExecutionStore;
-
-dispatcher.register(executionStore.handleActions.bind(executionStore))
-export default executionStore;

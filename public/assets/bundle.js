@@ -12969,29 +12969,7 @@ class ExecutionStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"
     }, 301);
   }
 
-  handleActions(action) {
-    switch (action.type) {
-      case "EXECUTE":
-        {
-          this.execute();
-          break;
-        }case "HALT_EXECUTION":
-        {
-          this.finish();
-          break;
-        }case "FINISH_EXECUTION":
-        {
-          this.finish();
-          break;
-        }
-    }
-  }
 }
-
-const executionStore = new ExecutionStore();
-
-__WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(executionStore.handleActions.bind(executionStore));
-/* harmony default export */ __webpack_exports__["a"] = (executionStore);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
@@ -14007,13 +13985,13 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         {
           this.addCommand(action.commandProps);
           break;
+        }case "HALT_EXECUTION":
+        {
+          this.finishExecution();
+          break;
         }case "EXECUTE":
         {
           this.executeIfValid();
-          break;
-        }case "HALT_EXECUTION":
-        {
-          this.finish();
           break;
         }case "UPDATE_COMMAND":
         {
@@ -14073,9 +14051,10 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
 
   finishExecution() {
     this.stopped = true;
-    this.halt();
     this.resetExecutionTracker();
     $('#RM-overlay').addClass('hidden');
+
+    this.emit('change');
   }
 
   runNextCommand(id, animationDuration) {
@@ -14092,9 +14071,7 @@ class ProgramStore extends __WEBPACK_IMPORTED_MODULE_0_events__["EventEmitter"] 
         var newId = this.executeCommand(id);
         setTimeout(this.runNextCommand.bind(this), animationDuration, newId, animationDuration);
       } else {
-        setTimeout(function () {
-          this.finishExecution();
-        }, 0);
+        setTimeout(this.finishExecution.bind(this), 0);
       }
     }
   }
@@ -33367,7 +33344,7 @@ class EditPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_rmActions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_flashActions__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_ProgramStore__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ExecutePanel_ExecuteButton__ = __webpack_require__(140);
 /*
 
@@ -33391,12 +33368,12 @@ Both the halt/spinner and the execution button are always rendered, but the one 
 class ExecutePanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor() {
     super();
-    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo();
+    this.state = __WEBPACK_IMPORTED_MODULE_3__stores_ProgramStore__["a" /* default */].executionInfo();
   }
 
   componentWillMount() {
-    __WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].on('change', () => {
-      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_ExecutionStore__["a" /* default */].getInfo());
+    __WEBPACK_IMPORTED_MODULE_3__stores_ProgramStore__["a" /* default */].on('change', () => {
+      this.setState(__WEBPACK_IMPORTED_MODULE_3__stores_ProgramStore__["a" /* default */].executionInfo());
     });
   }
 

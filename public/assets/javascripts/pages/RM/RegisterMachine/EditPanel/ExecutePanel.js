@@ -14,18 +14,18 @@ import React from 'react'
 
 import rmActions from '../../../../actions/rmActions'
 import flashActions from '../../../../actions/flashActions'
-import executionStore from '../../../../stores/ExecutionStore'
+import programStore from '../../../../stores/ProgramStore'
 import ExecuteButton from './ExecutePanel/ExecuteButton'
 
 export default class ExecutePanel extends React.Component {
   constructor() {
     super()
-    this.state = executionStore.getInfo()
+    this.state = programStore.executionInfo()
   }
 
   componentWillMount() {
-    executionStore.on('change', () => {
-      this.setState( executionStore.getInfo() )
+    programStore.on('change', () => {
+      this.setState( programStore.executionInfo() )
     })
   }
 
