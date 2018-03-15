@@ -1,5 +1,10 @@
-# React Website Scaffold
+# React Demo
 
-## Libraries
+It's located [here](https://murmuring-beyond-81733.herokuapp.com/) for the time being.
 
-Comes with Animate.css and Bootstraps (css and js) already integrated into bundle.js
+## Packages Used
+
+- Server: Express
+- Pipeline: Webpack
+- Backend: React.js/FLUX and mo.js
+- Fontend: Animate.css and Bootstraps
